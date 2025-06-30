@@ -5,8 +5,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import UserLayout from "./layouts/UserLayout.tsx";
 import AdminLayout from "./layouts/AdminLayout";
-import UserPage from "./pages/UserPage";
-import AdminPage from "./pages/AdminPage";
+import LoginPage from "./pages/User/Login/index.tsx";
+import HomePage from "./pages/User/Home/index.tsx";
+import DetailPage from "./pages/User/Detail/index.tsx";
+import MyPage from "./pages/User/My/index.tsx";
+import AdminLoginPage from "./pages/Admin/Login/index.tsx";
+import SigninPage from "./pages/User/Signin/index.tsx";
+import MapPage from "./pages/User/Map/index.tsx";
+import AdminSigninPage from "./pages/Admin/Signin/index.tsx";
 
 const publicRoutes = createBrowserRouter([
   {
@@ -15,7 +21,27 @@ const publicRoutes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <UserPage />,
+        element: <LoginPage />,
+      },
+      {
+        path: "signin",
+        element: <SigninPage />,
+      },
+      {
+        path: "home",
+        element: <HomePage />,
+      },
+      {
+        path: "map",
+        element: <MapPage />,
+      },
+      {
+        path: "detail",
+        element: <DetailPage />,
+      },
+      {
+        path: "mypage",
+        element: <MyPage />,
       },
     ],
   },
@@ -25,7 +51,11 @@ const publicRoutes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <AdminPage />,
+        element: <AdminLoginPage />,
+      },
+      {
+        path: "signin",
+        element: <AdminSigninPage />,
       },
     ],
   },
