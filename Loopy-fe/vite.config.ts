@@ -52,7 +52,7 @@ export default defineConfig({
             //캐싱 전략 NetWork만
             handler: 'NetworkOnly',
             options: {
-              cacheName: 'catxi-pwa-cache-v1',
+              cacheName: 'loopy-pwa-cache-v1',
               expiration: {
                 maxEntries: 100,
                 maxAgeSeconds: 24 * 60 * 60  // 24시간
