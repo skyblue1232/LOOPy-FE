@@ -1,3 +1,5 @@
+import CheckIcon from "../../../../assets/images/Check.svg?react";
+
 interface CheckCircleProps {
   checked: boolean;
 }
@@ -9,7 +11,11 @@ const CheckCircle = ({ checked }: CheckCircleProps) => {
         checked ? "bg-[#FA9820] border-none" : "border-[#000000]"
       }`}
     >
-      {checked && <div className="w-[0.625rem] h-[0.625rem] bg-white rounded-full" />}
+      <CheckIcon
+        className={`w-[0.625rem] h-[0.625rem] ${
+          checked ? "text-white" : "text-black"
+        }`}
+      />
     </div>
   );
 };

@@ -17,7 +17,10 @@ interface StepNicknameProps {
 }
 
 const StepNickname = ({ formData, setFormData, onNext }: StepNicknameProps) => {
-  const isValid = formData.nickname.trim() !== "" && formData.phone.trim() !== "";
+  const phoneRegex = /^01[0|1|6|7|8|9]-\d{3,4}-\d{4}$/;
+  const isValid =
+    formData.nickname.trim() !== "" &&
+    phoneRegex.test(formData.phone.trim());
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
@@ -59,7 +62,7 @@ const StepNickname = ({ formData, setFormData, onNext }: StepNicknameProps) => {
         전화번호
       </p>
       <CommonInput
-        placeholder="전화번호 입력"
+        placeholder="전화번호 입력 (예: 010-1234-5678)"
         value={formData.phone}
         onChange={e =>
           setFormData(prev => ({
@@ -80,11 +83,7 @@ const StepNickname = ({ formData, setFormData, onNext }: StepNicknameProps) => {
         <CommonButton
           text="인증번호 받기"
           onClick={handleClick}
-          className={`w-full ${
-            isValid
-              ? "bg-[#FA9820] text-white"
-              : "bg-[#CCCCCC] text-white pointer-events-none"
-          }`}
+          className="w-full"
           disabled={!isValid}
         />
       </div>
