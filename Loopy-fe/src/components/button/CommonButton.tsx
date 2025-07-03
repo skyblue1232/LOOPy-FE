@@ -3,14 +3,32 @@ interface CommonButtonProps {
   onClick?: () => void;
   className?: string; 
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  autoStyle?: boolean; 
 }
 
-const CommonButton = ({ text, onClick, className = '', type = 'button' }: CommonButtonProps) => {
+const CommonButton = ({
+  text,
+  onClick,
+  className = '',
+  type = 'button',
+  disabled = false,
+  autoStyle = true,
+}: CommonButtonProps) => {
+  const baseStyle = "w-full py-[1rem] text-center font-suit font-semibold rounded-[8px]";
+  const active = "bg-[#FA9820] text-white";
+  const inactive = "bg-[#CCCCCC] text-white pointer-events-none";
+
+  const appliedClass = autoStyle
+    ? `${baseStyle} ${disabled ? inactive : active}`
+    : baseStyle;
+
   return (
     <button
       type={type}
       onClick={onClick}
-      className={`w-full py-[1rem] text-center font-suit font-semibold rounded-[8px] bg-[#FA9820] text-white ${className}`}
+      disabled={disabled}
+      className={`${appliedClass} ${className}`}
     >
       {text}
     </button>
