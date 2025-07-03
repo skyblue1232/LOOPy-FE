@@ -13,10 +13,12 @@ import AdminLoginPage from "./pages/Admin/Login/index.tsx";
 import SigninPage from "./pages/User/Signin/index.tsx";
 import MapPage from "./pages/User/Map/index.tsx";
 import AdminSigninPage from "./pages/Admin/Signin/index.tsx";
+import ErrorPage from "./pages/ErrorPage.tsx";
 
 const publicRoutes = createBrowserRouter([
   {
     path: "/",
+    errorElement: <ErrorPage />,
     element: <UserLayout />,
     children: [
       {
