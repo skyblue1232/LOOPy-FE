@@ -75,7 +75,7 @@ const StepEmail = ({ formData, setFormData, onNext }: StepEmailProps) => {
         }`}
       >
         <CommonButton
-          text="다음"
+          text="다음으로 넘어가기"
           onClick={handleClick}
           className={`w-full ${
             isValid
