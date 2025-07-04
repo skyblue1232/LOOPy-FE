@@ -16,8 +16,8 @@ const CommonButton = ({
   autoStyle = true,
 }: CommonButtonProps) => {
   const baseStyle = "w-full py-[1rem] text-center font-suit font-semibold rounded-[8px]";
-  const active = "bg-[#FA9820] text-white";
-  const inactive = "bg-[#CCCCCC] text-white pointer-events-none";
+  const active = "bg-[#6970F3] text-white";
+  const inactive = "bg-[#DFDFDF] text-[#7F7F7F] pointer-events-none";
 
   const appliedClass = autoStyle
     ? `${baseStyle} ${disabled ? inactive : active}`

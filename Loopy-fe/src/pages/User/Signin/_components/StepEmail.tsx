@@ -70,7 +70,7 @@ const StepEmail = ({ formData, setFormData, onNext }: StepEmailProps) => {
       />
 
       <div
-        className={`fixed left-0 w-full px-[1.5rem] transition-all duration-300 ${
+        className={`absolute left-0 w-full px-[1.5rem] transition-all duration-300 ${
           isKeyboardOpen ? "bottom-[1rem]" : "bottom-[1.5rem]"
         }`}
       >
