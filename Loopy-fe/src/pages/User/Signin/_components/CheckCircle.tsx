@@ -8,7 +8,7 @@ const CheckCircle = ({ checked }: CheckCircleProps) => {
   return (
     <div
       className={`w-[1.25rem] h-[1.25rem] rounded-full border flex items-center justify-center ${
-        checked ? "bg-[#FA9820] border-none" : "border-[#000000]"
+        checked ? "bg-[#6970F3] border-none" : "border-[#000000]"
       }`}
     >
       <CheckIcon
