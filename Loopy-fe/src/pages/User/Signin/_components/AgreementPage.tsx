@@ -42,15 +42,15 @@ const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-suit">
+    <div className="relative min-h-screen flex flex-col font-suit">
       <CommonHeader
         title="서비스 이용 동의"
         onBack={onBack}
         onClose={() => navigate("/")}
       />
 
-      <div>
-        <h1 className="text-xl font-bold mt-[2.875rem] mb-6">
+      <div className="pb-[7rem]">
+        <h1 className="text-xl font-bold mt-[2.5rem] mb-[2.75rem]">
           서비스 이용을 위해
           <br />
           약관에 동의해주세요.
@@ -58,9 +58,9 @@ const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
 
         <button
           onClick={handleToggleAll}
-          className="flex items-center justify-between w-full"
+          className="flex items-center justify-between w-full mb-[3rem]"
         >
-          <div className="flex items-center gap-2 mb-[3.75rem]">
+          <div className="flex items-center gap-2">
             <CheckCircle checked={Object.values(agreements).every(Boolean)} />
             <span className="text-base font-medium">전체 동의하기</span>
           </div>
@@ -88,11 +88,13 @@ const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
         />
       </div>
 
-      {isAllRequiredChecked && (
-        <div className="fixed bottom-0 left-0 w-full px-[1.5rem] py-[3rem] text-white">
-          <CommonButton text="다음" onClick={onNext} />
-        </div>
-      )}
+      <div className="absolute bottom-0 left-0 w-full py-[3rem] bg-white">
+        <CommonButton
+          text="다음으로 넘어가기"
+          onClick={onNext}
+          disabled={!isAllRequiredChecked} 
+        />
+      </div>
     </div>
   );
 };
