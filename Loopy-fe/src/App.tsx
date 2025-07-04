@@ -14,6 +14,7 @@ import SigninPage from "./pages/User/Signin/index.tsx";
 import MapPage from "./pages/User/Map/index.tsx";
 import AdminSigninPage from "./pages/Admin/Signin/index.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
+import OnBoard from "./pages/User/OnBoard/index.tsx";
 
 const publicRoutes = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const publicRoutes = createBrowserRouter([
       {
         path: "signin",
         element: <SigninPage />,
+      },
+      {
+        path: "onboard",
+        element: <OnBoard />,
       },
       {
         path: "home",
