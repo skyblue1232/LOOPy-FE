@@ -8,7 +8,7 @@ const KakaoLogin = ({ onClick }: KakaoLoginProps) => {
   return (
     <button
       onClick={onClick}
-      className="w-full bg-[#FAE64D] p-[16px] rounded-md relative flex items-center justify-center"
+      className="w-full bg-[#FAE64D] p-[1rem] rounded-md relative flex items-center justify-center"
     >
       <div className="absolute left-[16px] w-6 h-6">
         <KakaoIcon className="w-full h-full" />
