@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
 import CommonInput from "../../../../components/input/CommonInput";
 import CommonButton from "../../../../components/button/CommonButton";
 import CheckIcon from "../../../../assets/images/Check.svg?react";
+import { isEmailFormValid } from "../../../../utils/validation";
+import { usePasswordValidation } from "../../../../hooks/usePasswordValidation";
+import { useKeyboardOpen } from "../../../../hooks/useKeyboardOpen";
 
 interface FormData {
   email: string;
@@ -19,40 +21,21 @@ interface StepEmailProps {
 }
 
 const StepEmail = ({ formData, setFormData, onNext }: StepEmailProps) => {
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
-  const [lengthValid, setLengthValid] = useState(false);
-  const [comboValid, setComboValid] = useState(false);
-  const [passwordMatch, setPasswordMatch] = useState(true);
+  const isKeyboardOpen = useKeyboardOpen();
 
-  const isValid =
-    formData.email.trim() !== "" &&
-    lengthValid &&
-    comboValid &&
-    formData.password === formData.confirmPassword &&
-    formData.nickname.trim() !== "";
+  const { lengthValid, comboValid, passwordMatch } = usePasswordValidation(
+    formData.password,
+    formData.confirmPassword
+  );
 
-  useEffect(() => {
-    const onResize = () => {
-      const viewportHeight = window.visualViewport?.height || window.innerHeight;
-      const windowHeight = window.innerHeight;
-      setIsKeyboardOpen(viewportHeight < windowHeight - 100);
-    };
-
-    window.visualViewport?.addEventListener("resize", onResize);
-    return () => {
-      window.visualViewport?.removeEventListener("resize", onResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    const password = formData.password;
-    setLengthValid(password.length >= 8 && password.length <= 20);
-    setComboValid(/(?=.*[a-zA-Z])(?=.*\d)(?=.*[^\w\s])/.test(password));
-  }, [formData.password]);
-
-  useEffect(() => {
-    setPasswordMatch(formData.password === formData.confirmPassword);
-  }, [formData.password, formData.confirmPassword]);
+  const isValid = isEmailFormValid(
+    formData.email,
+    formData.password,
+    formData.confirmPassword,
+    formData.nickname,
+    lengthValid,
+    comboValid
+  );
 
   const handleClick = () => {
     if (!isValid) return;
