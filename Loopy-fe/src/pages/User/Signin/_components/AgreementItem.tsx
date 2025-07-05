@@ -5,9 +5,10 @@ interface AgreementItemProps {
   label: string;
   checked: boolean;
   onClick: () => void;
+  onArrowClick: () => void;
 }
 
-const AgreementItem = ({ label, checked, onClick }: AgreementItemProps) => {
+const AgreementItem = ({ label, checked, onClick, onArrowClick }: AgreementItemProps) => {
   return (
     <button
       onClick={onClick}
@@ -17,7 +18,9 @@ const AgreementItem = ({ label, checked, onClick }: AgreementItemProps) => {
         <CheckCircle checked={checked} />
         <span className="text-sm">{label}</span>
       </div>
-      <NextIcon /> 
+      <button onClick={onArrowClick}>
+        <NextIcon />
+      </button> 
     </button>
   );
 };
