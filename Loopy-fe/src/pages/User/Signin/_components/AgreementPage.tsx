@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import CommonHeader from "../../../../components/header/CommonHeader";
 import AgreementListView from "./AgreementListView";
 import AgreementDetailView from "./AgreementDetailView";
@@ -11,8 +10,6 @@ interface AgreementPageProps {
 }
 
 const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
-  const navigate = useNavigate();
-
   const [agreements, setAgreements] = useState<AgreementState>({
     terms: false,
     privacy: false,
@@ -74,7 +71,6 @@ const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
           <CommonHeader
             title="서비스 이용 동의"
             onBack={onBack}
-            onClose={() => navigate("/")}
           />
           <AgreementListView
             agreements={agreements}

@@ -12,7 +12,7 @@ const CheckCircle = ({ checked }: CheckCircleProps) => {
       }`}
     >
       <CheckIcon
-        className={`w-[0.625rem] h-[0.625rem] ${
+        className={`w-3 h-2 ${
           checked ? "text-white" : "text-black"
         }`}
       />

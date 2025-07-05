@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import StepEmail from "./_components/StepEmail";
-import StepNickname from "./_components/StepNickname";
 import StepVerify from "./_components/StepVerify";
 import AgreementPage from "./_components/AgreementPage";
 import CommonHeader from "../../../components/header/CommonHeader";
@@ -9,6 +8,7 @@ import CommonHeader from "../../../components/header/CommonHeader";
 interface FormData {
   email: string;
   password: string;
+  confirmPassword: string;
   nickname: string;
   phone: string;
   verifyCode: string;
@@ -20,6 +20,7 @@ const SignupPage = () => {
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
+    confirmPassword: "",
     nickname: "",
     phone: "",
     verifyCode: "",
@@ -27,7 +28,7 @@ const SignupPage = () => {
 
   const goNext = () => setStep(prev => prev + 1);
   const goBack = () => setStep(prev => (prev > 0 ? prev - 1 : 0));
-  const goToHome = () => navigate("/home");
+  const goToHome = () => navigate("/");
 
   return (
     <div>
@@ -35,7 +36,6 @@ const SignupPage = () => {
         <CommonHeader
           title="회원가입"
           onBack={goBack}
-          onClose={() => navigate("/")}
         />
       )}
 
@@ -48,13 +48,6 @@ const SignupPage = () => {
         />
       )}
       {step === 2 && (
-        <StepNickname
-          formData={formData}
-          setFormData={setFormData}
-          onNext={goNext}  
-        />
-      )}
-      {step === 3 && (
         <StepVerify
           formData={formData}
           setFormData={setFormData}
