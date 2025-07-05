@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CommonButton from "../../../../components/button/CommonButton";
-import AgreementItem from "./AgreementItem";
-import CheckCircle from "./CheckCircle";
 import CommonHeader from "../../../../components/header/CommonHeader";
+import AgreementListView from "./AgreementListView";
+import AgreementDetailView from "./AgreementDetailView";
+import type { AgreementKey, AgreementState } from "../../../../types/agreement";
 
 interface AgreementPageProps {
   onNext: () => void;
@@ -13,17 +13,20 @@ interface AgreementPageProps {
 const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
   const navigate = useNavigate();
 
-  const [agreements, setAgreements] = useState({
+  const [agreements, setAgreements] = useState<AgreementState>({
     terms: false,
     privacy: false,
     location: false,
     marketing: false,
   });
 
+  const [view, setView] = useState<"list" | "detail">("list");
+  const [selectedAgreementKey, setSelectedAgreementKey] = useState<AgreementKey | null>(null);
+
   const isAllRequiredChecked =
     agreements.terms && agreements.privacy && agreements.location;
 
-  const handleToggle = (key: keyof typeof agreements) => {
+  const handleToggle = (key: AgreementKey) => {
     setAgreements(prev => ({
       ...prev,
       [key]: !prev[key],
@@ -41,60 +44,58 @@ const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
     });
   };
 
+  const handleShowDetail = (key: AgreementKey) => {
+    setSelectedAgreementKey(key);
+    setView("detail");
+  };
+
+  const handleBackToList = () => {
+    setSelectedAgreementKey(null);
+    setView("list");
+  };
+
+  const getTitle = (key: AgreementKey) => {
+    switch (key) {
+      case "terms":
+        return "서비스 이용 약관";
+      case "privacy":
+        return "개인정보 수집 및 이용 동의";
+      case "location":
+        return "위치기반 서비스 이용약관 동의";
+      case "marketing":
+        return "마케팅 정보 활용 동의";
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col font-suit">
-      <CommonHeader
-        title="서비스 이용 동의"
-        onBack={onBack}
-        onClose={() => navigate("/")}
-      />
+      {view === "list" && (
+        <>
+          <CommonHeader
+            title="서비스 이용 동의"
+            onBack={onBack}
+            onClose={() => navigate("/")}
+          />
+          <AgreementListView
+            agreements={agreements}
+            onToggle={handleToggle}
+            onToggleAll={handleToggleAll}
+            onShowDetail={handleShowDetail}
+            isAllRequiredChecked={isAllRequiredChecked}
+            onNext={onNext}
+          />
+        </>
+      )}
 
-      <div className="pb-[7rem]">
-        <h1 className="text-xl font-bold mt-[2.5rem] mb-[2.75rem]">
-          서비스 이용을 위해
-          <br />
-          약관에 동의해주세요.
-        </h1>
-
-        <button
-          onClick={handleToggleAll}
-          className="flex items-center justify-between w-full mb-[3rem]"
-        >
-          <div className="flex items-center gap-2">
-            <CheckCircle checked={Object.values(agreements).every(Boolean)} />
-            <span className="text-base font-medium">전체 동의하기</span>
-          </div>
-        </button>
-
-        <AgreementItem
-          label="[필수] 서비스 이용약관"
-          checked={agreements.terms}
-          onClick={() => handleToggle("terms")}
-        />
-        <AgreementItem
-          label="[필수] 개인정보 수집 및 이용 동의"
-          checked={agreements.privacy}
-          onClick={() => handleToggle("privacy")}
-        />
-        <AgreementItem
-          label="[필수] 위치기반 서비스 이용약관 동의"
-          checked={agreements.location}
-          onClick={() => handleToggle("location")}
-        />
-        <AgreementItem
-          label="[선택] 마케팅 정보 활용 동의"
-          checked={agreements.marketing}
-          onClick={() => handleToggle("marketing")}
-        />
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full py-[3rem] bg-white">
-        <CommonButton
-          text="다음으로 넘어가기"
-          onClick={onNext}
-          disabled={!isAllRequiredChecked} 
-        />
-      </div>
+      {view === "detail" && selectedAgreementKey && (
+        <>
+          <CommonHeader
+            title={getTitle(selectedAgreementKey)}
+            onBack={handleBackToList}
+          />
+          <AgreementDetailView agreementKey={selectedAgreementKey} />
+        </>
+      )}
     </div>
   );
 };
