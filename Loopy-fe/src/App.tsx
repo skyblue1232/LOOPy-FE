@@ -17,6 +17,7 @@ import ErrorPage from './pages/ErrorPage.tsx';
 import SearchPage from './pages/User/Search/index.tsx';
 import AlarmPage from './pages/User/Alarm/index.tsx';
 import BookMarkPage from './pages/User/BookMark/index.tsx';
+import OnBoard from "./pages/User/OnBoard/index.tsx";
 
 const publicRoutes = createBrowserRouter([
   {
@@ -33,7 +34,11 @@ const publicRoutes = createBrowserRouter([
         element: <SigninPage />,
       },
       {
-        path: 'home',
+        path: "onboard",
+        element: <OnBoard />,
+      },
+      {
+        path: "home",
         element: <HomePage />,
       },
       {

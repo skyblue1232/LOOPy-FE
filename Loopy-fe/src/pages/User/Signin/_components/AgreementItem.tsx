@@ -1,22 +1,26 @@
 import CheckCircle from "./CheckCircle";
+import NextIcon from "../../../../assets/images/Next.svg?react";
 
 interface AgreementItemProps {
   label: string;
   checked: boolean;
   onClick: () => void;
+  onArrowClick: () => void;
 }
 
-const AgreementItem = ({ label, checked, onClick }: AgreementItemProps) => {
+const AgreementItem = ({ label, checked, onClick, onArrowClick }: AgreementItemProps) => {
   return (
     <button
       onClick={onClick}
-      className="flex items-center justify-between w-full py-4 border-b border-gray-100"
+      className="flex items-center justify-between w-full py-3"
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-[0.75rem]">
         <CheckCircle checked={checked} />
         <span className="text-sm">{label}</span>
       </div>
-      <span className="text-xl text-gray-400">{">"}</span>
+      <button onClick={onArrowClick}>
+        <NextIcon />
+      </button> 
     </button>
   );
 };

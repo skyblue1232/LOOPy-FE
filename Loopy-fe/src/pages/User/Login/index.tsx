@@ -1,9 +1,9 @@
 import CommonInput from "../../../components/input/CommonInput";
-import LoopyIcon from "../../../assets/images/LoopyIcon.svg?react";
 import CommonButton from "../../../components/button/CommonButton";
 import KakaoLogin from "./_components/KakaoLogin";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import LoopyIconSection from "./_components/LoopyIconSection";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -20,8 +20,8 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen overflow-hidden">
-      <LoopyIcon />
-      <div className="w-full mt-[4.375rem]">
+      <LoopyIconSection />
+      <div className="w-full mt-[8rem]">
         <CommonInput
           placeholder="이메일 입력"
           value={email}

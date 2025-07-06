@@ -1,86 +1,126 @@
-import { useEffect, useState } from "react";
 import CommonInput from "../../../../components/input/CommonInput";
 import CommonButton from "../../../../components/button/CommonButton";
+import { useKeyboardOpen } from "../../../../hooks/useKeyboardOpen";
+import { usePhoneVerification } from "../../../../hooks/usePhoneVerification";
 
 interface FormData {
   email: string;
   password: string;
+  confirmPassword: string;
   nickname: string;
   phone: string;
   verifyCode: string;
 }
 
-interface StepVerifyProps {
+interface StepPhoneVerifyProps {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   onNext: () => void;
 }
 
-const StepVerify = ({ formData, setFormData, onNext }: StepVerifyProps) => {
-  const isValid = formData.verifyCode.trim().length >= 4;
+const StepPhoneVerify = ({ formData, setFormData, onNext }: StepPhoneVerifyProps) => {
+  const isKeyboardOpen = useKeyboardOpen();
 
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const {
+    isRequested,
+    verifyError,
+    isPhoneValid,
+    isFormValid,
+    requestCode,
+    validateCode,
+    setVerifyError,
+  } = usePhoneVerification(formData.phone, formData.verifyCode);
 
-  useEffect(() => {
-    const onResize = () => {
-      const viewportHeight = window.visualViewport?.height || window.innerHeight;
-      const windowHeight = window.innerHeight;
-      setIsKeyboardOpen(viewportHeight < windowHeight - 100);
-    };
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, "");
+    const trimmed = raw.slice(0, 11);
+    let formatted = trimmed;
 
-    window.visualViewport?.addEventListener("resize", onResize);
-    return () => {
-      window.visualViewport?.removeEventListener("resize", onResize);
-    };
-  }, []);
+    if (trimmed.length >= 7) {
+      formatted = `${trimmed.slice(0, 3)}-${trimmed.slice(3, 7)}-${trimmed.slice(7)}`;
+    } else if (trimmed.length >= 4) {
+      formatted = `${trimmed.slice(0, 3)}-${trimmed.slice(3)}`;
+    }
+
+    setFormData(prev => ({ ...prev, phone: formatted }));
+  };
+
+  const handleVerifyCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVerifyError(false);
+    setFormData(prev => ({ ...prev, verifyCode: e.target.value }));
+  };
 
   const handleNext = () => {
-    if (!isValid) return;
+    if (!isFormValid) return;
+    if (!validateCode()) return;
     onNext();
   };
 
   return (
     <div className="pt-[1.5rem]">
-      <p className="text-[1rem] text-[#323232] font-semibold mb-[0.75rem] whitespace-pre-line">
-        {formData.phone} (으)로{`\n`}전송한 인증번호를 입력해주세요.
-      </p>
-      <CommonInput
-        placeholder="인증번호 입력"
-        value={formData.verifyCode}
-        onChange={e =>
-          setFormData(prev => ({
-            ...prev,
-            verifyCode: e.target.value,
-          }))
-        }
-      />
+      <p className="text-[1rem] font-medium text-[#323232] mb-[0.5rem]">전화번호</p>
+      <div className="flex gap-2">
+        <div className="flex-1 w-full">
+          <CommonInput
+            placeholder="전화번호 입력를 입력해주세요"
+            value={formData.phone}
+            onChange={handlePhoneChange}
+          />
+        </div>
+        <div className="py-[0.25rem]">
+          <button
+            className={`text-[0.875rem] w-full font-semibold px-[1.5rem] py-[1rem] rounded-[9px] ${
+              isPhoneValid ? "bg-[#6970F3] text-white" : "bg-[#D9D9D9] text-[#A8A8A8] pointer-events-none"
+            }`}
+            onClick={requestCode}
+          >
+            인증번호 받기
+          </button>
+        </div>
+      </div>
+
+      {isRequested && (
+        <>
+          <div className="flex justify-between items-center mt-[1rem] mb-[0.5rem]">
+            <p className="text-[1rem] font-medium text-[#323232]">인증번호</p>
+            <button
+              className="text-[0.75rem] font-semibold text-[#252525] underline"
+              onClick={() => {
+                console.log("인증번호 재요청");
+              }}
+            >
+              인증번호 재요청
+            </button>
+          </div>
+
+          <CommonInput
+            placeholder="인증번호를 입력해주세요"
+            value={formData.verifyCode}
+            onChange={handleVerifyCodeChange}
+            hasError={verifyError}
+          />
+          {verifyError && (
+            <p className="text-[0.75rem] text-[#FF0000] mt-1 ml-1">인증번호가 일치하지 않습니다</p>
+          )}
+        </>
+      )}
 
       <div
-        className={`fixed left-0 w-full px-4 transition-all duration-300 ${
-          isKeyboardOpen ? "bottom-[1rem]" : "bottom-[1.5rem]"
+        className={`absolute left-0 w-full px-[1.5rem] transition-all duration-300 ${
+          isKeyboardOpen ? "bottom-[4rem]" : "bottom-[2rem]"
         }`}
       >
-        <button
-          className="block w-full flex justify-center items-center text-right text-[0.75rem] text-[#323232] underline mb-4"
-          onClick={() => {
-            console.log("인증번호 재요청");
-          }}
-        >
-          인증번호 재요청
-        </button>
         <CommonButton
-          text="다음"
+          text="회원가입하기"
           onClick={handleNext}
           className={`w-full ${
-            isValid
-              ? "bg-[#FA9820] text-white"
-              : "bg-[#CCCCCC] text-white pointer-events-none"
+            isFormValid ? "bg-[#6970F3] text-white" : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
           }`}
-          disabled={!isValid}
+          disabled={!isFormValid}
         />
       </div>
     </div>
   );
 };
 
-export default StepVerify;
+export default StepPhoneVerify;
