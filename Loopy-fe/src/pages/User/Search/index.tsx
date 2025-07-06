@@ -1,11 +1,11 @@
 import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
 
-const MyPage = () => {
+const SearchPage = () => {
   return (
     <div>
-      mypage
+      search page
       <CommonBottomBar
-        active="mypage"
+        active="search"
         onChange={(tab) => {
           console.log(tab);
         }}
@@ -14,4 +14,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default SearchPage;

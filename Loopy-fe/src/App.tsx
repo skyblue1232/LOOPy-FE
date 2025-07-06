@@ -1,24 +1,27 @@
-import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import UserLayout from "./layouts/UserLayout.tsx";
-import AdminLayout from "./layouts/AdminLayout";
-import LoginPage from "./pages/User/Login/index.tsx";
-import HomePage from "./pages/User/Home/index.tsx";
-import DetailPage from "./pages/User/Detail/index.tsx";
-import MyPage from "./pages/User/My/index.tsx";
-import AdminLoginPage from "./pages/Admin/Login/index.tsx";
-import SigninPage from "./pages/User/Signin/index.tsx";
-import MapPage from "./pages/User/Map/index.tsx";
-import AdminSigninPage from "./pages/Admin/Signin/index.tsx";
-import ErrorPage from "./pages/ErrorPage.tsx";
+import UserLayout from './layouts/UserLayout.tsx';
+import AdminLayout from './layouts/AdminLayout';
+import LoginPage from './pages/User/Login/index.tsx';
+import HomePage from './pages/User/Home/index.tsx';
+import DetailPage from './pages/User/Detail/index.tsx';
+import MyPage from './pages/User/My/index.tsx';
+import AdminLoginPage from './pages/Admin/Login/index.tsx';
+import SigninPage from './pages/User/Signin/index.tsx';
+import MapPage from './pages/User/Map/index.tsx';
+import AdminSigninPage from './pages/Admin/Signin/index.tsx';
+import ErrorPage from './pages/ErrorPage.tsx';
+import SearchPage from './pages/User/Search/index.tsx';
+import AlarmPage from './pages/User/Alarm/index.tsx';
+import BookMarkPage from './pages/User/BookMark/index.tsx';
 import OnBoard from "./pages/User/OnBoard/index.tsx";
 
 const publicRoutes = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     errorElement: <ErrorPage />,
     element: <UserLayout />,
     children: [
@@ -27,7 +30,7 @@ const publicRoutes = createBrowserRouter([
         element: <LoginPage />,
       },
       {
-        path: "signin",
+        path: 'signin',
         element: <SigninPage />,
       },
       {
@@ -39,21 +42,33 @@ const publicRoutes = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "map",
+        path: 'map',
         element: <MapPage />,
       },
       {
-        path: "detail",
+        path: 'detail',
         element: <DetailPage />,
       },
       {
-        path: "mypage",
+        path: 'mypage',
         element: <MyPage />,
+      },
+      {
+        path: 'search',
+        element: <SearchPage />,
+      },
+      {
+        path: 'alarm',
+        element: <AlarmPage />,
+      },
+      {
+        path: 'bookmark',
+        element: <BookMarkPage />,
       },
     ],
   },
   {
-    path: "/admin",
+    path: '/admin',
     element: <AdminLayout />,
     children: [
       {
@@ -61,7 +76,7 @@ const publicRoutes = createBrowserRouter([
         element: <AdminLoginPage />,
       },
       {
-        path: "signin",
+        path: 'signin',
         element: <AdminSigninPage />,
       },
     ],
