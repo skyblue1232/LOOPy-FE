@@ -1,18 +1,11 @@
-import CommonInput from "../../../../components/Input/CommonInput";
-import CommonButton from "../../../../components/button/CommonButton";
-import CheckIcon from "../../../../assets/images/Check.svg?react";
-import { isEmailFormValid } from "../../../../utils/validation";
-import { usePasswordValidation } from "../../../../hooks/usePasswordValidation";
-import { useKeyboardOpen } from "../../../../hooks/useKeyboardOpen";
-
-interface FormData {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  nickname: string;
-  phone: string;
-  verifyCode: string;
-}
+import CommonInput from "../../../../../components/input/CommonInput";
+import CommonButton from "../../../../../components/button/CommonButton";
+import { isEmailFormValid } from "../../../../../utils/validation";
+import { usePasswordValidation } from "../../../../../hooks/usePasswordValidation";
+import { useKeyboardOpen } from "../../../../../hooks/useKeyboardOpen";
+import type { FormData } from "../../../../../types/form";
+import PasswordInput from "./PasswordInput";
+import PasswordValidationHint from "./PasswordHint";
 
 interface StepEmailProps {
   formData: FormData;
@@ -22,7 +15,6 @@ interface StepEmailProps {
 
 const StepEmail = ({ formData, setFormData, onNext }: StepEmailProps) => {
   const isKeyboardOpen = useKeyboardOpen();
-
   const { lengthValid, comboValid, passwordMatch } = usePasswordValidation(
     formData.password,
     formData.confirmPassword
@@ -48,34 +40,22 @@ const StepEmail = ({ formData, setFormData, onNext }: StepEmailProps) => {
       <CommonInput
         placeholder="이메일을 입력해주세요"
         value={formData.email}
-        onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
+        onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
       />
 
       <p className="text-[1rem] font-medium text-[#323232] mt-[1rem] mb-[0.5rem]">비밀번호</p>
-      <CommonInput
+      <PasswordInput
         placeholder="비밀번호를 입력해주세요"
-        type="password"
         value={formData.password}
-        onChange={e => setFormData(prev => ({ ...prev, password: e.target.value }))}
+        onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
       />
-
-      <div className="mt-2 flex flex-col gap-[0.25rem] text-[0.75rem] font-normal">
-        <div className={`flex items-center gap-2 ${lengthValid ? "text-[#6970F3]" : "text-[#A8A8A8]"}`}>
-          <CheckIcon className="w-3 h-2" />
-          <span>공백없이 8자 ~ 20자</span>
-        </div>
-        <div className={`flex items-center gap-2 ${comboValid ? "text-[#6970F3]" : "text-[#A8A8A8]"}`}>
-          <CheckIcon className="w-3 h-2" />
-          <span>대소문자, 숫자, 특수문자 1개 이상 포함</span>
-        </div>
-      </div>
+      <PasswordValidationHint lengthValid={lengthValid} comboValid={comboValid} />
 
       <p className="text-[1rem] font-medium text-[#323232] mt-[1.25rem] mb-[0.5rem]">비밀번호 확인</p>
-      <CommonInput
+      <PasswordInput
         placeholder="한번 더 비밀번호를 입력해주세요"
-        type="password"
         value={formData.confirmPassword}
-        onChange={e => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+        onChange={(e) => setFormData((prev) => ({ ...prev, confirmPassword: e.target.value }))}
         hasError={!passwordMatch && formData.confirmPassword !== ""}
       />
       {!passwordMatch && formData.confirmPassword && (
@@ -86,7 +66,7 @@ const StepEmail = ({ formData, setFormData, onNext }: StepEmailProps) => {
       <CommonInput
         placeholder="닉네임을 입력해주세요"
         value={formData.nickname}
-        onChange={e => setFormData(prev => ({ ...prev, nickname: e.target.value }))}
+        onChange={(e) => setFormData((prev) => ({ ...prev, nickname: e.target.value }))}
       />
 
       <div
