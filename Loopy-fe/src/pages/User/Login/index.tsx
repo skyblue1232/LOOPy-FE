@@ -1,4 +1,4 @@
-import CommonInput from "../../../components/input/CommonInput";
+import CommonInput from "../../../components/Input/CommonInput";
 import CommonButton from "../../../components/button/CommonButton";
 import KakaoLogin from "./_components/KakaoLogin";
 import { useNavigate } from "react-router-dom";
