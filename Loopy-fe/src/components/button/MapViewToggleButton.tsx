@@ -1,20 +1,31 @@
+import { useNavigate } from "react-router-dom";
+
 interface Props {
   isMapView: boolean;
   onClick: () => void;
 }
 
-const MapViewToggleButton = ({ isMapView, onClick }: Props) => {
+const MapViewToggleButton = ({ isMapView }: Props) => {
   const iconSrc = isMapView
     ? "src/assets/images/ListView.svg"
     : "src/assets/images/MapView.svg";
 
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (isMapView) {
+      navigate("/search"); // 리스트 페이지
+    } else {
+      navigate("/map"); // 지도 페이지
+    }
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleClick}
       style={{
-        width: "3.75rem", // 60px
+        width: "3.75rem", 
         height: "3.75rem",
-        borderRadius: "1.875rem",
         backgroundColor: "transparent",
         padding: 0,
         border: "none",
