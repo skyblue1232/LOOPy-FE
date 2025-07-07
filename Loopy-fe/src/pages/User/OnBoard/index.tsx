@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StepCafeInfo from "./_components/StepCafeInfo";
 import StepSearchArea from "./_components/StepSearchArea";
-import StepLocationPermission from "./_components/StepLocationPermission";
 import CommonHeader from "../../../components/header/CommonHeader";
 
 const OnboardingPage = () => {
@@ -18,9 +17,8 @@ const OnboardingPage = () => {
         title=""
         onBack={goBack}
       />
-      {step === 0 && <StepCafeInfo onNext={goNext} />}
-      {step === 1 && <StepSearchArea onNext={goNext} />}
-      {step === 2 && <StepLocationPermission onNext={() => navigate("/home")} />}
+      {step === 0 && <StepSearchArea onNext={goNext} />}
+      {step === 1 && <StepCafeInfo onNext={() => navigate("/home")} />}
     </div>
   );
 };
