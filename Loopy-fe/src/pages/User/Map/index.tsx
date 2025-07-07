@@ -87,6 +87,8 @@ const MapPage = () => {
             activeMarkerRef.current.setImage(getMarkerImage(prevCafe.hasStamp, false));
           }
           activeMarkerRef.current = null;
+          setSelectedCafe(null);         
+          setIsFilterPopupOpen(false);
         });
 
         dummyCafes.forEach((cafe) => {
