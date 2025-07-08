@@ -8,8 +8,8 @@ const SelectableButton = ({ label, selected, onClick }: SelectableButtonProps) =
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-3 rounded-[6.25rem] text-[0.875rem] font-normal
-        ${selected ? "bg-[#434343] text-white" : "bg-[#F1F4F8] text-[#252729]"}`}
+      className={`px-[1.25rem] py-[0.625rem] rounded-[50px] text-[0.875rem] font-medium
+        ${selected ? "bg-[#F0F1FE] text-[#6970F3] border-[1px] border-[#6970F3]" : "text-[#3B3B3B] border-[0.5px] border-[#A8A8A8]"}`}
     >
       {label}
     </button>

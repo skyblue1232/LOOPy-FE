@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import StepEmail from "./_components/StepEmail";
-import StepVerify from "./_components/StepVerify";
+import StepEmail from "./_components/StepSignin/StepEmail";
+import StepVerify from "./_components/StepSignin/StepVerify";
 import AgreementPage from "./_components/AgreementPage";
 import CommonHeader from "../../../components/header/CommonHeader";
 

@@ -24,7 +24,7 @@ const MyStamp: React.FC<MyStampProps> = ({
       {/* 스탬프 영역 */}
       <div className="absolute w-[16.375rem] h-[5rem] rounded-br-[6.25rem] top-0 right-0 bg-[#E3F389] px-4 py-3 flex flex-col items-end justify-center">
         {/* 스탬프 개수 + 화살표 */}
-        <div className="absolute top-[0.938rem] left-[6.25rem] flex items-center gap-10 text-[1rem] font-semibold text-black">
+        <div className="absolute top-[0.938rem] left-[6.25rem] flex items-center gap-10 text-base font-semibold text-black">
           <span>스탬프 {stampCount}개</span>
           <span className="text-lg cursor-pointer">→</span>
         </div>

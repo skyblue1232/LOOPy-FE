@@ -19,6 +19,8 @@ import AlarmPage from './pages/User/Alarm/index.tsx';
 import BookMarkPage from './pages/User/BookMark/index.tsx';
 import OnBoard from "./pages/User/OnBoard/index.tsx";
 import LocationPage from './pages/User/Location/index.tsx';
+import ChallengePage from './pages/User/Challenge/index.tsx';
+import LevelDetailPage from './pages/User/LevelDetail/index.tsx';
 
 const publicRoutes = createBrowserRouter([
   {
@@ -35,11 +37,11 @@ const publicRoutes = createBrowserRouter([
         element: <SigninPage />,
       },
       {
-        path: "onboard",
+        path: 'onboard',
         element: <OnBoard />,
       },
       {
-        path: "home",
+        path: 'home',
         element: <HomePage />,
       },
       {
@@ -73,6 +75,14 @@ const publicRoutes = createBrowserRouter([
       {
         path: 'bookmark',
         element: <BookMarkPage />,
+      },
+      {
+        path: 'challenge',
+        element: <ChallengePage />,
+      },
+      {
+        path: 'level',
+        element: <LevelDetailPage />,
       },
     ],
   },

@@ -1,16 +1,8 @@
-import CommonInput from "../../../../components/Input/CommonInput";
-import CommonButton from "../../../../components/button/CommonButton";
-import { useKeyboardOpen } from "../../../../hooks/useKeyboardOpen";
-import { usePhoneVerification } from "../../../../hooks/usePhoneVerification";
-
-interface FormData {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  nickname: string;
-  phone: string;
-  verifyCode: string;
-}
+import CommonInput from "../../../../../components/input/CommonInput";
+import CommonButton from "../../../../../components/button/CommonButton";
+import { useKeyboardOpen } from "../../../../../hooks/useKeyboardOpen";
+import { usePhoneVerification } from "../../../../../hooks/usePhoneVerification";
+import type { FormData } from "../../../../../types/form";
 
 interface StepPhoneVerifyProps {
   formData: FormData;
