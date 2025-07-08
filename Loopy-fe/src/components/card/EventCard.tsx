@@ -1,3 +1,5 @@
+import CommonCard from "./CommonCard";
+
 interface Props {
     imageSrc: string; 
     monthLabel: string; 
@@ -8,8 +10,11 @@ interface Props {
 
 const EventCard = ({ imageSrc, monthLabel, title, description, onClick }: Props) => {
     return (
-        <div className="flex items-center justify-between bg-[#F6F6FF] rounded-[0.75rem] h-[6.5rem] px-[1rem] py-[1rem] pt-[0.75rem] w-full">
-            <div className="flex items-center">
+        <CommonCard
+            className="flex items-center justify-between bg-[#F0F1FE] h-[6.5rem]"
+            padding="p-4" 
+        >
+            <div className="flex items-center overflow-hidden">
                 <img
                 src={imageSrc}
                 alt="이벤트 이미지"
@@ -36,7 +41,7 @@ const EventCard = ({ imageSrc, monthLabel, title, description, onClick }: Props)
                 className="w-[1rem] h-[1rem]"
                 />
             </button>
-        </div>
+        </CommonCard>
     );
 };
 

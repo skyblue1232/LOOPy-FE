@@ -47,17 +47,22 @@ const SearchPage = () => {
         onChange={(e) => setSearchValue(e.target.value)}
         placeholder="취향에 맞는 카페를 찾아보세요!"
         top="4.4375rem" 
+        variant="search"
       />
 
-      <FilterBar onOpenFilterPopup={handleOpenFilterPopup} />
+      <FilterBar onOpenFilterPopup={handleOpenFilterPopup} variant="search"/>
 
       {isFilterPopupOpen && (
-        <div className="absolute bottom-0 left-0 right-0 z-[100]" style={{ bottom: "4.5rem" }}>
-          <FilterPopup
-            selectedGroup={selectedGroup}
-            onClose={() => setIsFilterPopupOpen(false)}
-          />
-        </div>
+        <>
+          <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-[40]" />
+
+          <div className="absolute bottom-0 left-0 right-0 z-[100]" style={{ bottom: "4.5rem" }}>
+            <FilterPopup
+              selectedGroup={selectedGroup}
+              onClose={() => setIsFilterPopupOpen(false)}
+            />
+          </div>
+        </>
       )}
 
       <div className="mt-[11.25rem]">

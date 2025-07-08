@@ -1,12 +1,17 @@
 interface Props {
   onClick: () => void;
+  variant?: "map" | "search";
 }
 
-const FilterIconButton = ({ onClick }: Props) => {
+const FilterIconButton = ({ onClick, variant = "map" }: Props) => {
+  const isMap = variant === "map";
+
   return (
     <button
       onClick={onClick}
-      className="w-8 aspect-square rounded-full bg-white flex items-center justify-center shadow-[0_4px_4px_rgba(0,0,0,0.15)] overflow-hidden"
+      className={`
+        ${isMap ? "w-8 aspect-square rounded-full bg-white flex items-center justify-center shadow-[0_4px_4px_rgba(0,0,0,0.15)]" : ""}
+      `}
     >
       <img
         src="/src/assets/images/Filter.svg"

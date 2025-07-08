@@ -1,10 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface SearchBarProps {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
-    backgroundColor?: string;
+    variant?: "map" | "search";
     top?: string;
 }
 
@@ -13,26 +14,46 @@ const SearchBar = ({
     onChange,
     placeholder,
     top = "4.4375rem",   // default: 71px
+    variant = "map",
 }: SearchBarProps) => {
+    const isMap = variant === "map";
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        if (location.pathname.includes("/map")) {
+        navigate("/map/location");
+        } else {
+        navigate("/search/location");
+        }
+    };
+
     return (
         <div
             className="absolute w-full z-20"
             style={{ top }}
         >
-        <div className="flex items-center h-[2.625rem] bg-white rounded-[0.5rem] px-4 py-[0.5625rem] shadow-[0_4px_4px_rgba(0,0,0,0.15)]">
-            <input
-                type="text"
-                value={value}
-                onChange={onChange}
-                placeholder={placeholder}
-                className="flex-1 border-none outline-none bg-transparent text-[0.875rem] font-normal text-black"
-            />
-            <img
-            src="/src/assets/images/Search.svg"
-            alt="검색"
-            className="w-4 h-4 ml-2"
-            />
-        </div>
+            <div 
+                className={`
+                    flex items-center h-[2.625rem] px-4 py-[0.5625rem]
+                    rounded-[0.5rem]
+                    ${isMap ? "bg-white shadow-[0_4px_4px_rgba(0,0,0,0.15)]" : "bg-[#F5F5F5]"}
+                `}
+                onClick={handleClick}
+            >
+                <input
+                    type="text"
+                    value={value}
+                    onChange={onChange}
+                    placeholder={placeholder}
+                    className="flex-1 border-none outline-none bg-transparent text-[0.875rem] font-normal text-black"
+                />
+                <img
+                    src="/src/assets/images/Search.svg"
+                    alt="검색"
+                    className="w-4 h-4 ml-2"
+                />
+            </div>
         </div>
     );
 };

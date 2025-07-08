@@ -143,12 +143,6 @@ const MapPage = () => {
           <FilterBar onOpenFilterPopup={handleOpenFilterPopup} />
         </div>
 
-        {isFilterPopupOpen && (
-          <div className="absolute bottom-0 left-0 w-full right-0 z-[50] pointer-events-auto" style={{ bottom: "4.5rem" }}>
-            <FilterPopup selectedGroup={selectedGroup} onClose={() => setIsFilterPopupOpen(false)} />
-          </div>
-        )}
-
         <div
           className={`
             absolute
@@ -188,6 +182,19 @@ const MapPage = () => {
           </div>
         )}
       </div>
+
+      {isFilterPopupOpen && (
+          <>
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-[40]" />
+          
+            <div className="absolute bottom-0 left-0 right-0 z-[100]" style={{ bottom: "4.5rem" }}>
+              <FilterPopup
+                selectedGroup={selectedGroup}
+                onClose={() => setIsFilterPopupOpen(false)}
+              />
+            </div>
+          </>
+      )}
 
       <CommonBottomBar
         active="search"
