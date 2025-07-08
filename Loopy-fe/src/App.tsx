@@ -17,7 +17,8 @@ import ErrorPage from './pages/ErrorPage.tsx';
 import SearchPage from './pages/User/Search/index.tsx';
 import AlarmPage from './pages/User/Alarm/index.tsx';
 import BookMarkPage from './pages/User/BookMark/index.tsx';
-import OnBoard from './pages/User/OnBoard/index.tsx';
+import OnBoard from "./pages/User/OnBoard/index.tsx";
+import LocationPage from './pages/User/Location/index.tsx';
 import ChallengePage from './pages/User/Challenge/index.tsx';
 import LevelDetailPage from './pages/User/LevelDetail/index.tsx';
 
@@ -48,6 +49,10 @@ const publicRoutes = createBrowserRouter([
         element: <MapPage />,
       },
       {
+        path: 'map/location',
+        element: <LocationPage />,
+      },
+      {
         path: 'detail',
         element: <DetailPage />,
       },
@@ -58,6 +63,10 @@ const publicRoutes = createBrowserRouter([
       {
         path: 'search',
         element: <SearchPage />,
+      },
+      {
+        path: 'search/location',
+        element: <LocationPage />,
       },
       {
         path: 'alarm',

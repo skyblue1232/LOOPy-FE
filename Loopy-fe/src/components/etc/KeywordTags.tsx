@@ -4,7 +4,7 @@ interface KeywordTagsProps {
 
 const KeywordTags = ({ keywords }: KeywordTagsProps) => {
   return (
-    <div style={{ margin: "0.5rem 0", display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+    <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
       {keywords.map((keyword, index) => (
         <span
           key={index}

@@ -5,6 +5,7 @@ import CafeDetailCard from "../../../components/card/MapCafeDetailCard";
 import SearchBar from "../../../components/Input/SearchBar";
 import FilterBar from "./_components/filter/FilterBar";
 import FilterPopup from "./_components/filter/FilterPopup";
+import CommonBottomBar from "../../../components/bottomBar/CommonBottomBar";
 
 declare global {
   interface Window {
@@ -126,13 +127,10 @@ const MapPage = () => {
   return (
     <div className="relative h-[100vh]">
 
-      {/* 지도 영역 */}
       <div ref={mapRef} className="w-full h-full" />
 
-      {/* 오버레이 (검색창, 필터바, 안내박스 등) */}
       <div className="absolute bottom-0 left-0 right-0 h-[100%] pointer-events-none z-[10]">
 
-        {/* 검색창 */}
         <div className="pointer-events-auto">
           <SearchBar
             value={searchValue}
@@ -141,28 +139,19 @@ const MapPage = () => {
           />
         </div>
 
-        {/* 필터바 */}
         <div className="pointer-events-auto">
           <FilterBar onOpenFilterPopup={handleOpenFilterPopup} />
         </div>
 
-        {/* 필터 팝업 */}
-        {isFilterPopupOpen && (
-          <div className="absolute bottom-0 left-0 right-0 z-[50] pointer-events-auto">
-            <FilterPopup selectedGroup={selectedGroup} onClose={() => setIsFilterPopupOpen(false)} />
-          </div>
-        )}
-
-        {/* 안내박스 + 뷰 전환 버튼 */}
         <div
           className={`
             absolute
-            left-[1.25rem] right-[1.25rem]
+            left-0 right-0
             flex justify-between items-center
             h-[3.5rem]
             pointer-events-auto
             transition-all
-            ${selectedCafe ? "bottom-[17.75rem]" : "bottom-[1.25rem]"}
+            ${selectedCafe ? "bottom-[22.75rem]" : "bottom-[6.25rem]"}
           `}
         >
           <StampLegend />
@@ -172,7 +161,6 @@ const MapPage = () => {
           />
         </div>
 
-        {/* 카페 상세 카드 */}
         {selectedCafe && (
           <div
             className={`
@@ -194,6 +182,26 @@ const MapPage = () => {
           </div>
         )}
       </div>
+
+      {isFilterPopupOpen && (
+          <>
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-[40]" />
+          
+            <div className="absolute bottom-0 left-0 right-0 z-[100]" style={{ bottom: "4.5rem" }}>
+              <FilterPopup
+                selectedGroup={selectedGroup}
+                onClose={() => setIsFilterPopupOpen(false)}
+              />
+            </div>
+          </>
+      )}
+
+      <CommonBottomBar
+        active="search"
+        onChange={(tab) => {
+          console.log("탭 변경:", tab);
+        }}
+      />
     </div>
   );
 };
