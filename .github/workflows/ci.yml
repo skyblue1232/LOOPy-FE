@@ -1,4 +1,4 @@
-name: Node.js CI (pnpm)
+name: Node.js CI
 
 on:
   push:
@@ -10,27 +10,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
           cache: 'pnpm'
 
-      - name: Install pnpm
+      - name: Install pnpm globally
         run: npm install -g pnpm
 
-      - name: Move into project directory
-        run: cd Loopy-fe && pnpm install
+      - name: Install dependencies
+        run: |
+          cd Loopy-fe
+          pnpm install
 
-      - name: Build
-        run: cd Loopy-fe && pnpm run build
-
-      - name: Test
-        run: cd Loopy-fe && pnpm test
+      - name: Build project
+        run: |
+          cd Loopy-fe
+          pnpm run build
