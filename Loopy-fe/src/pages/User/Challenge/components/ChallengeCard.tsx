@@ -1,4 +1,5 @@
 import type { ChallengeCardData } from '../mock/mockData';
+import { useNavigate } from 'react-router-dom';
 
 interface ChallengeCardProps {
   data: ChallengeCardData;
@@ -9,7 +10,9 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   data,
   hideParticipatingTag,
 }) => {
+  const navigate = useNavigate();
   const {
+    challengeId,
     challengeMonth,
     challengeName,
     challengeStartDate,
@@ -18,8 +21,12 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
     participating,
   } = data;
 
+  const handleClick = () => {
+    navigate(`/challenge/${challengeId}`);
+  };
+
   return (
-    <div className="flex items-center -mx-[1rem]">
+    <div onClick={handleClick} className="flex items-center -mx-[1rem]">
       {/* 좌측 이미지 */}
       <img
         src={challengeImage}
