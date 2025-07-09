@@ -16,7 +16,7 @@ const AgreementItem = ({ label, checked, onClick, onArrowClick }: AgreementItemP
     >
       <div className="flex items-center gap-[0.75rem]">
         <CheckCircle checked={checked} />
-        <span className="text-sm">{label}</span>
+        <span className="text-[0.875rem] font-normal text-[#252525]">{label}</span>
       </div>
       <button onClick={onArrowClick}>
         <NextIcon />

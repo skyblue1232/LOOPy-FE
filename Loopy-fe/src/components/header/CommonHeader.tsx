@@ -13,10 +13,10 @@ const CommonHeader = ({ title, onBack }: CommonHeaderProps) => {
           <BackIcon />
         </button>
       ) : (
-        <div className="w-[24px]" />
+        <div className="w-[1.5rem]" />
       )}
-      <h1 className="text-[18px] font-bold text-[#323232]">{title}</h1>
-      <div className="w-[24px]" />
+      <h1 className="text-[1.125rem] font-bold text-[#000000]">{title}</h1>
+      <div className="w-[1.5rem]" />
     </div>
   );
 };

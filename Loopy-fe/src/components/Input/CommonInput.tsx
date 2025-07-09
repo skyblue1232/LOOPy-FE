@@ -21,7 +21,7 @@ const CommonInput = ({
     ? "border-[#FF0000]" 
     : isFocused
     ? "border-[#6970F3]" 
-    : "border-[#7f7f7f]"; 
+    : "border-none"; 
 
   return (
     <div className="w-full py-[0.25rem]">

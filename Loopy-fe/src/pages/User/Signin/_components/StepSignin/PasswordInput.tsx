@@ -28,9 +28,9 @@ const PasswordInput = ({ value, placeholder, onChange, hasError }: Props) => {
         className="absolute top-1/2 right-4 -translate-y-1/2"
       >
         {show ? (
-          <Eye className="w-5 h-5 stroke-[#7F7F7F]" />
+          <Eye className="w-5 h-5 text-[#7F7F7F]" />
         ) : (
-          <EyeOff className="w-5 h-5 stroke-[#7F7F7F]" />
+          <EyeOff className="w-5 h-5 text-[#7F7F7F]" />
         )}
       </button>
     </div>

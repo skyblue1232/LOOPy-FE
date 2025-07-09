@@ -23,7 +23,7 @@ const AgreementListView = ({
   return (
     <>
       <div className="pb-[7rem]">
-        <h1 className="text-xl font-bold mt-[2.5rem] mb-[2.75rem]">
+        <h1 className="text-[1.5rem] text-[#323232] font-bold mt-[2.5rem] mb-[2.75rem]">
           서비스 이용을 위해
           <br />
           약관에 동의해주세요.
@@ -35,7 +35,7 @@ const AgreementListView = ({
         >
           <div className="flex items-center gap-2">
             <CheckCircle checked={Object.values(agreements).every(Boolean)} />
-            <span className="text-base font-medium">전체 동의하기</span>
+            <span className="text-[1rem] font-medium text-[#252525]">전체 동의하기</span>
           </div>
         </button>
 

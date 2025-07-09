@@ -23,10 +23,10 @@ const StepCafeInfo = ({ onNext }: { onNext: () => void }) => {
         </h2>
       </div>
       <div className="flex items-center gap-[0.75rem] mb-[3rem]">
-        <p className="text-[1rem] text-[#7F7F7F]">
+        <p className="text-[0.875rem] text-[#7F7F7F] font-medium">
           해당하는 카페를 먼저 추천드릴게요
         </p>
-        <span className="text-[#A8A8A8] text-[0.75rem] font-medium">
+        <span className="text-[#A8A8A8] text-[1rem] font-normal">
           (1 ~ 5개 선택 필수)
         </span>
       </div>
