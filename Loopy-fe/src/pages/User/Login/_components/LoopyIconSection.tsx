@@ -12,7 +12,7 @@ const LoopyIconSection = () => {
       >
         <path
           d="M0,0 L0,126 Q124,116 203,133 Q370,163 396,124 L393,0 Z"
-          fill="#5B68DF"
+          fill="#6970F3"
         />
       </svg>
       <div className="flex flex-col absolute top-0 left-0 w-full h-full flex justify-center items-center gap-[0.928rem] z-10">
