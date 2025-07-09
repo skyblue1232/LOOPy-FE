@@ -21,7 +21,7 @@ const SocialLoginSection = () => {
         />
       </div>
 
-      <div className="flex justify-center items-center text-[0.75rem] gap-[1rem]">
+      <div className="flex justify-center items-center text-[0.75rem] gap-[1rem] mb-[1.25rem]">
         <span className="text-[#7F7F7F] font-normal">카페 사장님이시라면?</span>
         <button
           onClick={() => navigate("/admin")}

@@ -6,8 +6,11 @@ import LoopyIconSection from "./_components/LoopyIconSection";
 import Eye from "../../../assets/images/Eye.svg?react";
 import EyeOff from "../../../assets/images/EyeOff.svg?react";
 import SocialLoginSection from "./_components/SocialLoginSection";
+import useThemeColor from "../../../hooks/useThemeColor";
 
 const LoginPage = () => {
+  useThemeColor("#6970F3");
+
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
