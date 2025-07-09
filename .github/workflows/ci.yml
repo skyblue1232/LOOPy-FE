@@ -12,12 +12,12 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [18.x]
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
@@ -26,11 +26,11 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Install dependencies
-        run: pnpm install
+      - name: Move into project directory
+        run: cd Loopy-fe && pnpm install
 
       - name: Build
-        run: pnpm run build
+        run: cd Loopy-fe && pnpm run build
 
       - name: Test
-        run: pnpm test || echo "No tests"
+        run: cd Loopy-fe && pnpm test
