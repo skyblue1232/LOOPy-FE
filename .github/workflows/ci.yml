@@ -27,13 +27,16 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install
-        working-directory: Loopy-fe
+        run: |
+          cd Loopy-fe
+          pnpm install
 
-      - name: Build
-        run: pnpm run build
-        working-directory: Loopy-fe
+      - name: Build project
+        run: |
+          cd Loopy-fe
+          pnpm run build
 
-      - name: Test
-        run: pnpm test || echo "No tests"
-        working-directory: Loopy-fe
+      - name: Run tests
+        run: |
+          cd Loopy-fe
+          pnpm test || echo "No tests"
