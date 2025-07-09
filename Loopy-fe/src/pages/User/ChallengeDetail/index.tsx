@@ -47,7 +47,7 @@ const ChallengeDetailPage = () => {
         {/* 구분선 */}
         <div className="w-full max-w-md h-px bg-[#E0E0E0] mt-4 mb-4" />
 
-        <p className="text-sm font-normal leading-relaxed mb-8 text-center">
+        <p className="text-sm font-normal leading-relaxed mb-8">
           {challenge.challengeDetail}
         </p>
 
@@ -57,7 +57,7 @@ const ChallengeDetailPage = () => {
               <img src={Calendar} alt="달력 아이콘" className="w-4 h-4" />
               <span className="text-sm font-medium text-[#6970F3]">기간</span>
             </div>
-            <span className="text-sm font-medium text-[#4F4F4F]">
+            <span className="text-base font-medium">
               {challenge.challengeStartDate} ~ {challenge.challengeDoneDate}
             </span>
           </div>
@@ -69,7 +69,7 @@ const ChallengeDetailPage = () => {
                 챌린지 혜택
               </span>
             </div>
-            <span className="text-sm font-medium text-[#4F4F4F]">
+            <span className="text-base font-medium">
               {challenge.challengeReward}
             </span>
           </div>
