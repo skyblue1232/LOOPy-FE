@@ -37,6 +37,12 @@ const ChallengeDetailPage = () => {
           {challenge.challengeName}
         </h1>
 
+        {challenge.participating && (
+          <p className="bg-[#F0F1FE] rounded text-[#6970F3] text-[0.75rem] font-regular mb-4 px-[0.5rem] py-[0.375rem]">
+            카페 위니에서 챌린지 중
+          </p>
+        )}
+
         {/* 구분선 */}
         <div className="w-full max-w-md h-px bg-[#E0E0E0] mt-4 mb-4" />
 
@@ -76,8 +82,11 @@ const ChallengeDetailPage = () => {
         </div>
 
         {!challenge.participating ? (
-          <button className="w-full max-w-md bg-[#6970F3] hover:bg-[#5b62d8] text-white py-3 rounded-xl font-semibold transition-colors">
-            챌린지 참여하기
+          <button
+            onClick={() => navigate(`/challenge/${challengeId}/stores`)}
+            className="w-full max-w-md bg-[#6970F3] hover:bg-[#5b62d8] text-white py-3 rounded-xl font-semibold transition-colors"
+          >
+            참여 가능 매장 찾기
           </button>
         ) : (
           <div className="flex gap-[1rem] justify-center mt-4">

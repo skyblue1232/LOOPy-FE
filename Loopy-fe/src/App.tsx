@@ -22,6 +22,7 @@ import LocationPage from './pages/User/Location/index.tsx';
 import ChallengePage from './pages/User/Challenge/index.tsx';
 import LevelDetailPage from './pages/User/LevelDetail/index.tsx';
 import ChallengeDetailPage from './pages/User/ChallengeDetail/index.tsx';
+import ChallengeStoreListPage from './pages/User/ChallengeDetail/ChallengeStoreListPage/index.tsx';
 
 const publicRoutes = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const publicRoutes = createBrowserRouter([
       {
         path: 'challenge/:id',
         element: <ChallengeDetailPage />,
+      },
+      {
+        path: 'challenge/:id/stores',
+        element: <ChallengeStoreListPage />,
       },
       {
         path: 'level',
