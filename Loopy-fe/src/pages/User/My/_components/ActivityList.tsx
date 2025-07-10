@@ -24,7 +24,7 @@ const ActivityList = ({ onNavigate }: Props) => {
             }`}
           >
             <span className="text-[1rem] font-normal">{label}</span>
-            <NextIcon className="w-[1.125rem] h-[1.125rem] text-[#A8A8A8]" />
+            <NextIcon className="w-[1rem] h-[1rem] text-[#A8A8A8]" />
           </button>
         ))}
       </div>

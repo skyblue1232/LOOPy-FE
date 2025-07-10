@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
-import CommonHeader from '../../../components/header/CommonHeader';
 import CommonCard from '../../../components/card/CommonCard';
 import ProfileSection from './_components/ProfileSection.tsx';
 import QuickAccessMenu from './_components/QuickAccessMenu.tsx';
@@ -17,31 +16,23 @@ import FilterPage from './Filter';
 import CafeNoticePage from './CafeNotice';
 
 import Setting from '../../../assets/images/Setting.svg?react';
-import { stepTitles } from '../../../constants/stepTitles.ts';
 
 const MyPage = () => {
   const [step, setStep] = useState(0);
 
   const renderStep = () => {
     const PageComponent = [
-      SettingPage,
-      StampExchangePage,
-      MyChallengePage,
-      CouponBoxPage,
-      StampHistoryPage,
-      ReviewPage,
-      FilterPage,
-      CafeNoticePage,
+      () => <SettingPage onBack={() => setStep(0)} />,
+      () => <StampExchangePage />,
+      () => <MyChallengePage />,
+      () => <CouponBoxPage />,
+      () => <StampHistoryPage />,
+      () => <ReviewPage />,
+      () => <FilterPage />,
+      () => <CafeNoticePage />,
     ][step - 1];
 
-    if (!PageComponent) return null;
-
-    return (
-      <div className="min-h-screen bg-white text-[#252525]">
-        <CommonHeader title={stepTitles[step]} onBack={() => setStep(0)} />
-        <PageComponent />
-      </div>
-    );
+    return PageComponent ? <PageComponent /> : null;
   };
 
   return step === 0 ? (
