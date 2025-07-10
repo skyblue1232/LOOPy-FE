@@ -23,6 +23,7 @@ import ChallengePage from './pages/User/Challenge/index.tsx';
 import LevelDetailPage from './pages/User/LevelDetail/index.tsx';
 import ChallengeDetailPage from './pages/User/ChallengeDetail/index.tsx';
 import ChallengeStoreListPage from './pages/User/ChallengeDetail/ChallengeStoreListPage/index.tsx';
+import MyStampPage from './pages/User/MyStamp/index.tsx';
 
 const publicRoutes = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ const publicRoutes = createBrowserRouter([
       {
         path: 'level',
         element: <LevelDetailPage />,
+      },
+      {
+        path: 'mystamppage/:cafeId',
+        element: <MyStampPage />,
       },
     ],
   },

@@ -1,4 +1,5 @@
 export interface StampItem {
+  cafeId: string;
   imageUrl: string;
   cafeName: string;
   address: string;
@@ -24,40 +25,44 @@ export interface ChallengeCardData {
 
 export const stampList: StampItem[] = [
   {
+    cafeId: '1',
     imageUrl:
       'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=400&q=80',
     cafeName: '카페 위니',
     address: '서울 서대문구 이화여대길 52',
     stampCount: 5,
     stampMax: 10,
-    dueDate: '10/7',
+    dueDate: '10.07',
   },
   {
+    cafeId: '2',
     imageUrl:
       'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=400&q=80',
     cafeName: '카페 위니',
     address: '서울 서대문구 이화여대길 52',
     stampCount: 2,
     stampMax: 10,
-    dueDate: '11/15',
+    dueDate: '11.15',
   },
   {
+    cafeId: '3',
     imageUrl:
       'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=400&q=80',
     cafeName: '카페 위니',
     address: '서울 서대문구 이화여대길 52',
     stampCount: 4,
     stampMax: 10,
-    dueDate: '7/30',
+    dueDate: '07.30',
   },
   {
+    cafeId: '4',
     imageUrl:
       'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=400&q=80',
     cafeName: '카페 위니',
     address: '서울 서대문구 이화여대길 52',
-    stampCount: 8,
+    stampCount: 0,
     stampMax: 10,
-    dueDate: '8/15',
+    dueDate: '08.20',
   },
 ];
 
