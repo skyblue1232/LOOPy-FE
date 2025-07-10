@@ -39,7 +39,7 @@ const MyPage = () => {
       case "review":
         return <ReviewPage />;
       case "filter":
-        return <FilterPage />;
+        return <FilterPage onBack={() => setStep("my")} />;
       case "cafeNotice":
         return <CafeNoticePage />;
     }
