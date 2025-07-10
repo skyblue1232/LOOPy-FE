@@ -5,24 +5,24 @@ import EditProfile from "./_components/EditProfile";
 import ManageAccount from "./_components/ManageAccount";
 import WithdrawAccountView from "./_components/WithdrawAccountView";
 import { useNavigate } from "react-router-dom";
+import type { MyPageStep, SettingStep } from "../../../../types/mySteps";
 
 interface SettingPageProps {
   onBack: () => void;
+  onNavigate: (step: MyPageStep) => void;
 }
 
-type Step = 0 | 1 | 2 | 3;
-
 const SettingPage = ({ onBack }: SettingPageProps) => {
-  const [step, setStep] = useState<Step>(0);
+  const [step, setStep] = useState<SettingStep>("settingMain");
   const navigate = useNavigate();
 
   const getTitle = () => {
     switch (step) {
-      case 1:
+      case "editProfile":
         return "개인정보 수정";
-      case 2:
+      case "manageAccount":
         return "계정 관리";
-      case 3:
+      case "withdraw":
         return "회원 탈퇴";
       default:
         return "설정";
@@ -30,12 +30,16 @@ const SettingPage = ({ onBack }: SettingPageProps) => {
   };
 
   const handleBack = () => {
-    if (step === 1 || step === 2) {
-      setStep(0);
-    } else if (step === 3) {
-      setStep(2);
-    } else {
-      onBack();
+    switch (step) {
+      case "editProfile":
+      case "manageAccount":
+        setStep("settingMain");
+        break;
+      case "withdraw":
+        setStep("manageAccount");
+        break;
+      default:
+        onBack();
     }
   };
 
@@ -43,10 +47,10 @@ const SettingPage = ({ onBack }: SettingPageProps) => {
     <div>
       <CommonHeader title={getTitle()} onBack={handleBack} />
 
-      {step === 0 && (
+      {step === "settingMain" && (
         <div className="flex flex-col mt-[1.5rem]">
           <button
-            onClick={() => setStep(1)}
+            onClick={() => setStep("editProfile")}
             className="flex w-full items-center justify-between py-[0.625rem] text-[1.125rem] font-medium"
           >
             <span>개인정보 수정</span>
@@ -54,7 +58,7 @@ const SettingPage = ({ onBack }: SettingPageProps) => {
           </button>
 
           <button
-            onClick={() => setStep(2)}
+            onClick={() => setStep("manageAccount")}
             className="flex w-full items-center justify-between py-[0.625rem] text-[1.125rem] font-medium"
           >
             <span>계정 관리</span>
@@ -63,13 +67,15 @@ const SettingPage = ({ onBack }: SettingPageProps) => {
         </div>
       )}
 
-      {step === 1 && <EditProfile onBack={() => setStep(0)} />}
+      {step === "editProfile" && <EditProfile onBack={() => setStep("settingMain")} />}
 
-      {step === 2 && <ManageAccount onBack={() => setStep(0)} onGoWithdraw={() => setStep(3)} />}
+      {step === "manageAccount" && (
+        <ManageAccount onBack={() => setStep("settingMain")} onGoWithdraw={() => setStep("withdraw")} />
+      )}
 
-      {step === 3 && (
+      {step === "withdraw" && (
         <WithdrawAccountView
-          onBack={() => setStep(2)}
+          onBack={() => setStep("manageAccount")}
           onConfirm={() => {
             console.log("회원 탈퇴 확정");
             navigate("/");

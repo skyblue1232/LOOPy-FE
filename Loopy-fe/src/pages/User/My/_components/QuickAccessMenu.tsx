@@ -1,12 +1,14 @@
+import type { MyPageStep } from "../../../../types/mySteps";
+
 interface Props {
-  onNavigate: (step: number) => void;
+  onNavigate: (step: MyPageStep) => void;
 }
 
 const QuickAccessMenu = ({ onNavigate }: Props) => {
-  const menus = [
-    { label: '스탬프 환전', step: 2 },
-    { label: '챌린지', step: 3 },
-    { label: '쿠폰함', step: 4 },
+  const menus: { label: string; step: MyPageStep }[] = [
+    { label: '스탬프 환전', step: "stampExchange" },
+    { label: '챌린지', step: "myChallenge" },
+    { label: '쿠폰함', step: "couponBox" },
   ];
 
   return (
