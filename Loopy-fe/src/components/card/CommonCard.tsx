@@ -4,7 +4,7 @@ interface CommonCardProps {
     children: ReactNode;
     onClick?: () => void;
     isSelected?: boolean;
-    padding?: "p-4" | "px-4 py-6";
+    padding?: "p-4" | "p-[1.5rem]" | "px-4 py-6";
     className?: string;
 }
 
