@@ -3,6 +3,7 @@ import CommonButton from '../button/CommonButton';
 interface BottomPopupProps {
   onClose: () => void;
   purpleButton?: string;
+  purpleButtonOnClick?: () => void;
   show: boolean;
   titleText?: string;
   contentsText?: string;
@@ -13,6 +14,7 @@ export default function CommonBottomPopup({
   show,
   titleText,
   purpleButton,
+  purpleButtonOnClick,
   contentsText,
 }: BottomPopupProps) {
   if (!show) return null;
@@ -32,14 +34,14 @@ export default function CommonBottomPopup({
 
         {/* 타이틀 텍스트 */}
         {titleText && (
-          <div className="mb-[1.25rem] text-[1.25rem] font-bold">
+          <div className="mb-[1.25rem] text-[1.25rem] font-bold whitespace-pre-line">
             {titleText}
           </div>
         )}
 
         {/* 컨텐츠 텍스트 */}
         {contentsText && (
-          <div className="mb-[1.5rem] text-[0.875rem] font-regular text-[#7F7F7F]">
+          <div className="mb-[1.5rem] text-[0.875rem] font-regular text-[#7F7F7F] whitespace-pre-line">
             {contentsText}
           </div>
         )}
@@ -51,7 +53,7 @@ export default function CommonBottomPopup({
               text={purpleButton}
               autoStyle
               className="bg-[#6970F3] text-white font-semibold h-[3.125rem] flex items-center justify-center rounded"
-              onClick={() => {}}
+              onClick={purpleButtonOnClick}
             />
           </div>
         )}
