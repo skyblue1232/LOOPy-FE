@@ -1,6 +1,7 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface MyStampProps {
+  cafeId: string;
   imageUrl?: string;
   cafeName: string;
   address: string;
@@ -10,6 +11,7 @@ interface MyStampProps {
 }
 
 const MyStamp: React.FC<MyStampProps> = ({
+  cafeId,
   imageUrl,
   cafeName,
   address,
@@ -18,6 +20,7 @@ const MyStamp: React.FC<MyStampProps> = ({
   dueDate,
 }) => {
   const progressPercent = (stampCount / stampMax) * 100;
+  const navigate = useNavigate();
 
   return (
     <div className="relative w-[21.563rem] h-[11.125rem] flex items-center justify-between p-4 overflow-hidden">
@@ -26,7 +29,12 @@ const MyStamp: React.FC<MyStampProps> = ({
         {/* 스탬프 개수 + 화살표 */}
         <div className="absolute top-[0.938rem] left-[6.25rem] flex items-center gap-10 text-base font-semibold text-black">
           <span>스탬프 {stampCount}개</span>
-          <span className="text-lg cursor-pointer">→</span>
+          <span
+            className="text-lg cursor-pointer"
+            onClick={() => navigate(`/mystamppage/${cafeId}`)}
+          >
+            →
+          </span>
         </div>
 
         {/* 퍼센트 바 + 텍스트 */}
