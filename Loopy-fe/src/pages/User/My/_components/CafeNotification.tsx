@@ -22,7 +22,7 @@ const CafeNotification = ({ onNavigate }: Props) => {
         </div>
       </div>
 
-      <NextIcon className="w-[1.125rem] h-[1.125rem] text-[#A8A8A8] ml-auto" />
+      <NextIcon className="w-[1rem] h-[1rem] text-[#A8A8A8] ml-auto" />
     </button>
   );
 };
