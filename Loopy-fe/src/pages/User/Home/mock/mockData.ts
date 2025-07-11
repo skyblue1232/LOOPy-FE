@@ -5,6 +5,7 @@ export interface StampItem {
   address: string;
   stampCount: number;
   stampMax: number;
+  stampPaper: number; // 스탬프지 개수
   dueDate: string;
 }
 
@@ -32,6 +33,7 @@ export const stampList: StampItem[] = [
     address: '서울 서대문구 이화여대길 52',
     stampCount: 5,
     stampMax: 10,
+    stampPaper: 1,
     dueDate: '10.07',
   },
   {
@@ -42,6 +44,7 @@ export const stampList: StampItem[] = [
     address: '서울 서대문구 이화여대길 52',
     stampCount: 2,
     stampMax: 10,
+    stampPaper: 1,
     dueDate: '11.15',
   },
   {
@@ -52,6 +55,7 @@ export const stampList: StampItem[] = [
     address: '서울 서대문구 이화여대길 52',
     stampCount: 4,
     stampMax: 10,
+    stampPaper: 2,
     dueDate: '07.30',
   },
   {
@@ -62,6 +66,7 @@ export const stampList: StampItem[] = [
     address: '서울 서대문구 이화여대길 52',
     stampCount: 0,
     stampMax: 10,
+    stampPaper: 1,
     dueDate: '08.20',
   },
 ];
