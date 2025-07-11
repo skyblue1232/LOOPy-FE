@@ -1,5 +1,6 @@
-import { useState } from "react";
-import MainMyPage from "./_components/MainMyPage.tsx";
+import { useFunnel } from "../../../hooks/Funnel/useFunnel";
+import type { MyPageStep } from "../../../types/mySteps";
+import MainMyPage from "./_components/MainMyPage";
 import SettingPage from "./Setting";
 import StampExchangePage from "./StampExchange";
 import MyChallengePage from "./Challenge";
@@ -11,41 +12,38 @@ import CafeNoticePage from "./CafeNotice";
 import EditProfile from "./Setting/_components/EditProfile";
 import ManageAccount from "./Setting/_components/ManageAccount";
 import WithdrawAccountView from "./Setting/_components/WithdrawAccountView";
-import type { MyPageStep } from "../../../types/mySteps";
 
 const MyPage = () => {
-  const [step, setStep] = useState<MyPageStep>("my");
+  const { step, go, back } = useFunnel<MyPageStep>("my");
 
-  const renderStep = () => {
-    switch (step) {
-      case "my":
-        return <MainMyPage onNavigate={setStep} />;
-      case "setting":
-        return <SettingPage onBack={() => setStep("my")} onNavigate={setStep} />;
-      case "editProfile":
-        return <EditProfile onBack={() => setStep("setting")} />;
-      case "manageAccount":
-        return <ManageAccount onBack={() => setStep("setting")} onGoWithdraw={() => setStep("withdraw")} />;
-      case "withdraw":
-        return <WithdrawAccountView onBack={() => setStep("manageAccount")} onConfirm={() => setStep("my")} />;
-      case "stampExchange":
-        return <StampExchangePage />;
-      case "myChallenge":
-        return <MyChallengePage />;
-      case "couponBox":
-        return <CouponBoxPage onBack={() => setStep("my")} />;
-      case "stampHistory":
-        return <StampHistoryPage />;
-      case "review":
-        return <ReviewPage />;
-      case "filter":
-        return <FilterPage onBack={() => setStep("my")} />;
-      case "cafeNotice":
-        return <CafeNoticePage onBack={() => setStep("my")} />;
-    }
-  };
-
-  return <>{renderStep()}</>;
+  switch (step) {
+    case "my":
+      return <MainMyPage onNavigate={go} />;
+    case "setting":
+      return <SettingPage onBack={back("my")} onNavigate={go} />;
+    case "editProfile":
+      return <EditProfile onBack={back("setting")} />;
+    case "manageAccount":
+      return <ManageAccount onBack={back("setting")} onGoWithdraw={() => go("withdraw")} />;
+    case "withdraw":
+      return <WithdrawAccountView onBack={back("manageAccount")} onConfirm={back("my")} />;
+    case "stampExchange":
+      return <StampExchangePage />;
+    case "myChallenge":
+      return <MyChallengePage onBack={back("my")} />;
+    case "couponBox":
+      return <CouponBoxPage onBack={back("my")} />;
+    case "stampHistory":
+      return <StampHistoryPage />;
+    case "review":
+      return <ReviewPage />;
+    case "filter":
+      return <FilterPage onBack={back("my")} />;
+    case "cafeNotice":
+      return <CafeNoticePage onBack={back("my")} />;
+    default:
+      return <MainMyPage onNavigate={go} />;
+  }
 };
 
 export default MyPage;
