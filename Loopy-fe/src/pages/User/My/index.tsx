@@ -41,7 +41,7 @@ const MyPage = () => {
       case "filter":
         return <FilterPage onBack={() => setStep("my")} />;
       case "cafeNotice":
-        return <CafeNoticePage />;
+        return <CafeNoticePage onBack={() => setStep("my")} />;
     }
   };
 
