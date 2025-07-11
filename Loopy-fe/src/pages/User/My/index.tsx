@@ -1,82 +1,51 @@
-import { useState } from 'react';
-import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
-import CommonHeader from '../../../components/header/CommonHeader';
-import CommonCard from '../../../components/card/CommonCard';
-import ProfileSection from './_components/ProfileSection.tsx';
-import QuickAccessMenu from './_components/QuickAccessMenu.tsx';
-import ActivityList from './_components/ActivityList.tsx';
-import CafeNotification from './_components/CafeNotification.tsx';
-
-import SettingPage from './Setting';
-import StampExchangePage from './StampExchange';
-import MyChallengePage from './Challenge';
-import CouponBoxPage from './CouponBox';
-import StampHistoryPage from './StampHistory';
-import ReviewPage from './Review';
-import FilterPage from './Filter';
-import CafeNoticePage from './CafeNotice';
-
-import Setting from '../../../assets/images/Setting.svg?react';
-import { stepTitles } from '../../../constants/stepTitles.ts';
+import { useState } from "react";
+import MainMyPage from "./_components/MainMyPage.tsx";
+import SettingPage from "./Setting";
+import StampExchangePage from "./StampExchange";
+import MyChallengePage from "./Challenge";
+import CouponBoxPage from "./CouponBox";
+import StampHistoryPage from "./StampHistory";
+import ReviewPage from "./Review";
+import FilterPage from "./Filter";
+import CafeNoticePage from "./CafeNotice";
+import EditProfile from "./Setting/_components/EditProfile";
+import ManageAccount from "./Setting/_components/ManageAccount";
+import WithdrawAccountView from "./Setting/_components/WithdrawAccountView";
+import type { MyPageStep } from "../../../types/mySteps";
 
 const MyPage = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState<MyPageStep>("my");
 
   const renderStep = () => {
-    const PageComponent = [
-      SettingPage,
-      StampExchangePage,
-      MyChallengePage,
-      CouponBoxPage,
-      StampHistoryPage,
-      ReviewPage,
-      FilterPage,
-      CafeNoticePage,
-    ][step - 1];
-
-    if (!PageComponent) return null;
-
-    return (
-      <div className="min-h-screen bg-white text-[#252525]">
-        <CommonHeader title={stepTitles[step]} onBack={() => setStep(0)} />
-        <PageComponent />
-      </div>
-    );
+    switch (step) {
+      case "my":
+        return <MainMyPage onNavigate={setStep} />;
+      case "setting":
+        return <SettingPage onBack={() => setStep("my")} onNavigate={setStep} />;
+      case "editProfile":
+        return <EditProfile onBack={() => setStep("setting")} />;
+      case "manageAccount":
+        return <ManageAccount onBack={() => setStep("setting")} onGoWithdraw={() => setStep("withdraw")} />;
+      case "withdraw":
+        return <WithdrawAccountView onBack={() => setStep("manageAccount")} onConfirm={() => setStep("my")} />;
+      case "stampExchange":
+        return <StampExchangePage />;
+      case "myChallenge":
+        return <MyChallengePage />;
+      case "couponBox":
+        return <CouponBoxPage />;
+      case "stampHistory":
+        return <StampHistoryPage />;
+      case "review":
+        return <ReviewPage />;
+      case "filter":
+        return <FilterPage onBack={() => setStep("my")} />;
+      case "cafeNotice":
+        return <CafeNoticePage />;
+    }
   };
 
-  return step === 0 ? (
-    <div className="min-h-screen bg-[#F3F3F3] text-[#252525] overflow-y-auto -mx-[1.5rem] px-[1.5rem] pb-[6rem]">
-      <div className="py-[1.5rem] flex justify-between items-center">
-        <h1 className="text-[1.25rem] font-bold">마이페이지</h1>
-        <Setting
-          className="w-[1.25rem] h-[1.25rem]"
-          onClick={() => setStep(1)}
-        />
-      </div>
-
-      <div>
-        <CommonCard padding="p-[1.5rem]" className="bg-white mb-[1rem]">
-          <ProfileSection />
-          <QuickAccessMenu onNavigate={setStep} />
-        </CommonCard>
-        <CommonCard padding="p-[1.5rem]" className="bg-white mb-[1rem]">
-          <ActivityList onNavigate={setStep} />
-        </CommonCard>
-        <CommonCard padding="p-[1.5rem]" className="bg-white mb-[1.5rem]">
-          <CafeNotification onNavigate={() => setStep(8)} />
-        </CommonCard>
-      </div>
-
-      <CommonBottomBar
-        active="mypage"
-        onChange={(tab) => {
-          console.log(tab);
-        }}
-      />
-    </div>
-  ) : (
-    renderStep()
-  );
+  return <>{renderStep()}</>;
 };
 
 export default MyPage;

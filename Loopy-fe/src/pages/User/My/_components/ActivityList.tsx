@@ -1,14 +1,15 @@
 import NextIcon from "../../../../assets/images/Next.svg?react";
+import type { MyPageStep } from "../../../../types/mySteps";
 
 interface Props {
-  onNavigate: (step: number) => void;
+  onNavigate: (step: MyPageStep) => void;
 }
 
 const ActivityList = ({ onNavigate }: Props) => {
-  const menus = [
-    { label: "스탬프 히스토리", step: 5 },
-    { label: "내가 작성한 리뷰", step: 6 },
-    { label: "나의 추천 필터", step: 7 },
+  const menus: { label: string; step: MyPageStep }[] = [
+    { label: "스탬프 히스토리", step: "stampHistory" },
+    { label: "내가 작성한 리뷰", step: "review" },
+    { label: "나의 추천 필터", step: "filter" },
   ];
 
   return (
@@ -24,7 +25,7 @@ const ActivityList = ({ onNavigate }: Props) => {
             }`}
           >
             <span className="text-[1rem] font-normal">{label}</span>
-            <NextIcon className="w-[1.125rem] h-[1.125rem] text-[#A8A8A8]" />
+            <NextIcon className="w-[1rem] h-[1rem] text-[#A8A8A8]" />
           </button>
         ))}
       </div>
