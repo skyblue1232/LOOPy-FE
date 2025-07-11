@@ -33,7 +33,7 @@ const MyPage = () => {
       case "myChallenge":
         return <MyChallengePage />;
       case "couponBox":
-        return <CouponBoxPage />;
+        return <CouponBoxPage onBack={() => setStep("my")} />;
       case "stampHistory":
         return <StampHistoryPage />;
       case "review":
