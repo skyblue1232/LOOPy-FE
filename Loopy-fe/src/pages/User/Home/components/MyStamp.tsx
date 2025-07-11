@@ -25,7 +25,7 @@ const MyStamp: React.FC<MyStampProps> = ({
   return (
     <div className="relative w-[21.563rem] h-[11.125rem] flex items-center justify-between p-4 overflow-hidden">
       {/* 스탬프 영역 */}
-      <div className="absolute w-[16.375rem] h-[5rem] rounded-br-[6.25rem] top-0 right-0 bg-[#E3F389] px-4 py-3 flex flex-col items-end justify-center">
+      <div className="absolute w-[16.375rem] h-[5.125rem] rounded-br-[6.25rem] top-0 right-0 bg-[#E3F389] px-4 py-3 flex flex-col items-end justify-center">
         {/* 스탬프 개수 + 화살표 */}
         <div className="absolute top-[0.938rem] left-[6.25rem] flex items-center gap-10 text-base font-semibold text-black">
           <span>스탬프 {stampCount}개</span>
@@ -62,11 +62,11 @@ const MyStamp: React.FC<MyStampProps> = ({
       <div className="absolute w-[10rem] h-[10rem] rounded-full bg-[#E3F389] opacity-30 top-25 right-0"></div>
 
       {/* 카페 정보 */}
-      <div className="absolute left-[5.125rem] top-[5rem] w-[11.875rem] h-[6.25rem] bg-white p-3">
-        <div className="text-[1rem] font-extrabold">{cafeName}</div>
-        <div className="text-sm text-[#7F7F7F]">{address}</div>
-        <div className="text-sm text-[#8A6EFF] mt-3">
-          스탬프 기한 ~{dueDate}
+      <div className="absolute left-[5.125rem] top-[5.25rem] w-[11.875rem] h-[6.25rem] bg-white p-3.5">
+        <div className="text-[1rem] font-semibold">{cafeName}</div>
+        <div className="text-[0.75rem] text-[#7F7F7F] ">{address}</div>
+        <div className="text-[0.875rem] font-semibold text-[#6970F3] mt-1">
+          기한 ~{dueDate}
         </div>
       </div>
     </div>

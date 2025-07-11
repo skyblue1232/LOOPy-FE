@@ -78,7 +78,7 @@ const MyStampPage = () => {
           <div className="text-[1rem] flex gap-[0.5rem] items-center mb-4">
             <span className="font-medium">스탬프지</span>
             <span className="font-semibold text-[#6970F3]">
-              {stampData.stampCount}장째 진행 중
+              {stampData.stampPaper}장째 진행 중
             </span>
           </div>
           <div className="my-20">
