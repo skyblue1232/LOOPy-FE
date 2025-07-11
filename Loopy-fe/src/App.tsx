@@ -24,6 +24,8 @@ import LevelDetailPage from './pages/User/LevelDetail/index.tsx';
 import ChallengeDetailPage from './pages/User/ChallengeDetail/index.tsx';
 import ChallengeStoreListPage from './pages/User/ChallengeDetail/ChallengeStoreListPage/index.tsx';
 import MyStampPage from './pages/User/MyStamp/index.tsx';
+import MenuListPage from './pages/User/Menu/index.tsx';
+import ReviewWritePage from './pages/User/Review/index.tsx';
 
 const publicRoutes = createBrowserRouter([
   {
@@ -49,15 +51,33 @@ const publicRoutes = createBrowserRouter([
       },
       {
         path: 'map',
-        element: <MapPage />,
-      },
-      {
-        path: 'map/location',
-        element: <LocationPage />,
+        children: [
+          {
+            index: true,
+            element: <MapPage />,
+          },
+          {
+            path: 'location',
+            element: <LocationPage />,
+          },
+        ]
       },
       {
         path: 'detail',
-        element: <DetailPage />,
+        children: [
+          {
+            index: true,
+            element: <DetailPage />,
+          },
+          {
+            path: 'menu',
+            element: <MenuListPage />,
+          },
+          {
+            path: 'write-review',
+            element: <ReviewWritePage />,
+          },
+        ]
       },
       {
         path: 'mypage',
@@ -65,11 +85,16 @@ const publicRoutes = createBrowserRouter([
       },
       {
         path: 'search',
-        element: <SearchPage />,
-      },
-      {
-        path: 'search/location',
-        element: <LocationPage />,
+        children: [
+          {
+            index: true,
+            element: <SearchPage />,
+          },
+          {
+            path: 'location',
+            element: <LocationPage />,
+          },
+        ]
       },
       {
         path: 'alarm',
