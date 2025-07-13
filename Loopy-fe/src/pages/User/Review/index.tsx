@@ -25,7 +25,7 @@ export default function ReviewWritePage() {
     const isValid = reviewText.trim().length > 0;
 
     return (
-        <div className="max-w-[393px] mx-auto px-[1rem] pt-[3.75rem] pb-[2rem]">
+        <div>
             <CommonHeader title="리뷰 작성" onBack={() => navigate(-1)}/>
 
             <div className="mt-[1.5rem] text-[#FF0000] text-[0.75rem] font-normal">
