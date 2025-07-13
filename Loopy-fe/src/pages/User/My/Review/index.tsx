@@ -23,7 +23,7 @@ const ReviewPage = ({ onBack }: { onBack: () => void }) => {
             <li
               key={review.id}
               onClick={() => handleClick(review.id)}
-              className="border border-[#DFDFDF] rounded-[0.5rem] cursor-pointer hover:bg-[#F9F9F9]"
+              className="border border-[#DFDFDF] rounded-[0.5rem]  p-[1rem] cursor-pointer hover:bg-[#F9F9F9]"
             >
               <p className="text-[1rem] font-semibold text-[#252525]">{review.title}</p>
               <p className="text-[0.875rem] text-[#7F7F7F] mt-[0.25rem]">{review.content}</p>
