@@ -36,7 +36,7 @@ const MyPage = () => {
     case "stampHistory":
       return <StampHistoryPage />;
     case "review":
-      return <ReviewPage />;
+      return <ReviewPage onBack={back("my")} />;
     case "filter":
       return <FilterPage onBack={back("my")} />;
     case "cafeNotice":
