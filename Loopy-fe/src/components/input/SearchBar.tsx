@@ -36,7 +36,7 @@ const SearchBar = ({
             <div 
                 className={`
                     flex items-center h-[3rem] px-4 py-[0.5625rem]
-                    rounded-[0.5rem]
+                    rounded-[0.5rem] mt-[1.5rem]
                     ${isMap ? "bg-white shadow-[0_4px_4px_rgba(0,0,0,0.15)]" : "bg-[#F5F5F5]"}
                 `}
                 onClick={handleClick}
