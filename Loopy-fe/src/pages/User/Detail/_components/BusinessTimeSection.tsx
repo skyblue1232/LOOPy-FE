@@ -1,4 +1,7 @@
 import { useState, useMemo } from "react";
+import ArrowDownIcon from "/src/assets/images/ArrowDown.svg?react";
+import ArrowUpIcon from "/src/assets/images/ArrowUp.svg?react";
+import ClockIcon from "/src/assets/images/Clock.svg?react";
 
 const days = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -21,29 +24,35 @@ export default function BusinessTimeSection({ hours }: BusinessTimeSectionProps)
         return [...hours.slice(todayIdx), ...hours.slice(0, todayIdx)];
     }, [hours, today]);
 
+    const todayHour = sortedHours[0];
+    const restHours = sortedHours.slice(1); 
+
+    const Icon = isOpen ? ArrowUpIcon : ArrowDownIcon;
+
     return (
         <div>
-        <div
-            className="flex items-start justify-between text-[0.875rem] font-normal text-[#3B3B3B] cursor-pointer"
-            onClick={() => setIsOpen(!isOpen)}
-        >
-            <div className="flex items-center gap-[0.5rem]">
-            <img src="/src/assets/images/Clock.svg" className="h-[1rem]" />
-            <span>{sortedHours[0].day}</span>
-            <span>{sortedHours[0].time}</span>
-            </div>
-            <img src="/src/assets/images/ArrowDown.svg" />
-        </div>
-
-        {isOpen && (
-            <div className="mt-[0.5rem] text-[0.875rem] text-[#3B3B3B]">
-            {sortedHours.map((item) => (
-                <div key={item.day} className="mt-[0.25rem]">
-                {item.day} {item.time}
+            <div
+                className="flex items-start justify-between text-[0.875rem] font-normal text-[#3B3B3B] cursor-pointer"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <div className="flex items-center gap-[0.5rem]">
+                    <ClockIcon className="h-[1rem]" />
+                    <span>{todayHour.day}</span>
+                    <span>{todayHour.time}</span>
+                    <Icon className="w-[1rem] h-[1rem]" />
                 </div>
-            ))}
             </div>
-        )}
+
+            {isOpen && (
+                <div className="text-[0.875rem] font-normal text-[#3B3B3B]">
+                    {restHours.map((item) => (
+                        <div key={item.day} className="flex items-center gap-[0.5rem] pl-[1.5rem]">
+                            <span>{item.day}</span>
+                            <span>{item.time}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }

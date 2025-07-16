@@ -64,7 +64,7 @@ const SearchPage = () => {
         </>
       )}
 
-      <div className="mt-[11.25rem]">
+      <div className="mt-[12.75rem]">
         <EventCard
           imageSrc="src/assets/images/RedImage.svg"
           monthLabel="8월의 이벤트"
@@ -88,10 +88,6 @@ const SearchPage = () => {
               address={cafeMockDetail.address}
               images={cafeMockDetail.images}
               keywords={cafeMockDetail.keywords}
-              isBookmarked={false}
-              onToggleBookmark={(id) => {
-                console.log("북마크 토글:", id);
-              }}
             />
           </div>
         ))}

@@ -4,6 +4,10 @@ import CafeInfoContent from "./CafeInfoContent";
 import type { CafeDetailData } from "../../../../types/cafeData";
 import { cafeDetailMock } from "../../../../mock/cafeDetailMock";
 import CafeReviewContent from "./CafeReviewContent";
+import AlarmSubscribeButton from "./AlarmSubscribeButton";
+import BookmarkButton from "../../../../components/button/BookmarkButton";
+import ArrowDownIcon from "/src/assets/images/ArrowDown.svg?react";
+import ArrowUpIcon from "/src/assets/images/ArrowUp.svg?react";
 
 interface CafeInfoPanelProps extends CafeDetailData {
     selectedTab: "info" | "review";
@@ -45,6 +49,7 @@ export default function CafeInfoPanel({
         ...dummyHours.slice(dummyHours.findIndex((h) => h.day === today)),
         ...dummyHours.slice(0, dummyHours.findIndex((h) => h.day === today)),
     ];
+    const Icon = showAllTags ? ArrowUpIcon : ArrowDownIcon;
 
     return (
         <div className="absolute top-[15.25rem] z-10 w-[24.5625rem] rounded-t-[0.75rem] flex flex-col bg-white px-[1.5rem] pt-[1.5625rem] pb-[2rem] h-[calc(100%-15.25rem)]">
@@ -52,25 +57,10 @@ export default function CafeInfoPanel({
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-[1rem]">
                         <div className="text-[1.5rem] font-bold whitespace-nowrap">{name}</div>
-
-                        <button
-                        className="flex items-center gap-[0.25rem] text-[0.75rem] px-[0.5rem] py-[0.375rem] rounded-[0.25rem] border border-[#A8A8A8] whitespace-nowrap"
-                        >
-                        <img
-                            src="/src/assets/images/BellPlus.svg"
-                            className="w-[0.75rem] h-[0.75rem]"
-                            alt="알림"
-                        />
-                        <span>알림 받기</span>
-                        </button>
+                        <AlarmSubscribeButton />
                     </div>
 
-                    {/* 북마크 아이콘 */}
-                    <img
-                        src="/src/assets/images/Bookmark.svg"
-                        className="w-[1.5rem] h-[1.5rem]"
-                        alt="북마크"
-                    />
+                    <BookmarkButton/>
                     </div>
 
                 <div className="mt-[0.75rem] text-[#7F7F7F] text-[1rem] font-normal">
@@ -84,10 +74,10 @@ export default function CafeInfoPanel({
                     {tags.length > 2 && (
                     <button
                         onClick={() => setShowAllTags(!showAllTags)}
-                        className="flex- items-center text-[0.875rem] text-[#3B3B3B] whitespace-nowrap ml-[0.5rem]"
+                        className="flex items-center text-[0.875rem] text-[#3B3B3B] whitespace-nowrap ml-[0.5rem] gap-[0.25rem]"
                     >
                         {showAllTags ? "접기" : "태그 더보기"}
-                        <img src="/src/assets/images/ArrowDown.svg" className="w-[1rem] h-[1rem] shrink-0"/>
+                        <Icon className="w-[1rem] h-[1rem] shrink-0"/>
                     </button>
                     )}
                 </div>
