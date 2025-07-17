@@ -23,7 +23,7 @@ const dummyCafes: Cafe[] = [
 ];
 
 const cafeMockDetail = {
-  distanceText: "500m", 
+  distanceText: "500m",
   address: "서울 서대문구 이화여대길 52",
   images: ["src/assets/images/CafePic.svg", "/sample2.jpg", "/sample3.jpg"],
   keywords: ["분위기좋음", "조용한"],
@@ -41,30 +41,22 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white relative overflow-y-hidden">
-      <SearchBar
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-        placeholder="취향에 맞는 카페를 찾아보세요!"
-        variant="search"
-      />
+    <div className="min-h-screen flex flex-col bg-white">
+      {/* SearchBar */}
+      <div className="pt-[1.5rem]">
+        <SearchBar
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          placeholder="취향에 맞는 카페를 찾아보세요!"
+          variant="search"
+        />
+      </div>
 
-      <FilterBar onOpenFilterPopup={handleOpenFilterPopup} variant="search"/>
+      <div className="mt-[0.75rem] pb-[1.5rem]">
+        <FilterBar onOpenFilterPopup={handleOpenFilterPopup} variant="search" />
+      </div>
 
-      {isFilterPopupOpen && (
-        <>
-          <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-[40]" />
-
-          <div className="absolute bottom-0 left-0 right-0 z-[100]" style={{ bottom: "4.5rem" }}>
-            <FilterPopup
-              selectedGroup={selectedGroup}
-              onClose={() => setIsFilterPopupOpen(false)}
-            />
-          </div>
-        </>
-      )}
-
-      <div className="mt-[12.75rem]">
+      <div className="mt-[1.5rem]">
         <EventCard
           imageSrc="src/assets/images/RedImage.svg"
           monthLabel="8월의 이벤트"
@@ -74,26 +66,25 @@ const SearchPage = () => {
         />
       </div>
 
-      <div className="mt-[1.5rem] mb-[1rem]">
+      <div className="mt-[1.5rem]">
         <LocationLabel dongName="서대문구 연희동" />
       </div>
 
-      <div className="flex-1 overflow-y-auto pb-[5.5rem]">
+      <div className="mt-[1.5rem] flex flex-col gap-[1.25rem]">
         {dummyCafes.map((cafe) => (
-          <div key={cafe.id} className="mb-[1.25rem]">
-            <CafeListCard
-              id={cafe.id}
-              name={cafe.name}
-              distanceText={cafeMockDetail.distanceText}
-              address={cafeMockDetail.address}
-              images={cafeMockDetail.images}
-              keywords={cafeMockDetail.keywords}
-            />
-          </div>
+          <CafeListCard
+            key={cafe.id}
+            id={cafe.id}
+            name={cafe.name}
+            distanceText={cafeMockDetail.distanceText}
+            address={cafeMockDetail.address}
+            images={cafeMockDetail.images}
+            keywords={cafeMockDetail.keywords}
+          />
         ))}
       </div>
 
-      <div className="absolute right-0
+      <div className="absolute right-[1.5rem]
             flex justify-between items-center
             h-[3.5rem]
             pointer-events-auto
@@ -110,6 +101,18 @@ const SearchPage = () => {
           console.log("탭 변경:", tab);
         }}
       />
+
+      {isFilterPopupOpen && (
+        <>
+          <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-40" />
+          <div className="absolute bottom-0 left-0 right-0 z-50">
+            <FilterPopup
+              selectedGroup={selectedGroup}
+              onClose={() => setIsFilterPopupOpen(false)}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
