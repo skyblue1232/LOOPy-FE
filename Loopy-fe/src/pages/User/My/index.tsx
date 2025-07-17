@@ -28,7 +28,7 @@ const MyPage = () => {
     case "withdraw":
       return <WithdrawAccountView onBack={back("manageAccount")} onConfirm={back("my")} />;
     case "stampExchange":
-      return <StampExchangePage />;
+      return <StampExchangePage onBack={back("my")} />;
     case "myChallenge":
       return <MyChallengePage onBack={back("my")} />;
     case "couponBox":
