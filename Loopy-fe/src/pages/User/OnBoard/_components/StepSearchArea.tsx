@@ -37,9 +37,7 @@ const StepSearchArea = ({ onNext }: { onNext: () => void }) => {
 
         <SearchInputSection input={input} setInput={setInput} onSearch={handleSearch} />
 
-        {filteredResults.length > 0 && (
-          <CurrentLocationButton onClick={handleCurrentLocation} />
-        )}
+        <CurrentLocationButton onClick={handleCurrentLocation} />
       </div>
 
       <div className="flex-1 overflow-y-auto mb-[8rem] custom-scrollbar">
@@ -60,7 +58,7 @@ const StepSearchArea = ({ onNext }: { onNext: () => void }) => {
             rgba(255, 255, 255, 0.0) 100%)`,
         }}
       />
-      <div className="fixed bottom-[2rem] left-0 w-full px-[1.5rem] z-20">
+      <div className="absolute bottom-[2rem] left-0 w-full z-20">
         <CommonButton
           text="다음으로 넘어가기"
           onClick={handleNext}
