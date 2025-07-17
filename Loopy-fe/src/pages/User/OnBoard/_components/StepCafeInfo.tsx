@@ -16,17 +16,18 @@ const StepCafeInfo = ({ onNext }: { onNext: () => void }) => {
   };
 
   return (
-    <div>
+    <div className="pb-[6rem]">
       <div className="flex items-center mb-[0.5rem]">
         <h2 className="text-[1.5rem] text-[#323232] font-bold">
           관심 있는 카페 정보를 골라주세요
         </h2>
       </div>
-      <div className="flex items-center gap-[0.75rem] mb-[3rem]">
+
+      <div className="flex flex-col items-start gap-[0.25rem] mb-[3rem]">
         <p className="text-[0.875rem] text-[#7F7F7F] font-medium">
           해당하는 카페를 먼저 추천드릴게요
         </p>
-        <span className="text-[#A8A8A8] text-[1rem] font-normal">
+        <span className="text-[#A8A8A8] text-[0.875rem] font-normal">
           (1 ~ 5개 선택 필수)
         </span>
       </div>
@@ -76,15 +77,15 @@ const StepCafeInfo = ({ onNext }: { onNext: () => void }) => {
         })}
       </div>
 
-      <div className='absolute left-0 w-full px-[1.5rem] bottom-[2rem]'>
+      <div className="absolute left-0 w-full bottom-[2rem] px-[1.5rem]">
         <CommonButton
           text="완료하기"
           onClick={onNext}
           autoStyle={false}
           className={`w-full mt-[1.5rem] ${
             selectedTags.length >= 1 && selectedTags.length <= 5
-            ? "bg-[#6970F3] text-white"
-            : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
+              ? "bg-[#6970F3] text-white"
+              : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
           }`}
           disabled={selectedTags.length < 1 || selectedTags.length > 5}
         />
