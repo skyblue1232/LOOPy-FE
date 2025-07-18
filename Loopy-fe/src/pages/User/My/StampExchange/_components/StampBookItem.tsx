@@ -39,9 +39,8 @@ const StampBookItem = ({ stampBook, onExchangeClick }: Props) => {
               환전
             </button>
           </div>
-          <p className="text-[0.875rem] text-[#7F7F7F]">{cafeAddress}</p>
+          <p className="text-[0.875rem] text-[#7F7F7F] font-normal">{cafeAddress}</p>
 
-          {/* 스탬프 바 */}
           <div className="mt-[0.5rem]">
             <div className="flex items-center gap-2">
               <span className="text-[#6970F3] text-[0.875rem] font-semibold">스탬프</span>

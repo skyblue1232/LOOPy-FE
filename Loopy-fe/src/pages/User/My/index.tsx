@@ -34,7 +34,7 @@ const MyPage = () => {
     case "couponBox":
       return <CouponBoxPage onBack={back("my")} />;
     case "stampHistory":
-      return <StampHistoryPage />;
+      return <StampHistoryPage onBack={back("my")} />;
     case "review":
       return <ReviewPage onBack={back("my")} />;
     case "filter":
