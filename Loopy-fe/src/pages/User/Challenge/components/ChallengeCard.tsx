@@ -26,7 +26,10 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   };
 
   return (
-    <div onClick={handleClick} className="flex items-center -mx-[1rem]">
+    <div
+      onClick={handleClick}
+      className="flex items-center -mx-[1rem] cursor-pointer"
+    >
       {/* 좌측 이미지 */}
       <img
         src={challengeImage}
@@ -46,8 +49,8 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 
       {/* 우측 태그 */}
       {!hideParticipatingTag && participating && (
-        <div className="w-[3.188rem] h-[1.25rem] ml-4 px-2 py-1 bg-[#F0F1FE] text-[#6970F3] rounded-sm text-xs font-[0.75rem] items-center">
-          참여 중
+        <div className="w-[3.188rem] h-[1.25rem] ml-4 px-2 py-1 bg-[#F0F1FE] text-[#6970F3] rounded-sm text-xs font-[0.75rem] flex items-center justify-center">
+          <p>참여 중</p>
         </div>
       )}
     </div>

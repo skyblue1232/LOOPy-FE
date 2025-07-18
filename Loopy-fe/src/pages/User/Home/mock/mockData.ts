@@ -6,7 +6,7 @@ export interface StampItem {
   stampCount: number;
   stampMax: number;
   stampPaper: number; // 스탬프지 개수
-  dueDate: string;
+  dueDate: Date;
 }
 
 export interface ProfileCardData {
@@ -34,7 +34,7 @@ export const stampList: StampItem[] = [
     stampCount: 5,
     stampMax: 10,
     stampPaper: 1,
-    dueDate: '10.07',
+    dueDate: new Date(2025, 9, 7),
   },
   {
     cafeId: '2',
@@ -45,7 +45,7 @@ export const stampList: StampItem[] = [
     stampCount: 2,
     stampMax: 10,
     stampPaper: 1,
-    dueDate: '11.15',
+    dueDate: new Date(2025, 10, 15),
   },
   {
     cafeId: '3',
@@ -56,7 +56,7 @@ export const stampList: StampItem[] = [
     stampCount: 4,
     stampMax: 10,
     stampPaper: 2,
-    dueDate: '07.30',
+    dueDate: new Date(2025, 6, 20),
   },
   {
     cafeId: '4',
@@ -67,7 +67,7 @@ export const stampList: StampItem[] = [
     stampCount: 0,
     stampMax: 10,
     stampPaper: 1,
-    dueDate: '08.20',
+    dueDate: new Date(2025, 9, 20),
   },
 ];
 

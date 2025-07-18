@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import MapViewToggleButton from "../../../components/button/MapViewToggleButton";
-import StampLegend from "../../../components/modal/StampLegend";
-import CafeDetailCard from "../../../components/card/MapCafeDetailCard";
-import SearchBar from "../../../components/input/SearchBar";
-import FilterBar from "./_components/filter/FilterBar";
-import FilterPopup from "./_components/filter/FilterPopup";
-import { Helmet } from "react-helmet";
-import CommonBottomBar from "../../../components/bottomBar/CommonBottomBar";
+import { useEffect, useRef, useState } from 'react';
+import MapViewToggleButton from '../../../components/button/MapViewToggleButton';
+import StampLegend from '../../../components/modal/StampLegend';
+import CafeDetailCard from '../../../components/card/MapCafeDetailCard';
+import SearchBar from '../../../components/input/SearchBar';
+import FilterBar from './_components/filter/FilterBar';
+import FilterPopup from './_components/filter/FilterPopup';
+import { Helmet } from 'react-helmet';
+import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
 
 declare global {
   interface Window {
@@ -23,26 +23,26 @@ interface Cafe {
 }
 
 const dummyCafes: Cafe[] = [
-  { id: 1, name: "카페 A", lat: 37.5563, lng: 126.9355, hasStamp: false },
-  { id: 2, name: "카페 B", lat: 37.5558, lng: 126.937, hasStamp: true },
-  { id: 3, name: "카페 C", lat: 37.5545, lng: 126.9362, hasStamp: false },
+  { id: 1, name: '카페 A', lat: 37.5563, lng: 126.9355, hasStamp: false },
+  { id: 2, name: '카페 B', lat: 37.5558, lng: 126.937, hasStamp: true },
+  { id: 3, name: '카페 C', lat: 37.5545, lng: 126.9362, hasStamp: false },
 ];
 
 const cafeMockDetail = {
-  distanceText: "500m",
-  address: "서울 서대문구 이화여대길 52",
-  images: ["/sample1.jpg", "/sample2.jpg", "/sample3.jpg"],
-  keywords: ["분위기좋음", "조용한", "디저트맛집"],
+  distanceText: '500m',
+  address: '서울 서대문구 이화여대길 52',
+  images: ['/sample1.jpg', '/sample2.jpg', '/sample3.jpg'],
+  keywords: ['분위기좋음', '조용한', '디저트맛집'],
 };
 
 const getMarkerImage = (hasStamp: boolean, isActive: boolean) => {
   const imagePath = hasStamp
     ? isActive
-      ? "/src/assets/images/StampActiveMarker.svg"
-      : "/src/assets/images/StampDefaultMarker.svg"
+      ? '/src/assets/images/StampActiveMarker.svg'
+      : '/src/assets/images/StampDefaultMarker.svg'
     : isActive
-    ? "/src/assets/images/NoStampActiveMarker.svg"
-    : "/src/assets/images/NoStampDefaultMarker.svg";
+      ? '/src/assets/images/NoStampActiveMarker.svg'
+      : '/src/assets/images/NoStampDefaultMarker.svg';
 
   const size = isActive
     ? new window.kakao.maps.Size(48, 54)
@@ -56,8 +56,10 @@ const MapPage = () => {
   const activeMarkerRef = useRef<any>(null);
   const [selectedCafe, setSelectedCafe] = useState<Cafe | null>(null);
   const [isMapView, setIsMapView] = useState(true);
-  const [searchValue, setSearchValue] = useState("");
-  const [selectedGroup, setSelectedGroup] = useState<string | undefined>(undefined);
+  const [searchValue, setSearchValue] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState<string | undefined>(
+    undefined,
+  );
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
 
   const handleOpenFilterPopup = (group?: string) => {
@@ -67,7 +69,7 @@ const MapPage = () => {
 
   useEffect(() => {
     const kakaoKey = import.meta.env.VITE_KAKAO_JS_KEY;
-    const script = document.createElement("script");
+    const script = document.createElement('script');
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${kakaoKey}&autoload=false&libraries=services,clusterer`;
     script.async = true;
     document.head.appendChild(script);
@@ -82,10 +84,14 @@ const MapPage = () => {
           level: 3,
         });
 
-        map.addListener("click", () => {
-          const prevCafe = dummyCafes.find((c) => c.id === activeMarkerRef.current?.__cafeId);
+        map.addListener('click', () => {
+          const prevCafe = dummyCafes.find(
+            (c) => c.id === activeMarkerRef.current?.__cafeId,
+          );
           if (prevCafe) {
-            activeMarkerRef.current.setImage(getMarkerImage(prevCafe.hasStamp, false));
+            activeMarkerRef.current.setImage(
+              getMarkerImage(prevCafe.hasStamp, false),
+            );
           }
           activeMarkerRef.current = null;
           setSelectedCafe(null);
@@ -100,12 +106,16 @@ const MapPage = () => {
             map,
           });
 
-          marker.addListener("click", () => {
+          marker.addListener('click', () => {
             setTimeout(() => {
               if (activeMarkerRef.current) {
-                const prevCafe = dummyCafes.find((c) => c.id === activeMarkerRef.current.__cafeId);
+                const prevCafe = dummyCafes.find(
+                  (c) => c.id === activeMarkerRef.current.__cafeId,
+                );
                 if (prevCafe) {
-                  activeMarkerRef.current.setImage(getMarkerImage(prevCafe.hasStamp, false));
+                  activeMarkerRef.current.setImage(
+                    getMarkerImage(prevCafe.hasStamp, false),
+                  );
                 }
               }
 
@@ -128,7 +138,10 @@ const MapPage = () => {
     <>
       <Helmet>
         <meta name="theme-color" content="transparent" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
       </Helmet>
 
       <div className="h-[env(safe-area-inset-top)] bg-transparent" />
@@ -150,7 +163,7 @@ const MapPage = () => {
 
       <div
         className={`absolute left-0 right-0 flex justify-center pointer-events-none transition-all ${
-          selectedCafe ? "bottom-[22.75rem]" : "bottom-[6.25rem]"
+          selectedCafe ? 'bottom-[22.75rem]' : 'bottom-[6.25rem]'
         }`}
       >
         <div className="w-full max-w-[393px] px-[1.5rem] flex justify-between items-center h-[3.5rem] pointer-events-auto">
@@ -164,7 +177,7 @@ const MapPage = () => {
 
       {selectedCafe && (
         <div
-          className={`absolute bottom-[4.5625rem] left-0 right-0 flex justify-center transition-transform duration-300 ease-in-out pointer-events-auto z-[20] ${selectedCafe ? "translate-y-0" : "translate-y-full"}`}
+          className={`absolute bottom-[4.5625rem] left-0 right-0 flex justify-center transition-transform duration-300 ease-in-out pointer-events-auto z-[20] ${selectedCafe ? 'translate-y-0' : 'translate-y-full'}`}
           onClick={(e) => e.stopPropagation()}
         >
           <CafeDetailCard
@@ -180,7 +193,10 @@ const MapPage = () => {
       {isFilterPopupOpen && (
         <>
           <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-[40]" />
-          <div className="absolute bottom-0 left-0 right-0 z-[100]" style={{ bottom: "4.5625rem" }}>
+          <div
+            className="absolute bottom-0 left-0 right-0 z-[100]"
+            style={{ bottom: '4.5625rem' }}
+          >
             <FilterPopup
               selectedGroup={selectedGroup}
               onClose={() => setIsFilterPopupOpen(false)}
@@ -192,7 +208,7 @@ const MapPage = () => {
       <CommonBottomBar
         active="search"
         onChange={(tab) => {
-          console.log("탭 변경:", tab);
+          console.log('탭 변경:', tab);
         }}
       />
     </>
