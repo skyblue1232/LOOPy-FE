@@ -20,15 +20,19 @@ const HomePage = () => {
   });
 
   return (
-    <div className="relative min-h-screen">
+    <div>
       <div className="absolute inset-0 -mx-[1.5rem] bg-gradient-to-b from-[#6970F3] to-[#3D418D] z-0" />
       <div className="relative z-10">
-        <TopBar />
+        <div className="mt-[1.5rem]">
+          <TopBar />
+        </div>
         <CommonBottomBar active="home" onChange={(tab) => console.log(tab)} />
-        <ProfileCard {...profileCardData} />
+        <div className="mt-[1.5rem]">
+          <ProfileCard {...profileCardData} />
+        </div>
         <div className="bg-white rounded-t-xl mt-8 pt-8 -mx-[1.5rem] px-[1.5rem]">
-          <div className=" font-bold text-[1.125rem] flex justify-between items-center mb-4">
-            <span>루피와 진행 중인 챌린지, 뤂챌린지</span>
+          <div className=" font-bold text-[1.125rem] flex justify-between items-center mb-6">
+            <span>루피와 진행 중인 챌린지</span>
             <DetailButton
               onClick={() => navigate('/challenge')}
               textColor="text-[#7F7F7F]"
@@ -36,7 +40,7 @@ const HomePage = () => {
             />
           </div>
           <ChallengeCarousel />
-          <div className="flex justify-between items-center mt-6">
+          <div className="flex justify-between items-center mt-8">
             <div className="font-bold text-[1.125rem] flex items-center gap-2">
               <span>내 스탬프지</span>
               <span className="text-[#6970F3] text-[1.125rem]">
@@ -45,10 +49,10 @@ const HomePage = () => {
             </div>
             <StampSort value={sortType} onChange={setSortType} />
           </div>
-          <div className=" text-[0.875rem] text-gray-500 mt-2">
+          <div className=" text-[0.875rem] text-gray-500 mt-3">
             1달 내 재방문이 없으면 포인트로 자동 환전되어요
           </div>
-          <div className=" mt-4 pb-[5rem]">
+          <div className="mt-6 pb-[4rem] flex flex-col items-center">
             {sortedList.map((stamp, idx) => (
               <MyStamp key={idx} {...stamp} />
             ))}

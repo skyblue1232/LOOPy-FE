@@ -36,9 +36,9 @@ const ProfileCard = ({
       </div>
 
       {/* 이미지 + 우측 정보 묶기 */}
-      <div className="flex mt-4">
+      <div className="flex justify-center gap-[19px] mt-6">
         {/* 프로필 이미지 */}
-        <div className="w-[10.875rem] h-[9.75rem] overflow-hidden  flex-shrink-0">
+        <div className="w-[10.875rem] h-[9.75rem] overflow-hidden flex-shrink-0">
           {imageUrl ? (
             <img
               src={imageUrl}
@@ -53,22 +53,26 @@ const ProfileCard = ({
         </div>
 
         {/*현황 + 카드 */}
-        <div className="ml-4 flex flex-col justify-between">
+        <div className="flex flex-col justify-between">
           {/* 이번달 현황 */}
-          <div className="text-[1rem] font-semibold">
-            <div>이번달 현황</div>
-            <div className="flex justify-between mt-1 text-[0.875rem] text-[#E3F389] pr-4">
-              <div className="font-normal">받은 스탬프</div>
-              <div className="font-semibold">{receivedStamps}개</div>
+          {totalStamps !== 0 ? (
+            <div className="text-[1rem] font-semibold">
+              <div>이번달 현황</div>
+              <div className="flex justify-between mt-1 text-[0.875rem] text-[#E3F389] pr-4">
+                <div className="font-normal">받은 스탬프</div>
+                <div className="font-semibold">{receivedStamps}개</div>
+              </div>
+              <div className="flex justify-between text-[0.875rem] text-[#E3F389] pr-4">
+                <div className="font-normal">진행 중인 챌린지</div>
+                <div className="font-semibold">{ongoingChallenges}개</div>
+              </div>
             </div>
-            <div className="flex justify-between text-[0.875rem]  text-[#E3F389] pr-4">
-              <div className="font-normal">진행 중인 챌린지</div>
-              <div className="font-semibold">{ongoingChallenges}개</div>
-            </div>
-          </div>
+          ) : (
+            <div className="min-h-[4rem]" />
+          )}
 
           {/* 하단 카드 */}
-          <div className="flex gap-2 mt-4">
+          <div className="flex gap-[0.5rem] mt-4">
             <div className="w-[4.5rem] h-[4.5rem] bg-white/30 rounded-[4px] p-2 text-center">
               <div className="text-[0.875rem] font-semibold mt-0.5">
                 총 스탬프
