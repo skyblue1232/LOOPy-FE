@@ -1,3 +1,4 @@
+import BookmarkButton from "../button/BookmarkButton";
 import KeywordTags from "../etc/KeywordTags";
 
 interface Props {
@@ -7,14 +8,9 @@ interface Props {
     address: string;
     images: string[]; // 첫 번째 이미지만 사용
     keywords: string[];
-    isBookmarked: boolean;
-    onToggleBookmark: (id: number) => void;
 }
 
-const CafeListCard = ({ id, name, distanceText, address, images, keywords, isBookmarked, onToggleBookmark, }: Props) => {
-    const handleBookmarkClick = () => {
-        onToggleBookmark(id); 
-    };
+const CafeListCard = ({ name, distanceText, address, images, keywords, }: Props) => {
 
     return (
         <div className="flex w-full bg-transparent rounded-lg relative">
@@ -30,20 +26,9 @@ const CafeListCard = ({ id, name, distanceText, address, images, keywords, isBoo
                         <span className="text-[1.125rem] font-bold text-[#000]">{name}</span>
                         <span className="ml-2 text-[0.75rem] font-medium text-[#7F7F7F]">{distanceText}</span>
                     </div>
-                    <button
-                        onClick={handleBookmarkClick}
-                        className="w-[1.25rem] h-[1.25rem] flex items-center justify-center"
-                    >
-                        <img
-                        src={
-                            isBookmarked
-                            ? "src/assets/images/Bookmark-save.svg"
-                            : "src/assets/images/Bookmark.svg"
-                        }
-                        alt="북마크"
-                        className="w-full h-full"
-                        />
-                    </button>
+                    <BookmarkButton
+                        size="sm"
+                    />
                 </div>
 
                 <div className="text-[0.875rem] font-normal text-[#7F7F7F]">

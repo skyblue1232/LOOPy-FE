@@ -1,22 +1,22 @@
-import Bell from '../../../../assets/images/Bell.svg';
-import BookmarkWhite from '../../../../assets/images/BookmarkWhite.svg';
-import LoopyIconGreen from '../../../../assets/images/LoopyIconGreen.svg';
+import Bell from '../../../../assets/images/Bell.svg?react';
+import BookmarkWhite from '../../../../assets/images/BookmarkWhite.svg?react';
+import LoopyIconGreen from '../../../../assets/images/LoopyIconGreen.svg?react';
 import { useNavigate } from 'react-router-dom';
 
 const TopBar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-12 bg-transparent flex items-center justify-between px-1">
+    <div className="w-full bg-transparent flex items-center justify-between">
       <div>
-        <img src={LoopyIconGreen} alt="logo" className="w-6 h-6" />
+        <LoopyIconGreen className="w-[1.5rem] h-[1.5rem]" />
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-[0.75rem]">
         <button onClick={() => navigate('/bookmark')}>
-          <img src={BookmarkWhite} alt="bookmark" className="w-6 h-6" />
+          <BookmarkWhite className="w-[1.5rem] h-[1.5rem]" />
         </button>
         <button onClick={() => navigate('/alarm')}>
-          <img src={Bell} alt="bell" className="w-6 h-6" />
+          <Bell className="w-[1.5rem] h-[1.5rem]" />
         </button>
       </div>
     </div>

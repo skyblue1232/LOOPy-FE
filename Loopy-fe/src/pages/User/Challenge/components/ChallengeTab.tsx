@@ -5,10 +5,10 @@ interface ChallengeTabProps {
 
 const ChallengeTab = ({ activeTab, onChangeTab }: ChallengeTabProps) => {
   return (
-    <div className="w-[21.563rem] flex justify-between mt-4">
+    <div className="flex justify-between mt-4 w-full max-w-md mx-auto">
       <button
         onClick={() => onChangeTab('participating')}
-        className={`w-[10.75rem] pb-2 text-sm border-b ${
+        className={`flex-1 pb-2 text-sm border-b text-center ${
           activeTab === 'participating'
             ? 'text-[#6970F3] font-semibold border-[#6970F3]'
             : 'text-[#A8A8A8] font-medium border-[#F3F3F3]'
@@ -18,7 +18,7 @@ const ChallengeTab = ({ activeTab, onChangeTab }: ChallengeTabProps) => {
       </button>
       <button
         onClick={() => onChangeTab('all')}
-        className={`w-[10.75rem] pb-2 text-sm border-b ${
+        className={`flex-1 pb-2 text-sm border-b text-center ${
           activeTab === 'all'
             ? 'text-[#6970F3] font-semibold border-[#6970F3]'
             : 'text-[#A8A8A8] font-medium border-[#F3F3F3]'

@@ -7,6 +7,7 @@ interface BottomPopupProps {
   show: boolean;
   titleText?: string;
   contentsText?: string;
+  children?: React.ReactNode; 
 }
 
 export default function CommonBottomPopup({
@@ -16,11 +17,12 @@ export default function CommonBottomPopup({
   purpleButton,
   purpleButtonOnClick,
   contentsText,
+  children, 
 }: BottomPopupProps) {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center">
+    <div className="fixed inset-0 z-100 flex items-end justify-center">
       {/* 배경 오버레이 */}
       <div
         className="absolute inset-0 bg-[#252525] opacity-60"
@@ -45,6 +47,9 @@ export default function CommonBottomPopup({
             {contentsText}
           </div>
         )}
+
+        {/* children 영역 */}
+        {children && <div className="mb-[1.5rem]">{children}</div>}
 
         {/* 보라색 버튼 */}
         {purpleButton && (

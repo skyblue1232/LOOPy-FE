@@ -28,13 +28,13 @@ const MyPage = () => {
     case "withdraw":
       return <WithdrawAccountView onBack={back("manageAccount")} onConfirm={back("my")} />;
     case "stampExchange":
-      return <StampExchangePage />;
+      return <StampExchangePage onBack={back("my")} />;
     case "myChallenge":
       return <MyChallengePage onBack={back("my")} />;
     case "couponBox":
       return <CouponBoxPage onBack={back("my")} />;
     case "stampHistory":
-      return <StampHistoryPage />;
+      return <StampHistoryPage onBack={back("my")} />;
     case "review":
       return <ReviewPage onBack={back("my")} />;
     case "filter":

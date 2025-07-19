@@ -1,4 +1,5 @@
 import CommonCard from "../../../../components/card/CommonCard";
+import DownloadIcon from "/src/assets/images/Download.svg?react";
 
 interface CouponCardProps {
     imageSrc: string;
@@ -40,10 +41,8 @@ const CouponCard = ({
         </div>
 
         <button onClick={onDownload} className="ml-[1rem] shrink-0">
-            <img
-            src="/src/assets/images/Download.svg"
-            alt="쿠폰 다운로드"
-            className="w-[1.5rem] h-[1.5rem]"
+            <DownloadIcon
+                className="w-[2.0rem] h-[2.0rem]"
             />
         </button>
         </CommonCard>

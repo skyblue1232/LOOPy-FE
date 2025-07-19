@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import ListViewIcon from "/src/assets/images/ListView.svg?react";
+import MapViewIcon from "/src/assets/images/MapView.svg?react";
 
 interface Props {
   isMapView: boolean;
@@ -6,9 +8,7 @@ interface Props {
 }
 
 const MapViewToggleButton = ({ isMapView }: Props) => {
-  const iconSrc = isMapView
-    ? "src/assets/images/ListView.svg"
-    : "src/assets/images/MapView.svg";
+  const Icon = isMapView ? ListViewIcon : MapViewIcon;
 
   const navigate = useNavigate();
 
@@ -32,15 +32,7 @@ const MapViewToggleButton = ({ isMapView }: Props) => {
         zIndex: 10,
       }}
     >
-      <img
-        src={iconSrc}
-        alt="전환 버튼"
-        style={{
-          width: "4rem",
-          height: "4rem",
-          objectFit: "contain",
-        }}
-      />
+      <Icon className="w-[4rem] h-[4rem] object-contain" />
     </button>
   );
 };
