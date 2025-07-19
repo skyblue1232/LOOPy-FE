@@ -107,6 +107,8 @@ const MapPage = () => {
           });
 
           marker.addListener('click', () => {
+            window.kakao.maps.event.cancelBubble();
+
             setTimeout(() => {
               if (activeMarkerRef.current) {
                 const prevCafe = dummyCafes.find(
@@ -146,10 +148,12 @@ const MapPage = () => {
 
       <div className="h-[env(safe-area-inset-top)] bg-transparent" />
 
-      <div ref={mapRef} className="w-full h-full" />
+      <div className="relative -mx-[1.5rem]">
+        <div ref={mapRef} className="w-full h-[100dvh] z-[0]" />
+      </div>
 
       <div className="absolute inset-0 z-[10] pointer-events-none pt-[env(safe-area-inset-top)] flex justify-center">
-        <div className="w-full max-w-[393px] px-[1.5rem] mt-[1.5rem] pointer-events-auto">
+        <div className="w-full px-[1.5rem] mt-[1.5rem] pointer-events-auto">
           <SearchBar
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
@@ -166,7 +170,7 @@ const MapPage = () => {
           selectedCafe ? 'bottom-[22.75rem]' : 'bottom-[6.25rem]'
         }`}
       >
-        <div className="w-full max-w-[393px] px-[1.5rem] flex justify-between items-center h-[3.5rem] pointer-events-auto">
+        <div className="w-full px-[1.5rem] flex justify-between items-center h-[3.5rem] pointer-events-auto z-50 whitespace-normal">
           <StampLegend />
           <MapViewToggleButton
             isMapView={isMapView}
@@ -177,7 +181,7 @@ const MapPage = () => {
 
       {selectedCafe && (
         <div
-          className={`absolute bottom-[4.5625rem] left-0 right-0 flex justify-center transition-transform duration-300 ease-in-out pointer-events-auto z-[20] ${selectedCafe ? 'translate-y-0' : 'translate-y-full'}`}
+          className={`absolute bottom-[4.5625rem] left-0 right-0 flex justify-center transition-transform duration-300 ease-in-out pointer-events-auto z-[999] ${selectedCafe ? 'translate-y-0' : 'translate-y-full'}`}
           onClick={(e) => e.stopPropagation()}
         >
           <CafeDetailCard
