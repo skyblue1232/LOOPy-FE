@@ -1,5 +1,5 @@
-import Step10 from '../../../../assets/images/Step10.svg';
-import Vector from '../../../../assets/images/Vector.svg';
+import Step10 from '../../../../assets/images/Step10.svg?react';
+import Vector from '../../../../assets/images/Vector.svg?react';
 
 interface StampProps {
   currentStep: number; // 1~9
@@ -21,9 +21,7 @@ const StampPaper: React.FC<StampProps> = ({ currentStep }) => {
   return (
     <div className="relative w-[307px] h-[426.44px] mx-auto my-auto">
       {/* 스탬프지 배경 */}
-      <img
-        src={Vector}
-        alt="Stamp Paper"
+      <Vector
         className="absolute top-0 left-0"
         style={{
           width: 307,
@@ -66,9 +64,7 @@ const StampPaper: React.FC<StampProps> = ({ currentStep }) => {
       })}
 
       {/* 10단계 아이콘 */}
-      <img
-        src={Step10}
-        alt="Final reward"
+      <Step10
         className="absolute z-30"
         style={{
           top: `14px`,

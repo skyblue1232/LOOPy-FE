@@ -34,22 +34,17 @@ const BookMarkPage = () => {
   return (
     <div>
       <CommonHeader title="북마크한 카페" onBack={() => navigate(-1)} />
-      <div className="flex-1 overflow-y-auto pb-[5.5rem] mt-4">
+      <div className="mt-[1.5rem] flex flex-col gap-[1.25rem]">
         {dummyCafes.map((cafe) => (
-          <div key={cafe.id} className="mb-[1.25rem]">
-            <CafeListCard
-              id={cafe.id}
-              name={cafe.name}
-              distanceText={cafeMockDetail.distanceText}
-              address={cafeMockDetail.address}
-              images={cafeMockDetail.images}
-              keywords={cafeMockDetail.keywords}
-              isBookmarked={true}
-              onToggleBookmark={(id) => {
-                console.log('북마크 토글:', id);
-              }}
-            />
-          </div>
+          <CafeListCard
+            key={cafe.id}
+            id={cafe.id}
+            name={cafe.name}
+            distanceText={cafeMockDetail.distanceText}
+            address={cafeMockDetail.address}
+            images={cafeMockDetail.images}
+            keywords={cafeMockDetail.keywords}
+          />
         ))}
       </div>
     </div>

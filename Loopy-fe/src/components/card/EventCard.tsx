@@ -1,4 +1,5 @@
 import CommonCard from "./CommonCard";
+import ArrowRightIcon from "/src/assets/images/ArrowRight.svg?react";
 
 interface Props {
     imageSrc: string; 
@@ -35,10 +36,8 @@ const EventCard = ({ imageSrc, monthLabel, title, description, onClick }: Props)
             </div>
 
             <button onClick={onClick} className="ml-[1rem]">
-                <img
-                src="src/assets/images/ArrowRight.svg" 
-                alt="이동 버튼"
-                className="w-[1rem] h-[1rem]"
+                <ArrowRightIcon
+                    className="w-[1rem] h-[1rem]"
                 />
             </button>
         </CommonCard>
