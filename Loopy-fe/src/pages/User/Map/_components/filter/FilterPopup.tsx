@@ -2,8 +2,8 @@ import CommonButton from "../../../../../components/button/CommonButton";
 import TagButton from "../../../../../components/button/TagButton";
 import { useState } from "react";
 import { filterGroups } from "../../../../../constants/filterGroup";
-import GrabHandle from "src/assets/images/GrabHandle.svg?react";
-import ResetIcon from "src/assets/images/Reset.svg?react";
+import GrabHandle from "/src/assets/images/GrabHandle.svg?react";
+import ResetIcon from "/src/assets/images/Reset.svg?react";
 
 interface FilterPopupProps {
   onClose: () => void;
