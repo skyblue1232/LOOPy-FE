@@ -2,6 +2,8 @@ import CommonButton from "../../../../../components/button/CommonButton";
 import TagButton from "../../../../../components/button/TagButton";
 import { useState } from "react";
 import { filterGroups } from "../../../../../constants/filterGroup";
+import GrabHandle from "src/assets/images/GrabHandle.svg?react";
+import ResetIcon from "src/assets/images/Reset.svg?react";
 
 interface FilterPopupProps {
   onClose: () => void;
@@ -26,9 +28,7 @@ export default function FilterPopup({ onClose, selectedGroup }: FilterPopupProps
   return (
     <div className="w-full bg-white rounded-t-[1rem] px-[1.5rem] pt-[2.5rem] pb-[10rem] relative">
       {/* Grab Handle */}
-      <img
-        src={"src/assets/images/GrabHandle.svg"}
-        alt="grab"
+      <GrabHandle
         className="w-8 h-2 rounded-[0.25rem] absolute top-3 left-1/2 -translate-x-1/2"
       />
 
@@ -41,7 +41,7 @@ export default function FilterPopup({ onClose, selectedGroup }: FilterPopupProps
           onClick={handleReset}
           className="flex items-center gap-1 text-[0.75rem] text-[#3B3B3B]"
         >
-          <img src={"src/assets/images/Reset.svg"} alt="reset" className="w-3 h-3" />
+          <ResetIcon className="w-3 h-3" />
           전체 초기화
         </button>
       </div>

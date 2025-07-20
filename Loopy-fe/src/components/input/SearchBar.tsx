@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import SearchIcon from "/src/assets/images/Search.svg?react";
 
 interface SearchBarProps {
     value: string;
@@ -41,9 +42,7 @@ const SearchBar = ({
         placeholder={placeholder}
         className="flex-1 border-none outline-none bg-transparent text-[1rem] font-normal text-black"
       />
-      <img
-        src="/src/assets/images/Search.svg"
-        alt="검색"
+      <SearchIcon
         className="w-4 h-4 ml-2"
       />
     </div>

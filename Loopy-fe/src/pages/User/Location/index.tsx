@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import CommonButton from "../../../components/button/CommonButton";
 import AddressCard from "./_components/AddressCard";
 import CommonHeader from "../../../components/header/CommonHeader";
+import SearchIcon from "/src/assets/images/Search.svg?react";
+import LocationIcon from "/src/assets/images/Location.svg?react";
 
 const dummyDongList = [
     "서대문구 연희동",
@@ -36,9 +38,7 @@ const LocationPage = () => {
                         placeholder="동까지 입력"
                         className="flex-1 text-[1rem] bg-transparent border-none outline-none"
                     />
-                    <img
-                        src="/src/assets/images/Search.svg"
-                        alt="검색"
+                    <SearchIcon
                         className="w-4 h-4 ml-2"
                     />
                 </div>
@@ -46,9 +46,7 @@ const LocationPage = () => {
 
             <div className="mt-[0.5rem]">
                 <button className="w-full h-[48px] rounded-[0.5rem] bg-[#6970F3] text-white text-[0.875rem] font-medium flex justify-center items-center gap-[0.25rem]">
-                    <img 
-                        src="/src/assets/images/Location.svg"
-                        alt="위치 아이콘"
+                    <LocationIcon
                         className="w-4 h-4"
                     /> 
                     현재 위치로 설정하기

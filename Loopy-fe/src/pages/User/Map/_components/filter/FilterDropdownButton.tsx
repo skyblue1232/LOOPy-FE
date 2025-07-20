@@ -1,3 +1,5 @@
+import ArrowDownIcon from "/src/assets/images/ArrowDown.svg?react";
+
 interface Props {
   label: string;
   onClick: () => void;
@@ -19,9 +21,7 @@ const FilterDropdownButton = ({ label, onClick, variant = "map" }: Props) => {
       `}
     >
       <span>{label}</span>
-      <img
-        src="/src/assets/images/ArrowDown.svg"
-        alt="열기"
+      <ArrowDownIcon
         className="w-[0.75rem] h-[0.75rem]" // 12px
       />
     </button>
