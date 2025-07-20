@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import Info from '../../../assets/images/Info.svg?react';
 import CommonBottomPopup from '../../../components/popup/CommonBottomPopup';
 import StampPaper from './components/StampPaper';
+import { GetRemainingDays } from './components/GetRemainingDays';
 
 const MyStampPage = () => {
   const { cafeId } = useParams<{ cafeId: string }>();
@@ -23,10 +24,8 @@ const MyStampPage = () => {
   if (!stampData) return <div>해당 카페 스탬프 정보를 찾을 수 없습니다.</div>;
 
   // 남은 일수 계산
-  const today = new Date();
   const dueDate = new Date(stampData.dueDate);
-  const diffTime = dueDate.getTime() - today.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 남은 일수
+  const diffDays = GetRemainingDays(dueDate);
 
   const handlePurpleButtonClick = () => {
     setPopupStep(2);
