@@ -1,5 +1,5 @@
 import CommonCard from "./CommonCard";
-import ArrowRightIcon from "src/assets/images/ArrowRight.svg?react";
+import ArrowRightIcon from "/src/assets/images/ArrowRight.svg?react";
 
 interface Props {
     imageSrc: string; 
