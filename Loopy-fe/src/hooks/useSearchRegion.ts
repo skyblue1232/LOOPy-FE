@@ -30,7 +30,10 @@ export const useSearchRegion = () => {
         const result = await reverseGeocode(latitude, longitude);
         if (result) {
           setSelected(result);
-          setInput(result.region_2depth_name || ""); 
+          setInput(
+            `${result.region_1depth_name || ""} ${result.region_2depth_name || ""} ${result.region_3depth_name || ""}`.trim()
+          );
+          setRawResults([result]);
         } else {
           alert("현재 위치를 불러오지 못했습니다.");
         }
@@ -40,6 +43,11 @@ export const useSearchRegion = () => {
         console.error(err);
         alert("위치 정보를 가져올 수 없습니다.");
         setIsLoading(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
       }
     );
   }, []);
