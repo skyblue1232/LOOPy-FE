@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import CommonBottomBar from "../../../../components/bottomBar/CommonBottomBar";
 import CommonCard from "../../../../components/card/CommonCard";
 import type { MyPageStep } from "../../../../types/mySteps";
@@ -6,12 +7,26 @@ import ActivityList from "./ActivityList";
 import CafeNotification from "./CafeNotification";
 import ProfileSection from "./ProfileSection";
 import QuickAccessMenu from "./QuickAccessMenu";
+import MainMyPageSkeleton from "../Skeleton/MainMypageSkeleton";
 
 interface Props {
   onNavigate: (step: MyPageStep) => void;
 }
 
 const MainMyPage = ({ onNavigate }: Props) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); 
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <MainMyPageSkeleton />;
+  }
+
   return (
     <div className="min-h-screen bg-[#F3F3F3] text-[#252525] overflow-y-auto -mx-[1.5rem] px-[1.5rem] pb-[6rem]">
       <div className="py-[1.5rem] flex justify-between items-center">
