@@ -80,7 +80,7 @@ export default function FilterPopup({ onClose, selectedGroup }: FilterPopupProps
         />
         <CommonButton
           text="닫기"
-          autoStyle
+          autoStyle={false}
           className="text-[1rem] h-[3.125rem] bg-[#DFDFDF] text-[#7F7F7F] font-semibold flex items-center justify-center"
           onClick={onClose}
         />

@@ -1,3 +1,4 @@
+import CommonBottomBar from "../../../../components/bottomBar/CommonBottomBar";
 import CommonCard from "../../../../components/card/CommonCard";
 
 const SkeletonBox = ({ className }: { className: string }) => (
@@ -52,6 +53,8 @@ const MainMyPageSkeleton = () => {
           </div>
         </div>
       </CommonCard>
+
+      <CommonBottomBar active="mypage" onChange={(tab) => console.log(tab)} />
     </div>
   );
 };
