@@ -12,7 +12,7 @@ const StampLegend = () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        gap: "0.5rem",
+        gap: "0.25rem",
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>

@@ -35,7 +35,11 @@ const dummyCafes: Cafe[] = [
 const cafeMockDetail = {
   distanceText: '500m',
   address: '서울 서대문구 이화여대길 52',
-  images: ['/sample1.jpg', '/sample2.jpg', '/sample3.jpg'],
+  images: [
+    "https://cdn.pixabay.com/photo/2017/03/17/10/29/coffee-2151200_1280.jpg",
+    "https://cdn.pixabay.com/photo/2020/09/21/05/58/coffee-5589038_1280.jpg",
+    "https://cdn.pixabay.com/photo/2019/10/21/16/48/table-4566563_1280.jpg",
+  ],
   keywords: ['분위기좋음', '조용한', '디저트맛집'],
 };
 
@@ -111,7 +115,7 @@ const MapPage = () => {
           });
 
           marker.addListener('click', () => {
-           //window.kakao.maps.event.cancelBubble();
+            //window.kakao.maps.event.cancelBubble();
 
             setTimeout(() => {
               if (activeMarkerRef.current) {
