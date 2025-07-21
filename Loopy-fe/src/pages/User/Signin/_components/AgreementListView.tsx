@@ -29,15 +29,20 @@ const AgreementListView = ({
           약관에 동의해주세요.
         </h1>
 
-        <button
+        <div
           onClick={onToggleAll}
-          className="flex items-center justify-between w-full mb-[3rem]"
+          role="button"
+          tabIndex={0}
+          className="flex items-center justify-between w-full mb-[3rem] cursor-pointer"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") onToggleAll();
+          }}
         >
           <div className="flex items-center gap-2">
             <CheckCircle checked={Object.values(agreements).every(Boolean)} />
             <span className="text-[1rem] font-medium text-[#252525]">전체 동의하기</span>
           </div>
-        </button>
+        </div>
 
         <AgreementItem
           label="[필수] 서비스 이용약관"
@@ -69,7 +74,7 @@ const AgreementListView = ({
         <CommonButton
           text="다음으로 넘어가기"
           onClick={onNext}
-          disabled={!isAllRequiredChecked} 
+          disabled={!isAllRequiredChecked}
         />
       </div>
     </>
