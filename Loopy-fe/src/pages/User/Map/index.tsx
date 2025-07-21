@@ -7,10 +7,10 @@ import FilterBar from './_components/filter/FilterBar';
 import FilterPopup from './_components/filter/FilterPopup';
 import { Helmet } from 'react-helmet';
 import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
-import StampActiveMarker from '/src/assets/images/StampActiveMarker.svg?react';
-import StampDefaultMarker from '/src/assets/images/StampDefaultMarker.svg?react';
-import NoStampActiveMarker from '/src/assets/images/NoStampActiveMarker.svg?react';
-import NoStampDefaultMarker from '/src/assets/images/NoStampDefaultMarker.svg?react';
+import StampActiveMarker from '/src/assets/images/StampActiveMarker.svg';
+import StampDefaultMarker from '/src/assets/images/StampDefaultMarker.svg';
+import NoStampActiveMarker from '/src/assets/images/NoStampActiveMarker.svg';
+import NoStampDefaultMarker from '/src/assets/images/NoStampDefaultMarker.svg';
 
 declare global {
   interface Window {
@@ -111,7 +111,7 @@ const MapPage = () => {
           });
 
           marker.addListener('click', () => {
-            window.kakao.maps.event.cancelBubble();
+           //window.kakao.maps.event.cancelBubble();
 
             setTimeout(() => {
               if (activeMarkerRef.current) {
@@ -156,8 +156,8 @@ const MapPage = () => {
         <div ref={mapRef} className="w-full h-[100dvh] z-[0]" />
       </div>
 
-      <div className="absolute inset-0 z-[10] pointer-events-none pt-[env(safe-area-inset-top)] flex justify-center">
-        <div className="w-full px-[1.5rem] mt-[1.5rem] pointer-events-auto">
+      <div className="absolute top-[env(safe-area-inset-top)] left-0 right-0 z-[10] flex justify-center">
+        <div className="w-full px-[1.5rem] mt-[1.5rem]">
           <SearchBar
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
