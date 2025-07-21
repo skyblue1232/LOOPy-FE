@@ -95,8 +95,16 @@ export default function ReviewWritePage() {
             </div>
 
             {/* 완료 버튼 */}
-            <div className="mt-[2rem]">
-                <CommonButton text="완료하기" disabled={!isValid} />
+            <div
+                className={`absolute left-0 w-full px-[1.5rem] transition-all duration-300`}
+            >
+                <CommonButton
+                    text="완료하기"
+                    className={`w-full ${
+                        isValid ? "bg-[#6970F3] text-white" : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
+                    }`}
+                    disabled={!isValid}
+                />
             </div>
         </div>
     );

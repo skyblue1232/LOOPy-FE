@@ -37,7 +37,7 @@ const EventCard = ({ imageSrc, monthLabel, title, description, onClick }: Props)
 
             <button onClick={onClick} className="ml-[1rem]">
                 <ArrowRightIcon
-                    className="w-[1rem] h-[1rem]"
+                    className="w-[1rem] h-[1rem] text-[#A8A8A8]"
                 />
             </button>
         </CommonCard>

@@ -1,36 +1,54 @@
 import { useNavigate } from "react-router-dom";
 import CommonHeader from "../../../../components/header/CommonHeader";
+import ReviewItem from "./_components/ReviewItem";
+import { dummyReviews } from "../../../../mock/dummyReviews";
+import CommonBottomPopup from "../../../../components/popup/CommonBottomPopup";
+import { useState } from "react";
 
 const ReviewPage = ({ onBack }: { onBack: () => void }) => {
   const navigate = useNavigate();
-
-  const dummyReviews = [
-    { id: 1, title: "이디야 강남점 리뷰", content: "아이스 아메리카노 맛있었어요!" },
-    { id: 2, title: "스타벅스 홍대점 리뷰", content: "조용하고 좋아요." },
-  ];
+  const [reviews, setReviews] = useState(dummyReviews);
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
 
   const handleClick = (reviewId: number) => {
     navigate(`/detail/write-review?reviewId=${reviewId}`);
   };
 
-  return (
-    <div className="flex flex-col h-full">
-      <CommonHeader title="내가 작성한 리뷰" onBack={onBack} />
+  const handleDelete = (id: number) => {
+    setReviews((prev) => prev.filter((review) => review.id !== id));
+    setShowDeleteSuccess(true);
+  };
 
-      <div className="flex-1 overflow-y-auto mt-[1.5rem]">
-        <ul className="space-y-[1rem]">
-          {dummyReviews.map((review) => (
-            <li
-              key={review.id}
-              onClick={() => handleClick(review.id)}
-              className="border border-[#DFDFDF] rounded-[0.5rem]  p-[1rem] cursor-pointer hover:bg-[#F9F9F9]"
-            >
-              <p className="text-[1rem] font-semibold text-[#252525]">{review.title}</p>
-              <p className="text-[0.875rem] text-[#7F7F7F] mt-[0.25rem]">{review.content}</p>
-            </li>
-          ))}
-        </ul>
+  return (
+    <div className="flex flex-col -mx-[1.5rem]">
+      <div className="mx-[1.5rem]">
+        <CommonHeader title="내가 작성한 리뷰" onBack={onBack} />
+        <p className="mt-[1.5rem] text-[1rem] font-semibold">
+          내가 쓴 리뷰 총 {reviews.length}개
+        </p>
       </div>
+
+      <div className="flex-1 overflow-y-auto mt-[1.5rem] space-y-[2.125rem] mb-[3rem]">
+        {reviews.map((review) => (
+          <ReviewItem
+            key={review.id}
+            id={review.id}
+            cafeName={review.cafeName}
+            date={review.date}
+            content={review.content}
+            images={review.images}
+            onClick={() => handleClick(review.id)}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
+
+      {/* true로 바꾸기 */}
+      <CommonBottomPopup
+        show={showDeleteSuccess}
+        titleText="리뷰가 삭제되었습니다"
+        onClose={() => setShowDeleteSuccess(false)}
+      />
     </div>
   );
 };

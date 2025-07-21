@@ -28,7 +28,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   return (
     <div
       onClick={handleClick}
-      className="flex items-center -mx-[1rem] cursor-pointer"
+      className="flex items-center cursor-pointer"
     >
       {/* 좌측 이미지 */}
       <img

@@ -3,6 +3,7 @@ import CommonHeader from "../../../../components/header/CommonHeader";
 import { useMyStampBooks } from "../../../../hooks/query/useMyStampbook";
 import StampBookItem from "./_components/StampBookItem";
 import CommonBottomPopup from "../../../../components/popup/CommonBottomPopup";
+import StampBookItemSkeleton from "./Skeleton/StampBookItemSkeleton";
 
 interface StampExchangeProps {
   onBack: () => void;
@@ -32,8 +33,12 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
         자동 환전 후 스탬프는 소멸되어요!
       </div>
 
-      {isLoading ? (
-        <p className="p-4 text-center text-sm">로딩 중...</p>
+      {isLoading ? (      
+        <div>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <StampBookItemSkeleton key={i} />
+          ))}
+        </div>
       ) : (
         <div className="text-[#252525]">
           {data?.map((item) => (
