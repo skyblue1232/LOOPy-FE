@@ -1,18 +1,25 @@
 import CommonButton from "../../../../components/button/CommonButton";
 import SelectableButton from "../../../../components/button/SelectableButton";
 import { useState } from "react";
+import { useOnboardingContext } from "../../../../contexts/OnboardingContext"; 
 
 const storeTags = ["노트북", "1인석", "단체석", "주차 가능", "예약 가능", "와이파이 제공", "애견 동반", "24시간 운영"];
 const takeawayTags = ["텀블러 할인", "포장 할인"];
 const menuTags = ["비건", "저당/무가당", "글루텐프리", "디카페인"];
 
 const StepCafeInfo = ({ onNext }: { onNext: () => void }) => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const { tags, setTags } = useOnboardingContext(); 
+  const [selectedTags, setSelectedTags] = useState<string[]>(tags); 
 
   const toggleTag = (tag: string) => {
     setSelectedTags(prev =>
       prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
     );
+  };
+
+  const handleComplete = () => {
+    setTags(selectedTags);
+    onNext();
   };
 
   return (
@@ -80,7 +87,7 @@ const StepCafeInfo = ({ onNext }: { onNext: () => void }) => {
       <div className="absolute left-0 w-full bottom-[2rem] px-[1.5rem]">
         <CommonButton
           text="완료하기"
-          onClick={onNext}
+          onClick={handleComplete} 
           autoStyle={false}
           className={`w-full mt-[1.5rem] ${
             selectedTags.length >= 1 && selectedTags.length <= 5

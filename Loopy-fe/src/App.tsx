@@ -17,7 +17,6 @@ import ErrorPage from './pages/ErrorPage.tsx';
 import SearchPage from './pages/User/Search/index.tsx';
 import AlarmPage from './pages/User/Alarm/index.tsx';
 import BookMarkPage from './pages/User/BookMark/index.tsx';
-import OnBoard from './pages/User/OnBoard/index.tsx';
 import LocationPage from './pages/User/Location/index.tsx';
 import ChallengePage from './pages/User/Challenge/index.tsx';
 import LevelDetailPage from './pages/User/LevelDetail/index.tsx';
@@ -26,6 +25,7 @@ import ChallengeStoreListPage from './pages/User/ChallengeDetail/ChallengeStoreL
 import MyStampPage from './pages/User/MyStamp/index.tsx';
 import MenuListPage from './pages/User/Menu/index.tsx';
 import ReviewWritePage from './pages/User/Review/index.tsx';
+import OnboardingProviderWrapper from './pages/User/OnBoard/OnboardingWrapper.tsx';
 
 const publicRoutes = createBrowserRouter([
   {
@@ -43,7 +43,7 @@ const publicRoutes = createBrowserRouter([
       },
       {
         path: 'onboard',
-        element: <OnBoard />,
+        element: <OnboardingProviderWrapper />,
       },
       {
         path: 'home',

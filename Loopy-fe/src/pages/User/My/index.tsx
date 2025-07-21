@@ -1,9 +1,10 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFunnel } from "../../../hooks/Funnel/useFunnel";
 import type { MyPageStep } from "../../../types/mySteps";
 import MainMyPage from "./_components/MainMyPage";
 import SettingPage from "./Setting";
 import StampExchangePage from "./StampExchange";
-import MyChallengePage from "./Challenge";
 import CouponBoxPage from "./CouponBox";
 import StampHistoryPage from "./StampHistory";
 import ReviewPage from "./Review";
@@ -15,6 +16,14 @@ import WithdrawAccountView from "./Setting/_components/WithdrawAccountView";
 
 const MyPage = () => {
   const { step, go, back } = useFunnel<MyPageStep>("my");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (step === "myChallenge") {
+      go("my");
+      navigate("/challenge");
+    }
+  }, [step, navigate]);
 
   switch (step) {
     case "my":
@@ -29,8 +38,6 @@ const MyPage = () => {
       return <WithdrawAccountView onBack={back("manageAccount")} onConfirm={back("my")} />;
     case "stampExchange":
       return <StampExchangePage onBack={back("my")} />;
-    case "myChallenge":
-      return <MyChallengePage onBack={back("my")} />;
     case "couponBox":
       return <CouponBoxPage onBack={back("my")} />;
     case "stampHistory":

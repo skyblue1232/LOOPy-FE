@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useFunnel } from "../../../hooks/Funnel/useFunnel";
+import type { SignupStep } from "../../../types/signupSteps.ts";
 import StepEmail from "./_components/StepSignin/StepEmail";
 import StepVerify from "./_components/StepSignin/StepVerify";
 import AgreementPage from "./_components/AgreementPage";
 import CommonHeader from "../../../components/header/CommonHeader";
+import { useState } from "react";
 
 interface FormData {
   email: string;
@@ -16,7 +18,8 @@ interface FormData {
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState<number>(0);
+  const { step, go, back } = useFunnel<SignupStep>("agreement");
+
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -26,28 +29,25 @@ const SignupPage = () => {
     verifyCode: "",
   });
 
-  const goNext = () => setStep(prev => prev + 1);
-  const goBack = () => setStep(prev => (prev > 0 ? prev - 1 : 0));
   const goToHome = () => navigate("/");
 
   return (
     <div>
-      {step !== 0 && (
-        <CommonHeader
-          title="회원가입"
-          onBack={goBack}
-        />
+      {step !== "agreement" && (
+        <CommonHeader title="회원가입" onBack={back("agreement")} />
       )}
 
-      {step === 0 && <AgreementPage onNext={goNext} onBack={() => navigate("/")} />}
-      {step === 1 && (
+      {step === "agreement" && (
+        <AgreementPage onNext={() => go("email")} onBack={goToHome} />
+      )}
+      {step === "email" && (
         <StepEmail
           formData={formData}
           setFormData={setFormData}
-          onNext={goNext}
+          onNext={() => go("verify")}
         />
       )}
-      {step === 2 && (
+      {step === "verify" && (
         <StepVerify
           formData={formData}
           setFormData={setFormData}

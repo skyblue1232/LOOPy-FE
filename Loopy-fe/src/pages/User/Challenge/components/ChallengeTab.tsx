@@ -5,7 +5,7 @@ interface ChallengeTabProps {
 
 const ChallengeTab = ({ activeTab, onChangeTab }: ChallengeTabProps) => {
   return (
-    <div className="flex justify-between mt-4 w-full max-w-md mx-auto">
+    <div className="flex justify-between mt-4 w-full">
       <button
         onClick={() => onChangeTab('participating')}
         className={`flex-1 pb-2 text-sm border-b text-center ${

@@ -17,7 +17,7 @@ const ChallengePage = () => {
       {/* 탭 메뉴 */}
       <ChallengeTab activeTab={activeTab} onChangeTab={setActiveTab} />
       {/* 탭 콘텐츠 */}
-      <div className="mt-4 px-4">
+      <div className="mt-[1.5rem] mb-[3rem]">
         {activeTab === 'participating' ? (
           <ParticipatingChallengeList />
         ) : (

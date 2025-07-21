@@ -7,6 +7,10 @@ import FilterBar from './_components/filter/FilterBar';
 import FilterPopup from './_components/filter/FilterPopup';
 import { Helmet } from 'react-helmet';
 import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
+import StampActiveMarker from '/src/assets/images/StampActiveMarker.svg?react';
+import StampDefaultMarker from '/src/assets/images/StampDefaultMarker.svg?react';
+import NoStampActiveMarker from '/src/assets/images/NoStampActiveMarker.svg?react';
+import NoStampDefaultMarker from '/src/assets/images/NoStampDefaultMarker.svg?react';
 
 declare global {
   interface Window {
@@ -38,11 +42,11 @@ const cafeMockDetail = {
 const getMarkerImage = (hasStamp: boolean, isActive: boolean) => {
   const imagePath = hasStamp
     ? isActive
-      ? '/src/assets/images/StampActiveMarker.svg'
-      : '/src/assets/images/StampDefaultMarker.svg'
+      ? StampActiveMarker
+      : StampDefaultMarker
     : isActive
-      ? '/src/assets/images/NoStampActiveMarker.svg'
-      : '/src/assets/images/NoStampDefaultMarker.svg';
+      ? NoStampActiveMarker
+      : NoStampDefaultMarker
 
   const size = isActive
     ? new window.kakao.maps.Size(48, 54)

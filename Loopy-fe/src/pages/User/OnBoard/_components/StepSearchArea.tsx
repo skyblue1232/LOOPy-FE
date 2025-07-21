@@ -3,6 +3,8 @@ import CommonButton from "../../../../components/button/CommonButton";
 import SearchInputSection from "./search/SearchInputSection";
 import CurrentLocationButton from "./search/CurrentLocationButton";
 import SearchResultList from "./search/SearchResultList";
+import SearchResultSkeleton from "../Skeleton/SearchResultSkeleton";
+import { useOnboardingContext } from "../../../../contexts/OnboardingContext"; 
 
 const StepSearchArea = ({ onNext }: { onNext: () => void }) => {
   const {
@@ -13,15 +15,22 @@ const StepSearchArea = ({ onNext }: { onNext: () => void }) => {
     handleSearch,
     handleCurrentLocation,
     filteredResults,
+    isLoading,
   } = useSearchRegion();
+
+  const { setRegion } = useOnboardingContext(); 
 
   const handleNext = () => {
     if (!selected) return;
+
+    setRegion(selected); 
+
     console.log("선택된 장소 정보:", {
       name: `${selected.region_1depth_name} ${selected.region_2depth_name} ${selected.region_3depth_name}`,
       x: selected.x,
       y: selected.y,
     });
+
     onNext();
   };
 
@@ -36,16 +45,19 @@ const StepSearchArea = ({ onNext }: { onNext: () => void }) => {
         </p>
 
         <SearchInputSection input={input} setInput={setInput} onSearch={handleSearch} />
-
         <CurrentLocationButton onClick={handleCurrentLocation} />
       </div>
 
       <div className="flex-1 overflow-y-auto mb-[8rem] custom-scrollbar">
-        <SearchResultList
-          results={filteredResults}
-          selected={selected}
-          onSelect={setSelected}
-        />
+        {isLoading ? (
+          <SearchResultSkeleton />
+        ) : (
+          <SearchResultList
+            results={filteredResults}
+            selected={selected}
+            onSelect={setSelected}
+          />
+        )}
       </div>
 
       <div
