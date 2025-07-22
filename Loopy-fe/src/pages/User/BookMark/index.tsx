@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CommonHeader from '../../../components/header/CommonHeader';
 import CafeListCard from '../../../components/card/CafeListCard';
+import BookMarkPageSkeleton from './Skeleton/BookMarkSkeleton';
 
 interface Cafe {
   id: number;
@@ -24,17 +26,32 @@ const dummyCafes: Cafe[] = [
 const cafeMockDetail = {
   distanceText: '500m',
   address: '서울 서대문구 이화여대길 52',
-  images: ['src/assets/images/CafePic.svg', '/sample2.jpg', '/sample3.jpg'],
+  images: [
+    'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=400&q=80',
+  ],
+
   keywords: ['분위기좋음', '조용한'],
 };
 
 const BookMarkPage = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1000); // 1초 후 로딩 해제
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return <BookMarkPageSkeleton />;
+  }
 
   return (
-    <div>
+    <div className="mb-8">
       <CommonHeader title="북마크한 카페" onBack={() => navigate(-1)} />
-      <div className="mt-[1.5rem] flex flex-col gap-[1.25rem]">
+      <div className="mt-[1.5rem] flex flex-col gap-[1.25rem] px-4">
         {dummyCafes.map((cafe) => (
           <CafeListCard
             key={cafe.id}
