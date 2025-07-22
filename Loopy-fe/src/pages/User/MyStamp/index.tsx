@@ -52,7 +52,7 @@ const MyStampPage = () => {
 
   return (
     <div>
-      <div className="absolute inset-0 -mx-[1.5rem] bg-gradient-to-b from-[#6970F3] to-[#3D418D] z-0" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#6970F3] to-[#3D418D] z-0" />
       <div className="relative z-10 flex flex-col min-h-screen">
         <CommonHeader title="내 스탬프지" onBack={() => navigate(-1)} white />
         <div className="flex items-center gap-2 mt-6 text-white font-semibold text-lg">

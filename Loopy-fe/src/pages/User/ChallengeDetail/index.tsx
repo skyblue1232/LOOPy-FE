@@ -18,7 +18,7 @@ const ChallengeDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col mb-8">
       <CommonHeader title="챌린지 정보" onBack={() => navigate(-1)} />
 
       {/* 스크롤 영역 */}
@@ -119,7 +119,7 @@ const ChallengeDetailPage = () => {
 
       {/* 하단 고정 버튼 (참여 안 한 경우만) */}
       {!challenge.participating && (
-        <div className="fixed bottom-2 left-0 right-0 bg-white px-4 py-4">
+        <div className="fixed bottom-2 left-0 right-0 bg-white px-4 pb-8">
           <button
             onClick={() => navigate(`/challenge/${challengeId}/stores`)}
             className="w-full max-w-md mx-auto bg-[#6970F3] hover:bg-[#5b62d8] text-white py-3 rounded-xl font-semibold transition-colors"
