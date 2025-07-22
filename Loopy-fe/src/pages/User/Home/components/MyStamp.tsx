@@ -43,7 +43,7 @@ const MyStamp: React.FC<MyStampProps> = ({
 
         {/* 퍼센트 바 + 텍스트 */}
         <div className="absolute top-[2.813rem] left-[6.25rem] flex items-center gap-2 mt-1">
-          <div className="w-[4.313rem] h-[0.5rem] bg-gray-200 rounded-full overflow-hidden">
+          <div className="w-[4.313rem] h-[0.5rem] bg-white rounded-full overflow-hidden">
             <div
               className="h-full bg-[#6970F3] rounded-full"
               style={{ width: `${progressPercent}%` }}

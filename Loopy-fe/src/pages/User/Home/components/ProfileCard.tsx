@@ -25,9 +25,11 @@ const ProfileCard = ({
   return (
     <div className="text-white">
       {/* 이름 + 레벨 + 레벨 전체보기 */}
-      <div className="text-[1.5rem] font-bold">{username}님은</div>
-      <div className="flex items-center justify-between mt-1">
-        <div className="text-[1.5rem] font-bold text-[#E3F389]">{level}</div>
+      <div className="text-[1.5rem] font-bold leading-none">{username}님은</div>
+      <div className="flex items-center justify-between mt-2">
+        <div className="text-[1.5rem] font-bold text-[#E3F389] leading-none">
+          {level}
+        </div>
         <DetailButton
           onClick={() => navigate('/level')}
           textColor="text-white"
@@ -56,15 +58,21 @@ const ProfileCard = ({
         <div className="flex flex-col justify-between">
           {/* 이번달 현황 */}
           {totalStamps !== 0 ? (
-            <div className="text-[1rem] font-semibold">
-              <div>이번달 현황</div>
-              <div className="flex justify-between mt-1 text-[0.875rem] text-[#E3F389] pr-4">
-                <div className="font-normal">받은 스탬프</div>
-                <div className="font-semibold">{receivedStamps}개</div>
+            <div>
+              <div className="text-[1rem] font-semibold leading-none mb-3">
+                이번달 현황
+              </div>
+              <div className="flex justify-between text-[0.875rem] text-[#E3F389] pr-4 mb-2">
+                <div className="font-normal leading-none ">받은 스탬프</div>
+                <div className="font-semibold leading-none">
+                  {receivedStamps}개
+                </div>
               </div>
               <div className="flex justify-between text-[0.875rem] text-[#E3F389] pr-4">
-                <div className="font-normal">진행 중인 챌린지</div>
-                <div className="font-semibold">{ongoingChallenges}개</div>
+                <div className="font-normal leading-none">진행 중인 챌린지</div>
+                <div className="font-semibold leading-none">
+                  {ongoingChallenges}개
+                </div>
               </div>
             </div>
           ) : (
@@ -72,7 +80,7 @@ const ProfileCard = ({
           )}
 
           {/* 하단 카드 */}
-          <div className="flex gap-[0.5rem] mt-4">
+          <div className="flex gap-[0.5rem] mt-5">
             <div className="w-[4.5rem] h-[4.5rem] bg-white/30 rounded-[4px] p-2 text-center">
               <div className="text-[0.875rem] font-semibold mt-0.5">
                 총 스탬프

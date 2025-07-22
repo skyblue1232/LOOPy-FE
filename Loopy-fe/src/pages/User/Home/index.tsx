@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
 import MyStamp from './components/MyStamp';
@@ -8,10 +8,24 @@ import StampSort from './components/StampSort';
 import { stampList, profileCardData } from './mock/mockData';
 import DetailButton from './components/DetailButton';
 import ChallengeCarousel from './components/ChallengeCarousel';
+import HomePageSkeleton from './Skeleton/HomeSkeleton';
 
 const HomePage = () => {
   const [sortType, setSortType] = useState('most');
+  const [loading, setLoading] = useState(true); // 로딩 상태
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500); // 1.5초 후 로딩 해제
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <HomePageSkeleton />;
+  }
+
   const sortedList = [...stampList].sort((a, b) => {
     if (sortType === 'most') return b.stampCount - a.stampCount;
     if (sortType === 'due')
@@ -21,7 +35,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <div className="absolute inset-0 -mx-[1.5rem] bg-gradient-to-b from-[#6970F3] to-[#3D418D] z-0" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#6970F3] to-[#3D418D] z-0" />
       <div className="relative z-10">
         <div className="mt-[1.5rem]">
           <TopBar />
@@ -31,7 +45,7 @@ const HomePage = () => {
           <ProfileCard {...profileCardData} />
         </div>
         <div className="bg-white rounded-t-xl mt-8 pt-8 -mx-[1.5rem] px-[1.5rem]">
-          <div className=" font-bold text-[1.125rem] flex justify-between items-center mb-6">
+          <div className=" font-bold text-[1.125rem] flex justify-between items-center leading-none mb-6">
             <span>루피와 진행 중인 챌린지</span>
             <DetailButton
               onClick={() => navigate('/challenge')}
@@ -39,7 +53,9 @@ const HomePage = () => {
               label="전체보기"
             />
           </div>
-          <ChallengeCarousel />
+          <div className="-mr-[1.5rem]">
+            <ChallengeCarousel />
+          </div>
           <div className="flex justify-between items-center mt-8">
             <div className="font-bold text-[1.125rem] flex items-center gap-2">
               <span>내 스탬프지</span>

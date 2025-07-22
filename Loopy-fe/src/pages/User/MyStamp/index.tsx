@@ -7,23 +7,32 @@ import Info from '../../../assets/images/Info.svg?react';
 import CommonBottomPopup from '../../../components/popup/CommonBottomPopup';
 import StampPaper from './components/StampPaper';
 import { GetRemainingDays } from './components/GetRemainingDays';
+import MyStampSkeleton from './Skeleton/MyStampSkeleton';
 
 const MyStampPage = () => {
   const { cafeId } = useParams<{ cafeId: string }>();
   const navigate = useNavigate();
   const [stampData, setStampData] = useState<StampItem | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupStep, setPopupStep] = useState<1 | 2>(1);
 
   useEffect(() => {
     if (!cafeId) return;
+
     const data = stampList.find((item) => item.cafeId === cafeId) || null;
     setStampData(data);
+
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
   }, [cafeId]);
 
+  if (isLoading) return <MyStampSkeleton />;
   if (!stampData) return <div>해당 카페 스탬프 정보를 찾을 수 없습니다.</div>;
 
-  // 남은 일수 계산
   const dueDate = new Date(stampData.dueDate);
   const diffDays = GetRemainingDays(dueDate);
 
@@ -52,7 +61,7 @@ const MyStampPage = () => {
 
   return (
     <div>
-      <div className="absolute inset-0 -mx-[1.5rem] bg-gradient-to-b from-[#6970F3] to-[#3D418D] z-0" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#6970F3] to-[#3D418D] z-0" />
       <div className="relative z-10 flex flex-col min-h-screen">
         <CommonHeader title="내 스탬프지" onBack={() => navigate(-1)} white />
         <div className="flex items-center gap-2 mt-6 text-white font-semibold text-lg">
@@ -72,7 +81,6 @@ const MyStampPage = () => {
           까지
         </div>
 
-        {/* 남은 기간이 7일 이하일 때만 보임 */}
         {diffDays <= 7 && (
           <>
             <div className="flex items-center gap-2 p-3 rounded bg-[rgba(255,255,255,0.3)] mt-4">

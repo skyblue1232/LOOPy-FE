@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import CommonHeader from '../../../../components/header/CommonHeader';
 import { challengeCardList } from '../../Challenge/mock/mockData';
 import LocationLabel from '../../../../components/etc/LocationLabel';
 import SmallButton from '../components/SmallButton';
 import CommonBottomPopup from '../../../../components/popup/CommonBottomPopup';
+import ChallengeStoreListSkeleton from '../Skeleton/ChallengeStorListSkeleton';
 
 const ChallengeStoreListPage = () => {
   const { id } = useParams();
@@ -13,10 +14,23 @@ const ChallengeStoreListPage = () => {
   const challengeId = Number(id);
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const challenge = challengeCardList.find(
     (item) => item.challengeId === challengeId,
   );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500); // 임시 로딩 예시
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <ChallengeStoreListSkeleton />;
+  }
 
   if (!challenge) {
     return <div>챌린지를 찾을 수 없습니다.</div>;
