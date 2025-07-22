@@ -7,7 +7,7 @@ interface BottomPopupProps {
   show: boolean;
   titleText?: string;
   contentsText?: string;
-  children?: React.ReactNode; 
+  children?: React.ReactNode;
 }
 
 export default function CommonBottomPopup({
@@ -17,7 +17,7 @@ export default function CommonBottomPopup({
   purpleButton,
   purpleButtonOnClick,
   contentsText,
-  children, 
+  children,
 }: BottomPopupProps) {
   if (!show) return null;
 

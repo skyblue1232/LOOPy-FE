@@ -1,20 +1,34 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import CommonHeader from '../../../components/header/CommonHeader';
 import { challengeCardList } from '../Challenge/mock/mockData';
 import Calendar from '../../../assets/images/Calendar.svg';
 import Crown from '../../../assets/images/Crown.svg';
 import Info from '../../../assets/images/Info.svg?react';
+import ChallengeDetailSkeleton from './Skeleton/ChallengeDetailSkeleton';
 
 const ChallengeDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const challengeId = Number(id);
+  const [loading, setLoading] = useState(true);
 
   const challenge = challengeCardList.find(
     (item) => item.challengeId === challengeId,
   );
   if (!challenge) {
     return <div>챌린지를 찾을 수 없습니다.</div>;
+  }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <ChallengeDetailSkeleton />;
   }
 
   return (
@@ -119,10 +133,10 @@ const ChallengeDetailPage = () => {
 
       {/* 하단 고정 버튼 (참여 안 한 경우만) */}
       {!challenge.participating && (
-        <div className="fixed bottom-2 left-0 right-0 bg-white px-4 pb-8">
+        <div className="fixed bottom-2 left-0 right-0 bg-white px-4 pb-8 flex justify-center">
           <button
             onClick={() => navigate(`/challenge/${challengeId}/stores`)}
-            className="w-full max-w-md mx-auto bg-[#6970F3] hover:bg-[#5b62d8] text-white py-3 rounded-xl font-semibold transition-colors"
+            className="w-full max-w-md bg-[#6970F3] text-white py-3 rounded-xl font-semibold"
           >
             참여 가능 매장 찾기
           </button>
