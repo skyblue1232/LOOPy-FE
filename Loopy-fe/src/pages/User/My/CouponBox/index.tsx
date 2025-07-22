@@ -18,7 +18,7 @@ const CouponBoxPage = ({ onBack }: CouponBoxPageProps) => {
       <div className="flex border-b border-[#F3F3F3] mt-6">
         <button
           onClick={() => setActiveTab("valid")}
-          className={`flex-1 pb-[0.625rem] text-[1rem] font-semibold ${
+          className={`flex-1 pb-2 text-[1rem] font-semibold ${
             activeTab === "valid"
               ? "text-[#6970F3] border-b-2 border-[#6970F3]"
               : "text-[#A8A8A8]"

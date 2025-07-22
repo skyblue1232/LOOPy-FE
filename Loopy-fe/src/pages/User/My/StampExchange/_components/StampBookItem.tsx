@@ -13,7 +13,7 @@ const StampBookItem = ({ stampBook, onExchangeClick }: Props) => {
 
   return (
     <div className="flex items-start justify-center mt-[1.5rem]">
-      <div className="flex gap-3 w-full items-start">
+      <div className="flex gap-4 w-full items-start">
         <img
           src={imageUrl}
           alt={cafeName}
@@ -34,7 +34,7 @@ const StampBookItem = ({ stampBook, onExchangeClick }: Props) => {
                 e.stopPropagation();
                 onExchangeClick(id);
               }}
-              className="text-[#7F7F7F] text-[0.875rem] font-semibold bg-[#F3F3F3] px-[0.625rem] py-[0.375rem] rounded-[6px]"
+              className="text-[#7F7F7F] text-[0.875rem] font-semibold bg-[#F3F3F3] px-[0.625rem] py-[0.25rem] rounded-[6px]"
             >
               환전
             </button>
