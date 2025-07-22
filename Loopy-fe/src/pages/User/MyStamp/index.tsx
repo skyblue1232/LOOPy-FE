@@ -7,23 +7,32 @@ import Info from '../../../assets/images/Info.svg?react';
 import CommonBottomPopup from '../../../components/popup/CommonBottomPopup';
 import StampPaper from './components/StampPaper';
 import { GetRemainingDays } from './components/GetRemainingDays';
+import MyStampSkeleton from './Skeleton/MyStampSkeleton';
 
 const MyStampPage = () => {
   const { cafeId } = useParams<{ cafeId: string }>();
   const navigate = useNavigate();
   const [stampData, setStampData] = useState<StampItem | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupStep, setPopupStep] = useState<1 | 2>(1);
 
   useEffect(() => {
     if (!cafeId) return;
+
     const data = stampList.find((item) => item.cafeId === cafeId) || null;
     setStampData(data);
+
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
   }, [cafeId]);
 
+  if (isLoading) return <MyStampSkeleton />;
   if (!stampData) return <div>해당 카페 스탬프 정보를 찾을 수 없습니다.</div>;
 
-  // 남은 일수 계산
   const dueDate = new Date(stampData.dueDate);
   const diffDays = GetRemainingDays(dueDate);
 
@@ -72,7 +81,6 @@ const MyStampPage = () => {
           까지
         </div>
 
-        {/* 남은 기간이 7일 이하일 때만 보임 */}
         {diffDays <= 7 && (
           <>
             <div className="flex items-center gap-2 p-3 rounded bg-[rgba(255,255,255,0.3)] mt-4">
