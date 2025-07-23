@@ -8,9 +8,17 @@ const OnboardingPage = () => {
   const navigate = useNavigate();
   const { step, go, back } = useFunnel<"search" | "cafe">("search");
 
+  const handleBack = () => {
+    if (step === "search") {
+      navigate(-1); 
+    } else if (step === "cafe") {
+      back("search")(); 
+    }
+  };
+
   return (
     <div>
-      <CommonHeader title="" onBack={back("search")} />
+      <CommonHeader title="" onBack={handleBack} />
 
       {step === "search" && (
         <StepSearchArea onNext={() => go("cafe")} />
