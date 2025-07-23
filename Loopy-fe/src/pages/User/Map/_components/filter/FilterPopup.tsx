@@ -2,7 +2,6 @@ import CommonButton from "../../../../../components/button/CommonButton";
 import TagButton from "../../../../../components/button/TagButton";
 import { useState } from "react";
 import { filterGroups } from "../../../../../constants/filterGroup";
-import GrabHandle from "/src/assets/images/GrabHandle.svg?react";
 import ResetIcon from "/src/assets/images/Reset.svg?react";
 
 interface FilterPopupProps {
@@ -27,10 +26,6 @@ export default function FilterPopup({ onClose, selectedGroup }: FilterPopupProps
 
   return (
     <div className="w-full bg-white rounded-t-[1rem] px-[1.5rem] pt-[2.5rem] pb-[10rem] relative">
-      {/* Grab Handle */}
-      <GrabHandle
-        className="w-8 h-2 rounded-[0.25rem] absolute top-3 left-1/2 -translate-x-1/2"
-      />
 
       {/* 헤더 */}
       <div className="flex justify-between items-center mb-[1rem]">

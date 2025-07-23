@@ -20,12 +20,12 @@ export default function MenuCard({
             />
             <div className="flex flex-col justify-between flex-1">
                 <div>
-                <div className="text-[1rem] font-semibold text-black">{name}</div>
-                <div className="mt-[0.75rem] text-[0.875rem] font-normal text-[#3B3B3B]">
-                    {description}
+                    <div className="text-[1rem] font-semibold text-black">{name}</div>
+                    <div className="mt-[0.75rem] text-[0.875rem] font-normal text-[#3B3B3B] leading-none">
+                        {description}
+                    </div>
                 </div>
-                </div>
-                <div className="text-[1rem] font-semibold text-right text-black">{price}</div>
+                <div className="text-[1rem] font-semibold text-right text-black leading-none">{price}원</div>
             </div>
         </div>
     );

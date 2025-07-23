@@ -42,19 +42,19 @@ export const cafeDetailMock: CafeDetailData & {
         {
         name: "아이스 아메리카노",
         description: "시원한 얼음과 함께 즐기는 진한 에스프레소",
-        price: "₩3,800",
+        price: "3,800",
         imageSrc: "https://cdn.pixabay.com/photo/2022/11/01/05/18/coffee-7561288_1280.jpg",
         },
         {
         name: "말차 라떼",
         description: "쌉쌀하고 고소한 프리미엄 말차",
-        price: "₩4,200",
+        price: "4,200",
         imageSrc: "https://cdn.pixabay.com/photo/2022/11/01/05/18/coffee-7561288_1280.jpg",
         },
         {
         name: "딸기 라떼",
         description: "생딸기 베이스의 달콤한 라떼",
-        price: "₩4,500",
+        price: "4,500",
         imageSrc: "https://cdn.pixabay.com/photo/2022/11/01/05/18/coffee-7561288_1280.jpg",
         },
     ],

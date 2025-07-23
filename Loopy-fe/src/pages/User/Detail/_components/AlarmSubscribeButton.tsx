@@ -27,7 +27,7 @@ export default function AlarmSubscribeButton({ className = "" }: AlarmSubscribeB
             <button
                 onClick={handleClick}
                 className={`
-                    flex items-center gap-[0.25rem] px-[0.5rem] py-[0.375rem] rounded-[0.25rem]
+                    flex items-center gap-[0.25rem] px-[0.5rem] py-[0.1875rem] rounded-[0.25rem]
                     text-[0.75rem] whitespace-nowrap
                     ${subscribed ? "border border-[#6970F3] text-[#6970F3]" : "border border-[#A8A8A8]"}
                     ${className}

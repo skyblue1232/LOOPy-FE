@@ -23,16 +23,9 @@ const MapViewToggleButton = ({ isMapView }: Props) => {
   return (
     <button
       onClick={handleClick}
-      style={{
-        width: "4rem", 
-        height: "4rem",
-        backgroundColor: "transparent",
-        padding: 0,
-        border: "none",
-        zIndex: 10,
-      }}
+      className="w-[4rem] h-[4rem] rounded-full bg-[#6970F3] shadow-[0_0_10px_rgba(0,0,0,0.2)] flex items-center justify-center z-10"
     >
-      <Icon className="w-[4rem] h-[4rem] object-contain" />
+      <Icon className="w-[1.45rem] h-[1.45rem]" />
     </button>
   );
 };
