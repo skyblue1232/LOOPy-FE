@@ -22,7 +22,7 @@ export const oldMessages = [
     id: 3,
     sender: "카페 위니",
     avatar: "https://source.unsplash.com/random/40x40?coffee&3",
-    content: "안녕하세요, 너디너리 카페 주인입니다. 저희 너디너리는 이번 가을부터 매장을 부...",
+    content: "안녕하세요, 너디너리 카페 주인입니다. 저희 너디너리는 이번 가을부터 매장을 부디 요긴하게 이용해주세요.",
     date: "2025.08.25",
     isNew: false,
   },

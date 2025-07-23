@@ -22,17 +22,17 @@ export default defineConfig({
           {
             src: "/icon.png",
             sizes: "64x64",
-            type: "image/png"
+            type: "image/png",
           },
           {
             src: "/icon2.png",
             type: "image/png",
-            sizes: "192x192"
+            sizes: "192x192",
           },
           {
             src: "/icon3.png",
             type: "image/png",
-            sizes: "512x512"
+            sizes: "512x512",
           }
         ],
         start_url: ".",

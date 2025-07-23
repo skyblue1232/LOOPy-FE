@@ -26,10 +26,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   };
 
   return (
-    <div
-      onClick={handleClick}
-      className="flex items-center cursor-pointer"
-    >
+    <div onClick={handleClick} className="flex items-center cursor-pointer">
       {/* 좌측 이미지 */}
       <img
         src={challengeImage}
@@ -38,11 +35,13 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
       />
       {/* 중앙 텍스트 */}
       <div className="flex-1">
-        <div className="text-xs font-normal text-[#6970F3] mb-1">
+        <div className="text-xs font-normal text-[#6970F3] leading-none mb-2">
           {challengeMonth ? `${challengeMonth}월의 이벤트` : '루피만의 챌린지!'}
         </div>
-        <div className="text-base font-bold mb-1">{challengeName}</div>
-        <div className="text-sm font-normal text-[#7F7F7F]">
+        <div className="text-base font-bold leading-none mb-2">
+          {challengeName}
+        </div>
+        <div className="text-sm font-normal text-[#7F7F7F] leading-none">
           {challengeStartDate} ~ {challengeDoneDate}
         </div>
       </div>
