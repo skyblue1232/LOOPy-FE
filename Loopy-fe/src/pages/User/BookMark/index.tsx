@@ -51,7 +51,7 @@ const BookMarkPage = () => {
   return (
     <div className="mb-8">
       <CommonHeader title="북마크한 카페" onBack={() => navigate(-1)} />
-      <div className="mt-[1.5rem] flex flex-col gap-[1.25rem] px-4">
+      <div className="mt-[1.5rem] flex flex-col gap-6">
         {dummyCafes.map((cafe) => (
           <CafeListCard
             key={cafe.id}

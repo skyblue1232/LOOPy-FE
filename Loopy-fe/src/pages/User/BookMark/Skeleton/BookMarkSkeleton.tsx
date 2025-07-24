@@ -7,7 +7,7 @@ const BookMarkPageSkeleton = () => {
   return (
     <div>
       <CommonHeader title="북마크한 카페" onBack={() => navigate(-1)} />
-      <div className="mt-[1.5rem] flex flex-col gap-[1.25rem] px-4 animate-pulse">
+      <div className="mt-[1.5rem] flex flex-col gap-6 animate-pulse">
         {Array.from({ length: 7 }).map((_, index) => (
           <div key={index} className="flex w-full bg-white rounded-lg">
             {/* 이미지 자리 */}
