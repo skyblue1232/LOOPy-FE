@@ -14,7 +14,7 @@ const AddressCard = ({ dongName, isSelected = false, onClick }: Props) => {
             padding="px-4 py-6" 
             className={isSelected ? "bg-[#F0F1FE]" : ""}
         >
-            <div className="text-[1rem] font-medium">{dongName}</div>
+            <div className="text-[1rem] font-medium leading-none">{dongName}</div>
         </CommonCard>
     );
 };

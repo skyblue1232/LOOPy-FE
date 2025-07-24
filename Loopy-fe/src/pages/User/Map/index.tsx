@@ -30,12 +30,18 @@ const dummyCafes: Cafe[] = [
   { id: 1, name: '카페 A', lat: 37.5563, lng: 126.9355, hasStamp: false },
   { id: 2, name: '카페 B', lat: 37.5558, lng: 126.937, hasStamp: true },
   { id: 3, name: '카페 C', lat: 37.5545, lng: 126.9362, hasStamp: false },
+  { id: 4, name: '카페 D', lat: 37.5542, lng: 126.9368, hasStamp: true },
+  { id: 5, name: '카페 E', lat: 37.5555, lng: 126.938, hasStamp: true },
 ];
 
 const cafeMockDetail = {
   distanceText: '500m',
   address: '서울 서대문구 이화여대길 52',
-  images: ['/sample1.jpg', '/sample2.jpg', '/sample3.jpg'],
+  images: [
+    "https://cdn.pixabay.com/photo/2017/03/17/10/29/coffee-2151200_1280.jpg",
+    "https://cdn.pixabay.com/photo/2020/09/21/05/58/coffee-5589038_1280.jpg",
+    "https://cdn.pixabay.com/photo/2019/10/21/16/48/table-4566563_1280.jpg",
+  ],
   keywords: ['분위기좋음', '조용한', '디저트맛집'],
 };
 
@@ -65,10 +71,21 @@ const MapPage = () => {
     undefined,
   );
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const handleOpenFilterPopup = (group?: string) => {
     setSelectedGroup(group);
-    setIsFilterPopupOpen(true);
+    setIsPopupVisible(true);         
+    setTimeout(() => {
+      setIsFilterPopupOpen(true);   
+    }, 10); 
+  };
+
+  const handleCloseFilterPopup = () => {
+    setIsFilterPopupOpen(false);    
+    setTimeout(() => {
+      setIsPopupVisible(false); 
+    }, 150);
   };
 
   useEffect(() => {
@@ -111,7 +128,7 @@ const MapPage = () => {
           });
 
           marker.addListener('click', () => {
-           //window.kakao.maps.event.cancelBubble();
+            //window.kakao.maps.event.cancelBubble();
 
             setTimeout(() => {
               if (activeMarkerRef.current) {
@@ -170,17 +187,15 @@ const MapPage = () => {
       </div>
 
       <div
-        className={`absolute left-0 right-0 flex justify-center pointer-events-none transition-all ${
+        className={`fixed left-1/2 -translate-x-1/2 w-full max-w-[393px] px-[1.5rem] flex justify-between items-center h-[3.5rem] pointer-events-auto z-[60] transition-all ${
           selectedCafe ? 'bottom-[22.75rem]' : 'bottom-[6.25rem]'
         }`}
       >
-        <div className="w-full px-[1.5rem] flex justify-between items-center h-[3.5rem] pointer-events-auto z-50 whitespace-normal">
-          <StampLegend />
-          <MapViewToggleButton
-            isMapView={isMapView}
-            onClick={() => setIsMapView((prev) => !prev)}
-          />
-        </div>
+        <StampLegend />
+        <MapViewToggleButton
+          isMapView={isMapView}
+          onClick={() => setIsMapView((prev) => !prev)}
+        />
       </div>
 
       {selectedCafe && (
@@ -198,19 +213,27 @@ const MapPage = () => {
         </div>
       )}
 
-      {isFilterPopupOpen && (
-        <>
-          <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-[40]" />
+      {isPopupVisible && (
+        <div className="fixed inset-0 z-100 flex justify-center">
           <div
-            className="absolute bottom-0 left-0 right-0 z-[100]"
-            style={{ bottom: '4.5625rem' }}
+            className="w-full max-w-[393px] h-full bg-black/50"
+            onClick={handleCloseFilterPopup}
+          />
+
+          <div
+            className={`
+              absolute bottom-0 w-full max-w-[393px]
+              transition-transform duration-150 ease-in-out
+              ${isFilterPopupOpen ? 'translate-y-0' : 'translate-y-full'}
+            `}
+            onClick={(e) => e.stopPropagation()}
           >
             <FilterPopup
+              onClose={handleCloseFilterPopup}
               selectedGroup={selectedGroup}
-              onClose={() => setIsFilterPopupOpen(false)}
             />
           </div>
-        </>
+        </div>
       )}
 
       <CommonBottomBar

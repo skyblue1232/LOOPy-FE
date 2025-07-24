@@ -12,12 +12,10 @@ const FilterIconButton = ({ onClick, variant = "map" }: Props) => {
     <button
       onClick={onClick}
       className={`
-        ${isMap ? "w-8 aspect-square rounded-full bg-white flex items-center justify-center shadow-[0_4px_4px_rgba(0,0,0,0.15)]" : ""}
+        ${isMap ? "w-8 aspect-square rounded-full bg-white flex items-center justify-center shadow-[0_0_4px_0_rgba(0,0,0,0.15)]" : ""}
       `}
     >
-      <FilterIcon
-        className="w-4 h-4 object-contain"
-      />
+      <FilterIcon className={`${isMap ? "w-4 h-4 object-contain" : "w-[1.15625rem] h-[1.15625rem] object-contain"}`} />
     </button>
   );
 };

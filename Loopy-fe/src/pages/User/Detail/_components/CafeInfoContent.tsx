@@ -8,6 +8,7 @@ import CouponCard from "./CouponCard";
 import MenuCard from "./MenuCard";
 import PhoneIcon from "/src/assets/images/Phone.svg?react";
 import GlobeIcon from "/src/assets/images/Globe.svg?react";
+import ArrowRightIcon from "/src/assets/images/ArrowRight_Grey2.svg?react";
 import CouponReceivedModal from "./CouponModal";
 
 export interface BusinessHour {
@@ -43,7 +44,7 @@ export default function CafeInfoContent({
 
     return (
         <>
-            <div className="mt-[1.5rem] flex flex-col text-[0.875rem] font-normal text-[#3B3B3B]">
+            <div className="mt-[1.5rem] flex flex-col text-[0.875rem] font-normal text-[#3B3B3B] leading-none">
                 {/* 영업시간 */}
                 <BusinessTimeSection hours={hours} />
 
@@ -68,14 +69,14 @@ export default function CafeInfoContent({
                 </div>
 
                 {/* 하단 바 */}
-                <div className="mt-[1.5rem] w-[21.5625rem] h-[1px] bg-[#F3F3F3]" />
+                <div className="mt-[1.5rem] w-full h-[1px] bg-[#F3F3F3]" />
 
                 <div className="mt-[1.5rem]">
                     <MyStampCard current={4} total={10} dueDate="2025.08.15" />
                 </div>
 
                 {/* 챌린지*/}
-                <div className="mt-[2rem] text-[1rem] font-semibold text-[#000000]">
+                <div className="mt-[2rem] text-[1rem] font-semibold text-[#000000] leading-none">
                     챌린지 정보
                 </div>
 
@@ -90,8 +91,8 @@ export default function CafeInfoContent({
                 </div>
 
                 {/* 쿠폰 안내 */}
-                <div className="mt-[2rem] text-[1rem] font-semibold text-[#000000]">
-                    쿠폰 안내
+                <div className="mt-[2rem] text-[1rem] font-semibold text-[#000000] leading-none">
+                    할인 쿠폰
                 </div>
                 <div className="mt-[1rem]">
                     <CouponCard
@@ -106,21 +107,22 @@ export default function CafeInfoContent({
                 {/* 대표 메뉴 */}
                 {topMenus.length > 0 && (
                     <>
-                    <div className="mt-[2rem] flex items-center justify-between">
-                        <span className="text-[1rem] font-semibold text-[#000000]">대표 메뉴</span>
-                        <button
-                        onClick={() => navigate("/detail/menu")}
-                        className="text-[0.875rem] font-normal text-[#7F7F7F]"
-                        >
-                        전체보기 &gt;
-                        </button>
-                    </div>
+                        <div className="mt-[2rem] flex items-center justify-between">
+                            <span className="text-[1rem] font-semibold text-[#000000]">대표 메뉴</span>
+                            <button
+                            onClick={() => navigate("/detail/menu")}
+                            className="text-[0.875rem] font-normal text-[#7F7F7F] flex items-center leading-none"
+                            >
+                                메뉴 전체보기 
+                                <ArrowRightIcon className="h-[0.625rem] ml-[0.5rem]"/>
+                            </button>
+                        </div>
 
-                    <div className="mt-[1rem] flex flex-col gap-[1.5rem]">
-                        {topMenus.map((menu, idx) => (
-                            <MenuCard key={idx} {...menu} />
-                        ))}
-                    </div>
+                        <div className="mt-[1rem] flex flex-col gap-[1.5rem]">
+                            {topMenus.map((menu, idx) => (
+                                <MenuCard key={idx} {...menu} />
+                            ))}
+                        </div>
                     </>
                 )}
             </div>
@@ -129,18 +131,18 @@ export default function CafeInfoContent({
                 <>
                     {/* 배경 */}
                     <div className="fixed inset-0 flex justify-center z-40">
-                    <div className="w-full max-w-[393px] bg-black/50" />
+                        <div className="w-full max-w-[393px] bg-black/50" />
                     </div>
 
                     {/* 모달 */}
                     <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[393px] z-50">
-                    <CouponReceivedModal
-                        onClose={() => setShowCouponModal(false)}
-                        onConfirm={() => {
-                        setShowCouponModal(false);
-                        console.log("쿠폰함 이동");
-                        }}
-                    />
+                        <CouponReceivedModal
+                            onClose={() => setShowCouponModal(false)}
+                            onConfirm={() => {
+                            setShowCouponModal(false);
+                            console.log("쿠폰함 이동");
+                            }}
+                        />
                     </div>
                 </>
             )}

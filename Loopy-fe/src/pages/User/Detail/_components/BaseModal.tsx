@@ -1,5 +1,4 @@
 import CommonButton from "../../../../components/button/CommonButton";
-import GrabHandle from "/src/assets/images/GrabHandle.svg?react";
 
 interface BaseModalLayoutProps {
     children: React.ReactNode;
@@ -28,7 +27,6 @@ export default function BaseModalLayout({
                     absolute bottom-0 w-full h-[18.75rem] bg-white rounded-t-[1rem] z-10
                     px-[1.5rem] pt-[2.5rem] pb-[2.25rem]
                 ">
-                    <GrabHandle className="absolute top-[0.75rem] left-1/2 -translate-x-1/2 w-8 h-1 rounded-[0.25rem] bg-[#D9D9D9]" />
 
                     {/* 내용 */}
                     {children}
@@ -43,7 +41,7 @@ export default function BaseModalLayout({
                         />
                         <CommonButton
                         text={closeText}
-                        autoStyle
+                        autoStyle={false}
                         className="text-[1rem] h-[3.125rem] bg-[#DFDFDF] text-[#7F7F7F] font-semibold flex items-center justify-center"
                         onClick={onClose}
                         />

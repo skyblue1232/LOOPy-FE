@@ -23,13 +23,17 @@ const LocationPage = () => {
     const [searchValue, setSearchValue] = useState("");
     const [selectedDong, setSelectedDong] = useState<string | null>(null);
 
+    const filteredList = dummyDongList.filter((dong) =>
+        dong.includes(searchValue.trim())
+    );
+
     return (
-        <div className="relative pt-[47px] bg-white min-h-screen">
-            <div className="absolute top-[47px] left-0 right-0">
+        <div className="relative bg-white min-h-screen">
+            <div className="mt-[1.5rem] left-0 right-0">
                 <CommonHeader title="위치 설정" onBack={() => navigate(-1)} />
             </div>
 
-            <div className="mt-[73px]">
+            <div className="mt-[1.625rem]">
                 <div className="h-[48px] px-[1rem] py-[0.75rem] bg-[#F5F5F5] rounded-[0.5rem] flex items-center">
                     <input
                         type="text"
@@ -54,20 +58,24 @@ const LocationPage = () => {
             </div>
 
             <div
-                className="relative overflow-y-auto"
-                style={{ height: "calc(100vh - 47px - 48px - 26px - 48px - 8px - 172px)" }}
+                className="relative overflow-y-auto custom-scrollbar"
+                style={{ height: "calc(100vh - 47px - 48px - 26px - 48px - 172px)" }}
             >
                 <div className="pt-[1.5rem]">
-                    {dummyDongList.map((dong) => (
-                        <AddressCard
-                            key={dong}
-                            dongName={dong}
-                            isSelected={selectedDong === dong}
-                            onClick={() =>
+                    {filteredList.length === 0 ? (
+                        <p className="text-[0.875rem] text-center text-gray-400">검색 결과가 없습니다.</p>
+                    ) : (
+                        filteredList.map((dong) => (
+                            <AddressCard
+                                key={dong}
+                                dongName={dong}
+                                isSelected={selectedDong === dong}
+                                onClick={() =>
                                 setSelectedDong((prev) => (prev === dong ? null : dong))
-                            }
-                        />
-                    ))}
+                                }
+                            />
+                        ))
+                    )}
                 </div>
             </div>
 

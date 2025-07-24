@@ -6,8 +6,8 @@ import { cafeDetailMock } from "../../../../mock/cafeDetailMock";
 import CafeReviewContent from "./CafeReviewContent";
 import AlarmSubscribeButton from "./AlarmSubscribeButton";
 import BookmarkButton from "../../../../components/button/BookmarkButton";
-import ArrowDownIcon from "/src/assets/images/ArrowDown.svg?react";
-import ArrowUpIcon from "/src/assets/images/ArrowUp.svg?react";
+import ArrowDownIcon from "/src/assets/images/ArrowDown_Grey2.svg?react";
+import ArrowUpIcon from "/src/assets/images/ArrowUp_Grey2.svg?react";
 
 interface CafeInfoPanelProps extends CafeDetailData {
     selectedTab: "info" | "review";
@@ -52,7 +52,7 @@ export default function CafeInfoPanel({
     const Icon = showAllTags ? ArrowUpIcon : ArrowDownIcon;
 
     return (
-        <div className="absolute top-[15.25rem] z-10 w-[24.5625rem] rounded-t-[0.75rem] flex flex-col bg-white px-[1.5rem] pt-[1.5625rem] pb-[2rem] h-[calc(100%-15.25rem)]">
+        <div className="w-full px-[1.5rem] pt-[1.5625rem] pb-[2rem] bg-white rounded-t-[0.75rem]">
             <div className="shrink-0">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-[1rem]">
@@ -63,27 +63,39 @@ export default function CafeInfoPanel({
                     <BookmarkButton/>
                     </div>
 
-                <div className="mt-[0.75rem] text-[#7F7F7F] text-[1rem] font-normal">
+                <div className="mt-[0.25rem] text-[#7F7F7F] text-[1rem] font-normal">
                     {address}
                 </div>
 
-                <div className="mt-[1rem] flex flex-wrap gap-x-[0.375rem] gap-y-[0.5rem]">
-                    {(showAllTags ? tags : tags.slice(0, 2)).map((tag, idx) => (
-                        <CafeTagButton key={idx} label={tag} />
-                    ))}
-                    {tags.length > 2 && (
-                    <button
-                        onClick={() => setShowAllTags(!showAllTags)}
-                        className="flex items-center text-[0.875rem] text-[#3B3B3B] whitespace-nowrap ml-[0.5rem] gap-[0.25rem]"
-                    >
-                        {showAllTags ? "접기" : "태그 더보기"}
-                        <Icon className="w-[1rem] h-[1rem] shrink-0"/>
-                    </button>
+                <div className="mt-[0.75rem] flex flex-col gap-y-[0.5rem]">
+                    <div className="flex gap-x-[0.375rem] flex-wrap items-center">
+                        {tags.slice(0, 2).map((tag, idx) => (
+                            <CafeTagButton key={idx} label={tag} />
+                        ))}
+                        <div className="flex px-[0.625rem]">
+                            {tags.length > 2 && (
+                                <button
+                                    onClick={() => setShowAllTags(!showAllTags)}
+                                    className="flex items-center text-[0.875rem] text-[#7F7F7F] whitespace-nowrap gap-[0.25rem]"
+                                >
+                                    태그 더보기
+                                    <Icon className="w-[0.75rem] h-[0.75rem] shrink-0" />
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    {showAllTags && (
+                        <div className="flex flex-wrap gap-x-[0.375rem] gap-y-[0.5rem]">
+                            {tags.slice(2).map((tag, idx) => (
+                                <CafeTagButton key={`more-${idx}`} label={tag} />
+                            ))}
+                        </div>
                     )}
                 </div>
 
                 <div className="mt-[2rem] flex flex-col items-center border-b border-[#E0E0E0]">
-                    <div className="w-[21.5rem] relative"> {/* 344px */}
+                    <div className="w-full relative"> {/* 344px */}
                         <div className="flex">
                             {["카페 정보", "리뷰"].map((label, index) => {
                                 const key = index === 0 ? "info" : "review";
@@ -92,8 +104,8 @@ export default function CafeInfoPanel({
                                 <button
                                     key={label}
                                     onClick={() => onTabChange(key as "info" | "review")}
-                                    className={`w-[10.75rem] text-[1rem] font-semibold pb-[0.75rem] text-center ${
-                                    isSelected ? "text-[#6970F3]" : "text-[#A8A8A8]"
+                                    className={`w-1/2 text-[1rem] font-semibold pb-[0.75rem] text-center leading-none ${
+                                        isSelected ? "text-[#6970F3]" : "text-[#A8A8A8]"
                                     }`}
                                 >
                                     {label}
@@ -103,15 +115,15 @@ export default function CafeInfoPanel({
                         </div>
 
                         <div
-                        className={`absolute bottom-0 h-[0.125rem] bg-[#6970F3] transition-all duration-200 w-[10.75rem] ${
-                            selectedTab === "info" ? "left-0" : "left-[10.75rem]"
+                        className={`absolute bottom-0 h-[0.125rem] bg-[#6970F3] transition-all duration-200 w-1/2 ${
+                            selectedTab === "info" ? "left-0" : "left-1/2"
                         }`}
                         />
                     </div>
                 </div>
             </div>
 
-            <div className="flex-1 overflow-y-scroll custom-scrollbar pb-[2rem]">
+            <div className="pb-[2rem]">
                 {selectedTab === "info" && (
                     <CafeInfoContent
                         hours={sortedHours}
@@ -124,8 +136,7 @@ export default function CafeInfoPanel({
                 )}
                 {selectedTab === "review" && cafeDetailMock.reviews && (
                     <div className="mt-[1.5rem] flex flex-col gap-[2rem]">
-                        <CafeReviewContent reviews={[cafeDetailMock.reviews[0]]} />
-                        <CafeReviewContent reviews={[cafeDetailMock.reviews[1]]} />
+                        <CafeReviewContent reviews={cafeDetailMock.reviews} />
                     </div>
                 )}
             </div>
