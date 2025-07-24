@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TopPhotoSection from "./_components/TopPhotoSection";
 import CafeInfoPanel from "./_components/CafeInfoPanel";
 import CafePhotoModal from "./_components/CafePhotoModal";
@@ -8,6 +9,11 @@ import ReviewButton from "./_components/ReviewButton";
 const DetailPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<"info" | "review">("info");
+  const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1); 
+  };
 
   return (
     <div className="relative -mx-[1.5rem] h-screen overflow-y-scroll custom-scrollbar bg-white flex justify-center z-[100]">
@@ -16,6 +22,7 @@ const DetailPage = () => {
           <TopPhotoSection
             images={cafeDetailMock.images}
             onOpenModal={() => setIsModalOpen(true)}
+            onBack={handleBack}
           />
         </div>
 

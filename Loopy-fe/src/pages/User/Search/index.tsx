@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
 import SearchBar from '../../../components/input/SearchBar';
 import FilterBar from '../Map/_components/filter/FilterBar';
@@ -37,6 +38,8 @@ const SearchPage = () => {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [isMapView, setIsMapView] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleOpenFilterPopup = (group?: string) => {
     setSelectedGroup(group);
@@ -105,6 +108,10 @@ const SearchPage = () => {
                   address={cafeMockDetail.address}
                   images={cafeMockDetail.images}
                   keywords={cafeMockDetail.keywords}
+                  onClick={() => {
+                    console.log("Navigate");
+                    navigate(`/detail`);
+                  }}
                 />
               ))}
             </div>
@@ -143,7 +150,7 @@ const SearchPage = () => {
           >
             <FilterPopup
               onClose={handleCloseFilterPopup}
-              selectedGroup={undefined}
+              selectedGroup={selectedGroup}
             />
           </div>
         </div>

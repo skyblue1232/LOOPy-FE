@@ -1,16 +1,25 @@
 import ImageIcon from "/src/assets/images/Image.svg?react";
+import ArrowLeftButton from "/src/assets/images/ArrowLeftWhite.svg?react";
 
 interface TopPhotoSectionProps {
     images: string[];
     onOpenModal: () => void;
+    onBack: () => void;
 }
 
-export default function TopPhotoSection({ images, onOpenModal }: TopPhotoSectionProps) {
+export default function TopPhotoSection({ images, onOpenModal, onBack }: TopPhotoSectionProps) {
     const visibleImages = images.slice(0, 3);
     const extraCount = images.length - 3;
 
     return (
         <div className="w-full flex h-[16.9375rem] overflow-hidden z-0">
+            <button
+                onClick={onBack}
+                className="absolute left-[2.4375rem] top-[3.6875rem] z-20"
+            >
+                <ArrowLeftButton className="w-[0.5625rem] h-[1.5rem]" />
+            </button>
+
             {/* 왼쪽 큰 사진 */}
             <div className="w-full h-full overflow-hidden">
                 <img src={visibleImages[0]} className="w-full h-full object-cover" />

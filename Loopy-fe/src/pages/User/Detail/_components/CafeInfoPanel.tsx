@@ -136,8 +136,7 @@ export default function CafeInfoPanel({
                 )}
                 {selectedTab === "review" && cafeDetailMock.reviews && (
                     <div className="mt-[1.5rem] flex flex-col gap-[2rem]">
-                        <CafeReviewContent reviews={[cafeDetailMock.reviews[0]]} />
-                        <CafeReviewContent reviews={[cafeDetailMock.reviews[1]]} />
+                        <CafeReviewContent reviews={cafeDetailMock.reviews} />
                     </div>
                 )}
             </div>

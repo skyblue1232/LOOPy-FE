@@ -36,9 +36,12 @@ export default function CafeReviewContent({ reviews }: CafeReviewContentProps) {
     };
 
     return (
-        <div className="flex flex-col gap-[2rem]">
-            {reviews.map((review, i) => (
-                <div key={review.id}>
+        <>
+            {reviews.map((review, i) => {
+                console.log("map index 확인:", i);
+                console.log("리뷰 총 개수:", reviews.length);
+                return (
+                    <div key={review.id}>
                     <ReviewItem
                         review={review}
                         currentImageIndex={currentIndexes[i]}
@@ -46,11 +49,12 @@ export default function CafeReviewContent({ reviews }: CafeReviewContentProps) {
                         onPrev={() => handlePrev(i)}
                     />
                     {i !== reviews.length - 1 && (
-                        <div className="w-full h-[0.05rem] bg-[#D9D9D9]" />
+                        <div className="w-full h-[1px] bg-[#F3F3F3] mt-[1.5rem]" />
                     )}
-                </div>
-            ))}
-        </div>
+                    </div>
+                );
+                })}
+        </>
     );
 }
 
@@ -66,7 +70,6 @@ function ReviewItem({
 }: ReviewItemProps) {
     return (
         <div>
-            {/* 상단 프로필 */}
             <div className="flex gap-[0.75rem]">
                 <img
                     src={review.user.profileImage}
@@ -100,8 +103,6 @@ function ReviewItem({
                 ))}
             </div>
 
-
-            {/* 리뷰 본문 */}
             <p className="mt-[0.75rem] text-[0.875rem] font-normal text-[#3B3B3B] leading-[150%]">
                 {review.content}
             </p>

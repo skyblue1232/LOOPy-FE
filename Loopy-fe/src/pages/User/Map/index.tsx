@@ -230,7 +230,7 @@ const MapPage = () => {
           >
             <FilterPopup
               onClose={handleCloseFilterPopup}
-              selectedGroup={undefined}
+              selectedGroup={selectedGroup}
             />
           </div>
         </div>
