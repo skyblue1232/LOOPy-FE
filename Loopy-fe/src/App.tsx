@@ -26,6 +26,7 @@ import MyStampPage from './pages/User/MyStamp';
 import MenuListPage from './pages/User/Menu';
 import ReviewWritePage from './pages/User/Review';
 import OnboardingProviderWrapper from './pages/User/OnBoard/OnboardingWrapper';
+import LoginSuccess from './pages/auth/LoginSuccess.tsx';
 // import { AuthCheck } from './utils/authCheck';
 
 const publicRoutes = createBrowserRouter([
@@ -44,6 +45,11 @@ const publicRoutes = createBrowserRouter([
         path: 'signin',
         // loader: AuthCheck.authPageCheck,
         element: <SigninPage />,
+        handle: { isPublic: true },
+      },
+      {
+        path: "login/success",
+        element: <LoginSuccess />,
         handle: { isPublic: true },
       },
       {
