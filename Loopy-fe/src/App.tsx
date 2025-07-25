@@ -8,7 +8,6 @@ import AdminLayout from './layouts/AdminLayout';
 import LoginPage from './pages/User/Login';
 import HomePage from './pages/User/Home';
 import DetailPage from './pages/User/Detail';
-import MyPage from './pages/User/My';
 import AdminLoginPage from './pages/Admin/Login';
 import SigninPage from './pages/User/Signin';
 import MapPage from './pages/User/Map';
@@ -25,8 +24,9 @@ import ChallengeStoreListPage from './pages/User/ChallengeDetail/ChallengeStoreL
 import MyStampPage from './pages/User/MyStamp';
 import MenuListPage from './pages/User/Menu';
 import ReviewWritePage from './pages/User/Review';
-import OnboardingProviderWrapper from './pages/User/OnBoard/OnboardingWrapper';
+import OnboardingLayout from './layouts/OnboardingLayout.tsx';
 import LoginSuccess from './pages/auth/LoginSuccess.tsx';
+import MyPageFunnelLayout from './layouts/MyPageFunnelLayout.tsx';
 // import { AuthCheck } from './utils/authCheck';
 
 const publicRoutes = createBrowserRouter([
@@ -55,7 +55,7 @@ const publicRoutes = createBrowserRouter([
       {
         path: 'onboard',
         // loader: AuthCheck.authPageCheck,
-        element: <OnboardingProviderWrapper />,
+        element: <OnboardingLayout />,
       },
       {
         path: 'home',
@@ -100,7 +100,7 @@ const publicRoutes = createBrowserRouter([
       {
         path: 'mypage',
         // loader: AuthCheck.authPageCheck,
-        element: <MyPage />,
+        element: <MyPageFunnelLayout />,
       },
       {
         path: 'search',
