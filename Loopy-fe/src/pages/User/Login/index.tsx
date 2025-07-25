@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CommonInput from "../../../components/input/CommonInput";
 import CommonButton from "../../../components/button/CommonButton";
 import LoopyIconSection from "./_components/LoopyIconSection";
@@ -7,6 +7,7 @@ import Eye from "../../../assets/images/Eye.svg?react";
 import EyeOff from "../../../assets/images/EyeOff.svg?react";
 import SocialLoginSection from "./_components/SocialLoginSection";
 import useThemeColor from "../../../hooks/useThemeColor";
+import { useHandleLogin } from "../../../hooks/action/useHandleLogin";
 
 const LoginPage = () => {
   useThemeColor("#6970F3");
@@ -16,19 +17,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignup = () => {
-    navigate("/signin");
-  };
-
-  const handleLogin = () => {
-    console.log("로그인 시도", email, password);
-    const isLoginSuccessful = email && password;
-    if (isLoginSuccessful) {
-      navigate("/onboard");
-    } else {
-      alert("이메일 또는 비밀번호를 확인해주세요.");
-    }
-  };
+  const handleLogin = useHandleLogin(); 
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
@@ -62,12 +51,15 @@ const LoginPage = () => {
         </div>
 
         <div className="mt-[1.5rem] mb-[0.5rem]">
-          <CommonButton text="로그인" onClick={handleLogin} />
+          <CommonButton
+            text="로그인"
+            onClick={() => handleLogin({ email, password })}
+          />
         </div>
 
         <CommonButton
           text="회원가입"
-          onClick={handleSignup}
+          onClick={() => navigate("/signin")}
           autoStyle={false}
           className="bg-[#F0F1FE] text-[#6970F3]"
         />

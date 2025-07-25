@@ -5,7 +5,7 @@ interface CommonInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;
-  hasError?: boolean; 
+  hasError?: boolean;
 }
 
 const CommonInput = ({
@@ -18,10 +18,10 @@ const CommonInput = ({
   const [isFocused, setIsFocused] = useState(false);
 
   const borderColor = hasError
-    ? "border-[#FF0000]" 
+    ? "#FF0000"
     : isFocused
-    ? "border-[#6970F3]" 
-    : "border-none"; 
+    ? "#6970F3"
+    : "transparent";
 
   return (
     <div className="w-full py-[0.25rem]">
@@ -34,7 +34,8 @@ const CommonInput = ({
         onBlur={() => setIsFocused(false)}
         className={`w-full p-[1rem] text-[0.875rem] font-suit font-normal bg-[#F3F3F3]
         placeholder:text-[#7F7F7F] placeholder:font-suit placeholder:font-normal
-        border-[1px] rounded-[9px] outline-none ${borderColor}`}
+        border-[1px] rounded-[9px] outline-none`}
+        style={{ borderColor }}
       />
     </div>
   );
