@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFunnel } from "../../../hooks/Funnel/useFunnel";
-import type { MyPageStep } from "../../../types/mySteps";
+import { useMyPageFunnel } from "../../../contexts/MyFunnelProvider";
+
 import MainMyPage from "./_components/MainMyPage";
 import SettingPage from "./Setting";
 import StampExchangePage from "./StampExchange";
@@ -15,42 +15,62 @@ import ManageAccount from "./Setting/_components/ManageAccount";
 import WithdrawAccountView from "./Setting/_components/WithdrawAccountView";
 
 const MyPage = () => {
-  const { step, go, back } = useFunnel<MyPageStep>("my");
+  const funnel = useMyPageFunnel();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (step === "myChallenge") {
-      go("my");
+    if ((funnel.step as string) === "myChallenge") {
       navigate("/challenge");
     }
-  }, [step, navigate]);
+  }, [funnel.step, navigate]);
 
-  switch (step) {
-    case "my":
-      return <MainMyPage onNavigate={go} />;
-    case "setting":
-      return <SettingPage onBack={back("my")} onNavigate={go} />;
-    case "editProfile":
-      return <EditProfile onBack={back("setting")} />;
-    case "manageAccount":
-      return <ManageAccount onBack={back("setting")} onGoWithdraw={() => go("withdraw")} />;
-    case "withdraw":
-      return <WithdrawAccountView onBack={back("manageAccount")} onConfirm={back("my")} />;
-    case "stampExchange":
-      return <StampExchangePage onBack={back("my")} />;
-    case "couponBox":
-      return <CouponBoxPage onBack={back("my")} />;
-    case "stampHistory":
-      return <StampHistoryPage onBack={back("my")} />;
-    case "review":
-      return <ReviewPage onBack={back("my")} />;
-    case "filter":
-      return <FilterPage onBack={back("my")} />;
-    case "cafeNotice":
-      return <CafeNoticePage onBack={back("my")} />;
-    default:
-      return <MainMyPage onNavigate={go} />;
-  }
+  return (
+    <funnel.Render
+      my={({ history }) => (
+        <MainMyPage onNavigate={history.push} />
+      )}
+      setting={({ history, step }) => (
+        <SettingPage
+          currentStep={step}
+          onBack={() => history.push("my", {})}
+          onNavigate={history.push}
+        />
+      )}
+      editProfile={({ history }) => (
+        <EditProfile onBack={() => history.push("setting", {})} />
+      )}
+      manageAccount={({ history }) => (
+        <ManageAccount
+          onBack={() => history.push("setting", {})}
+          onGoWithdraw={() => history.push("withdraw", {})}
+        />
+      )}
+      withdraw={({ history }) => (
+        <WithdrawAccountView
+          onBack={() => history.push("manageAccount", {})}
+          onConfirm={() => history.push("my", {})}
+        />
+      )}
+      stampExchange={({ history }) => (
+        <StampExchangePage onBack={() => history.push("my", {})} />
+      )}
+      couponBox={({ history }) => (
+        <CouponBoxPage onBack={() => history.push("my", {})} />
+      )}
+      stampHistory={({ history }) => (
+        <StampHistoryPage onBack={() => history.push("my", {})} />
+      )}
+      review={({ history }) => (
+        <ReviewPage onBack={() => history.push("my", {})} />
+      )}
+      filter={({ history }) => (
+        <FilterPage onBack={() => history.push("my", {})} />
+      )}
+      cafeNotice={({ history }) => (
+        <CafeNoticePage onBack={() => history.push("my", {})} />
+      )}
+    />
+  );
 };
 
 export default MyPage;

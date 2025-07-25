@@ -51,8 +51,8 @@ const StampBookItem = ({ stampBook, onExchangeClick }: Props) => {
                 />
               </div>
               <div className="flex items-end gap-[2px]">
-                <span className="text-[#6970F3] text-[0.875rem] font-semibold">{currentStampCount}</span>
-                <span className="text-[0.75rem] font-medium">/{totalStampCount}</span>
+                <span className="text-[#6970F3] text-[0.875rem] font-bold">{currentStampCount}</span>
+                <span className="text-[0.75rem] font-medium pb-0.25">/{totalStampCount}</span>
               </div>
             </div>
           </div>
