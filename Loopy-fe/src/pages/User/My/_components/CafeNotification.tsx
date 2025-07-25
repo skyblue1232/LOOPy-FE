@@ -1,13 +1,14 @@
 import NextIcon from "../../../../assets/images/Next.svg?react";
+import type { MyPageSteps } from "../../../../types/mySteps";
 
 interface Props {
-  onNavigate: () => void;
+  onNavigate: (step: keyof MyPageSteps) => void; 
 }
 
 const CafeNotification = ({ onNavigate }: Props) => {
   return (
     <button
-      onClick={onNavigate}
+      onClick={() => onNavigate("cafeNotice")} 
       className="w-full flex items-center text-left"
     >
       <div className="flex items-center gap-[1rem]">

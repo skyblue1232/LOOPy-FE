@@ -2,6 +2,7 @@ import { useState } from "react";
 import CommonBottomPopup from "../../../../../components/popup/CommonBottomPopup";
 import DefaultAccountView from "./DefaultAccountView";
 import { useNavigate } from "react-router-dom";
+import CommonHeader from "../../../../../components/header/CommonHeader";
 
 interface ManageAccountProps {
   onBack: () => void;
@@ -10,7 +11,7 @@ interface ManageAccountProps {
   onGoWithdraw: () => void;
 }
 
-const ManageAccount = ({ isKakaoLinked = false, email = "", onGoWithdraw }: ManageAccountProps) => {
+const ManageAccount = ({ isKakaoLinked = false, email = "", onGoWithdraw, onBack }: ManageAccountProps) => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const navigate = useNavigate();
 
@@ -22,6 +23,8 @@ const ManageAccount = ({ isKakaoLinked = false, email = "", onGoWithdraw }: Mana
 
   return (
     <>
+      <CommonHeader title="설정" onBack={onBack} />
+
       <DefaultAccountView
         email={email}
         isKakaoLinked={isKakaoLinked}
