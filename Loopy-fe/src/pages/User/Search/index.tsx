@@ -10,6 +10,7 @@ import LocationLabel from '../../../components/etc/LocationLabel';
 import MapViewToggleButton from '../../../components/button/MapViewToggleButton';
 import CafeListCardSkeleton from './Skeleton/CafeListCardSkeleton';
 import EventCardSkeleton from './Skeleton/EventCardSkeleton';
+import LocationLabelSkeleton from './Skeleton/LocationLabel';
 
 interface Cafe {
   id: number;
@@ -110,7 +111,11 @@ const SearchPage = () => {
             </div>
 
             <div className="mt-[1.5rem]">
-              <LocationLabel dongName="서대문구 연희동" />
+              {isLoading ? (
+                <LocationLabelSkeleton />
+              ) : (
+                <LocationLabel dongName="서대문구 연희동" />
+              )}
             </div>
 
             <div className="mt-[1rem] flex flex-col gap-[1.25rem]">
