@@ -1,6 +1,6 @@
 export default function EventCardSkeleton() {
   return (
-    <div className="flex items-center justify-between bg-[#F0F1FE] h-[6.5rem] rounded-[0.75rem] px-4 animate-pulse">
+    <div className="flex items-center justify-between bg-[#F0F1FE] h-[6.5rem] rounded-[0.5rem] px-4 animate-pulse">
       <div className="flex items-center overflow-hidden">
         <div className="w-[3.875rem] h-[3.875rem] rounded-full bg-gray-300" />
 
