@@ -8,6 +8,8 @@ import CafeListCard from '../../../components/card/CafeListCard';
 import FilterPopup from '../Map/_components/filter/FilterPopup';
 import LocationLabel from '../../../components/etc/LocationLabel';
 import MapViewToggleButton from '../../../components/button/MapViewToggleButton';
+import CafeListCardSkeleton from './Skeleton/CafeListCardSkeleton';
+import EventCardSkeleton from './Skeleton/EventCardSkeleton';
 
 interface Cafe {
   id: number;
@@ -38,6 +40,15 @@ const SearchPage = () => {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [isMapView, setIsMapView] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000); 
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const navigate = useNavigate();
 
@@ -85,13 +96,17 @@ const SearchPage = () => {
             </div>
 
             <div className="mt-[1.75rem]">
-              <EventCard
-                imageSrc="src/assets/images/RedImage.svg"
-                monthLabel="8월의 이벤트"
-                title="친구와 함께 카공하면 스탬프..."
-                description="지금 바로 근처 매장을 찾아보세요!"
-                onClick={() => {}}
-              />
+              {isLoading ? (
+                <EventCardSkeleton />
+              ) : (
+                <EventCard
+                  imageSrc="src/assets/images/RedImage.svg"
+                  monthLabel="8월의 이벤트"
+                  title="친구와 함께 카공하면 스탬프..."
+                  description="지금 바로 근처 매장을 찾아보세요!"
+                  onClick={() => {}}
+                />
+              )}
             </div>
 
             <div className="mt-[1.5rem]">
@@ -99,21 +114,20 @@ const SearchPage = () => {
             </div>
 
             <div className="mt-[1rem] flex flex-col gap-[1.25rem]">
-              {dummyCafes.map((cafe) => (
-                <CafeListCard
-                  key={cafe.id}
-                  id={cafe.id}
-                  name={cafe.name}
-                  distanceText={cafeMockDetail.distanceText}
-                  address={cafeMockDetail.address}
-                  images={cafeMockDetail.images}
-                  keywords={cafeMockDetail.keywords}
-                  onClick={() => {
-                    console.log("Navigate");
-                    navigate(`/detail`);
-                  }}
-                />
-              ))}
+              {isLoading
+                ? Array.from({ length: 5 }).map((_, i) => <CafeListCardSkeleton key={i} />)
+                : dummyCafes.map((cafe) => (
+                    <CafeListCard
+                      key={cafe.id}
+                      id={cafe.id}
+                      name={cafe.name}
+                      distanceText={cafeMockDetail.distanceText}
+                      address={cafeMockDetail.address}
+                      images={cafeMockDetail.images}
+                      keywords={cafeMockDetail.keywords}
+                      onClick={() => navigate(`/detail`)}
+                    />
+                ))}
             </div>
           </div>
 
