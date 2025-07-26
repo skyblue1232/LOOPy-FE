@@ -1,25 +1,39 @@
-import CommonButton from "../../../../components/button/CommonButton";
-import SelectableButton from "../../../../components/button/SelectableButton";
 import { useState } from "react";
-import { useOnboardingContext } from "../../../../contexts/OnboardingContext"; 
+import CommonButton from "../../../../components/button/CommonButton";
+import { useOnboardingContext } from "../../../../contexts/OnboardingContext";
+import { usePatchPreferredKeywords } from "../../../../hooks/query/onboard/usePreferredArea";
+import TagSection from "./TagSection";
 
 const storeTags = ["노트북", "1인석", "단체석", "주차 가능", "예약 가능", "와이파이 제공", "애견 동반", "24시간 운영"];
 const takeawayTags = ["텀블러 할인", "포장 할인"];
 const menuTags = ["비건", "저당/무가당", "글루텐프리", "디카페인"];
 
 const StepCafeInfo = ({ onNext }: { onNext: () => void }) => {
-  const { tags, setTags } = useOnboardingContext(); 
-  const [selectedTags, setSelectedTags] = useState<string[]>(tags); 
+  const { tags, setTags } = useOnboardingContext();
+  const [selectedTags, setSelectedTags] = useState<string[]>(tags);
+  const { mutate } = usePatchPreferredKeywords();
 
   const toggleTag = (tag: string) => {
-    setSelectedTags(prev =>
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
   const handleComplete = () => {
     setTags(selectedTags);
-    onNext();
+    const pureTags = selectedTags.map((t) => t.split("/")[1]);
+
+    mutate(
+      { preferredKeywords: pureTags },
+      {
+        onSuccess: () => {
+          onNext();
+        },
+        onError: (err) => {
+          console.error("선호 키워드 저장 실패:", err);
+        },
+      }
+    );
   };
 
   return (
@@ -39,55 +53,34 @@ const StepCafeInfo = ({ onNext }: { onNext: () => void }) => {
         </span>
       </div>
 
-      <div className="mb-[1rem] font-semibold text-[1rem] text-[#252525]">매장 이용</div>
-      <div className="flex flex-wrap gap-[0.5rem] mb-[2.75rem]">
-        {storeTags.map(tag => {
-          const key = `store/${tag}`;
-          return (
-            <SelectableButton
-              key={key}
-              label={tag}
-              selected={selectedTags.includes(key)}
-              onClick={() => toggleTag(key)}
-            />
-          );
-        })}
-      </div>
+      <TagSection
+        title="매장 이용"
+        tagPrefix="store"
+        tags={storeTags}
+        selectedTags={selectedTags}
+        onToggle={toggleTag}
+      />
 
-      <div className="mb-[1rem] font-semibold text-[1rem] text-[#252525]">테이크아웃</div>
-      <div className="flex flex-wrap gap-[0.5rem] mb-6">
-        {takeawayTags.map(tag => {
-          const key = `takeout/${tag}`;
-          return (
-            <SelectableButton
-              key={key}
-              label={tag}
-              selected={selectedTags.includes(key)}
-              onClick={() => toggleTag(key)}
-            />
-          );
-        })}
-      </div>
+      <TagSection
+        title="테이크아웃"
+        tagPrefix="takeout"
+        tags={takeawayTags}
+        selectedTags={selectedTags}
+        onToggle={toggleTag}
+      />
 
-      <div className="mb-[1rem] font-semibold text-[1rem] text-[#252525]">메뉴</div>
-      <div className="flex flex-wrap gap-[0.5rem] mb-6">
-        {menuTags.map(tag => {
-          const key = `menu/${tag}`;
-          return (
-            <SelectableButton
-              key={key}
-              label={tag}
-              selected={selectedTags.includes(key)}
-              onClick={() => toggleTag(key)}
-            />
-          );
-        })}
-      </div>
+      <TagSection
+        title="메뉴"
+        tagPrefix="menu"
+        tags={menuTags}
+        selectedTags={selectedTags}
+        onToggle={toggleTag}
+      />
 
       <div className="absolute left-0 w-full bottom-[2rem] px-[1.5rem]">
         <CommonButton
           text="완료하기"
-          onClick={handleComplete} 
+          onClick={handleComplete}
           autoStyle={false}
           className={`w-full mt-[1.5rem] ${
             selectedTags.length >= 1 && selectedTags.length <= 5

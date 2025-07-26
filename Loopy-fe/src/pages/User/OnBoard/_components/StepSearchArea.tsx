@@ -5,6 +5,7 @@ import CurrentLocationButton from "./search/CurrentLocationButton";
 import SearchResultList from "./search/SearchResultList";
 import SearchResultSkeleton from "../Skeleton/SearchResultSkeleton";
 import { useOnboardingContext } from "../../../../contexts/OnboardingContext"; 
+import { usePatchPreferredArea } from "../../../../hooks/query/onboard/usePreferredArea";
 
 const StepSearchArea = ({ onNext }: { onNext: () => void }) => {
   const {
@@ -19,20 +20,42 @@ const StepSearchArea = ({ onNext }: { onNext: () => void }) => {
   } = useSearchRegion();
 
   const { setRegion } = useOnboardingContext(); 
+  const { mutate } = usePatchPreferredArea();
 
   const handleNext = () => {
     if (!selected) return;
 
+    const preferredArea = `${selected.region_1depth_name} ${selected.region_2depth_name} ${selected.region_3depth_name}`;
+
     setRegion(selected); 
 
-    console.log("선택된 장소 정보:", {
-      name: `${selected.region_1depth_name} ${selected.region_2depth_name} ${selected.region_3depth_name}`,
-      x: selected.x,
-      y: selected.y,
-    });
-
-    onNext();
+    mutate(
+      { preferredArea }, 
+      {
+        onSuccess: () => {
+          console.log("PATCH 성공:", preferredArea);
+          onNext(); 
+        },
+        onError: (error) => {
+          console.error("지역 저장 실패", error);
+        }
+      }
+    );
   };
+
+  // const handleNext = () => {
+  //   if (!selected) return;
+
+  //   setRegion(selected); 
+
+  //   console.log("선택된 장소 정보:", {
+  //     name: `${selected.region_1depth_name} ${selected.region_2depth_name} ${selected.region_3depth_name}`,
+  //     x: selected.x,
+  //     y: selected.y,
+  //   });
+
+  //   onNext();
+  // };
 
   return (
     <div className="relative flex flex-col h-[calc(100vh-3rem)] overflow-hidden">
