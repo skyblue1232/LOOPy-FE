@@ -26,9 +26,10 @@ export const patchPreferredArea = async (
       "/api/v1/users/me/preferred-area",
       data
     );
+    console.log("patchPreferredArea response:", res.data);
     return res.data;
   } catch (error) {
-    console.warn("patchPreferredArea failed, returning mock data:", error);
+    console.error("patchPreferredArea failed, returning mock data:", error);
     return mockPreferredAreaResponse;
   }
 };
@@ -42,9 +43,10 @@ export const patchPreferredKeywords = async (
       "/api/v1/users/me/preferences",
       data
     );
+    console.log("patchPreferredKeywords response:", res.data);
     return res.data;
   } catch (error) {
-    console.warn("patchPreferredKeywords failed, returning mock data:", error);
+    console.error("patchPreferredKeywords failed, returning mock data:", error);
     return mockPreferredKeywordsResponse;
   }
 };

@@ -13,8 +13,14 @@ export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
       error: null,
       success: {
         message: "임시 회원가입: 회원가입 성공 (서버 없음)",
-        userId: "999",
-        nickname: "테스터",
+        token: "mocked-token-123456",
+        user: {
+          id: "999",
+          email: data.email,
+          nickname: data.nickname,
+          roles: [data.role],
+          currentRole: data.role,
+        },
       },
     };
   }

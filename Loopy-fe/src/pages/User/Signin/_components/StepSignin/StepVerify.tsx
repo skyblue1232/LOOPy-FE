@@ -35,7 +35,11 @@ const StepPhoneVerify = ({ formData, setFormData, onNext }: StepPhoneVerifyProps
 
   const handleNext = () => {
     if (!isFormValid || !validateCode()) return;
-    const signupData = mapFormDataToSignupRequest(formData);
+    const signupData = {
+      ...mapFormDataToSignupRequest(formData),
+      role: "CUSTOMER" as const,
+    };
+
     signup(signupData, {
       onSuccess: (res) => {
         if (res.resultType === "SUCCESS") {
