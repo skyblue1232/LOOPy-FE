@@ -18,6 +18,8 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
           id: "999",
           email: data.email,
           nickname: "테스터",
+          roles: [data.role],       
+          currentRole: data.role,   
         },
       },
     };

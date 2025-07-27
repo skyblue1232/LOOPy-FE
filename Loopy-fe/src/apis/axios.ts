@@ -1,4 +1,4 @@
-import axios, { type InternalAxiosRequestConfig } from "axios";
+import axios, { type AxiosRequestHeaders, type InternalAxiosRequestConfig } from "axios";
 import Storage from "../utils/storage";
 
 const axiosInstance = axios.create({
@@ -9,8 +9,17 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = Storage.getAccessToken();
-    if (token && config.headers?.set) {
-      config.headers.set("Authorization", `Bearer ${token}`);
+
+    if (token) {
+      if (typeof config.headers?.set === "function") {
+        config.headers.set("Authorization", `Bearer ${token}`);
+      } else {
+        config.headers = {
+          ...(config.headers || {}),
+          Authorization: `Bearer ${token}`,
+        } as AxiosRequestHeaders;
+      }
+    } else {
     }
     return config;
   },

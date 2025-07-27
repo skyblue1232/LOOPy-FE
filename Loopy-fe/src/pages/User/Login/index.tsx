@@ -53,7 +53,7 @@ const LoginPage = () => {
         <div className="mt-[1.5rem] mb-[0.5rem]">
           <CommonButton
             text="로그인"
-            onClick={() => handleLogin({ email, password })}
+            onClick={() => handleLogin({ email, password, role: "CUSTOMER" })}
           />
         </div>
 

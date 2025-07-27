@@ -5,6 +5,7 @@ export interface SignupRequest {
   password: string;
   nickname: string;
   phoneNumber: string;
+  role: "CUSTOMER" | "OWNER";
   allowKakaoAlert: boolean;
   agreements: {
     termsAgreed: boolean;
@@ -16,8 +17,15 @@ export interface SignupRequest {
 
 export interface SignupSuccessResponse {
   message: string;
-  userId: string;
-  nickname: string;
+  token: string;
+  user: {
+    id: string;
+    email: string;
+    nickname: string;
+    roles: ("CUSTOMER" | "OWNER")[];    
+    currentRole: "CUSTOMER" | "OWNER";  
+  };
 }
+
 
 export type SignupResponse = ApiResponse<SignupSuccessResponse>;
