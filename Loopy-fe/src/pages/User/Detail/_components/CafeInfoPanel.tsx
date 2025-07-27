@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import CafeTagButton from "./CafeTagButton";
 import CafeInfoContent from "./CafeInfoContent";
 import type { CafeDetailData } from "../../../../types/cafeData";
@@ -8,6 +8,8 @@ import AlarmSubscribeButton from "./AlarmSubscribeButton";
 import BookmarkButton from "../../../../components/button/BookmarkButton";
 import ArrowDownIcon from "/src/assets/images/ArrowDown_Grey2.svg?react";
 import ArrowUpIcon from "/src/assets/images/ArrowUp_Grey2.svg?react";
+import CafeInfoContentSkeleton from "../Skeleton/CafeInfoContentSkeleton";
+import CafeReviewContentSkeleton from "../Skeleton/CafeReviewSkeleton";
 
 interface CafeInfoPanelProps extends CafeDetailData {
     selectedTab: "info" | "review";
@@ -18,6 +20,7 @@ interface CafeInfoPanelProps extends CafeDetailData {
         price: string;
         imageSrc: string;
     }[];
+    isLoading: boolean;
 }
 
 const days = ["일", "월", "화", "수", "목", "금", "토"];
@@ -42,6 +45,7 @@ export default function CafeInfoPanel({
     phone,
     instagram,
     description,
+    isLoading
 }: CafeInfoPanelProps) {
     const [showAllTags, setShowAllTags] = useState(false);
     const today = days[new Date().getDay()];
@@ -50,6 +54,17 @@ export default function CafeInfoPanel({
         ...dummyHours.slice(0, dummyHours.findIndex((h) => h.day === today)),
     ];
     const Icon = showAllTags ? ArrowUpIcon : ArrowDownIcon;
+    const [isTabLoading, setIsTabLoading] = useState(false);
+    const prevTabRef = useRef<"info" | "review">(selectedTab);
+
+    useEffect(() => {
+        if (prevTabRef.current !== selectedTab) {
+            setIsTabLoading(true);
+            const timer = setTimeout(() => setIsTabLoading(false), 1000);
+            prevTabRef.current = selectedTab;
+            return () => clearTimeout(timer);
+        }
+    }, [selectedTab]);
 
     return (
         <div className="w-full px-[1.5rem] pt-[1.5625rem] pb-[2rem] bg-white rounded-t-[0.75rem]">
@@ -125,6 +140,9 @@ export default function CafeInfoPanel({
 
             <div className="pb-[2rem]">
                 {selectedTab === "info" && (
+                    isLoading || isTabLoading ? (
+                    <CafeInfoContentSkeleton />
+                    ) : (
                     <CafeInfoContent
                         hours={sortedHours}
                         phone={phone}
@@ -133,11 +151,18 @@ export default function CafeInfoPanel({
                         keywords={keywords}
                         menus={cafeDetailMock.menus}
                     />
+                    )
                 )}
                 {selectedTab === "review" && cafeDetailMock.reviews && (
-                    <div className="mt-[1.5rem] flex flex-col gap-[2rem]">
-                        <CafeReviewContent reviews={cafeDetailMock.reviews} />
-                    </div>
+                    isTabLoading ? (
+                        <div className="mt-[1.5rem] flex flex-col gap-[2rem]">
+                            <CafeReviewContentSkeleton />
+                        </div>
+                    ) : (
+                        <div className="mt-[1.5rem] flex flex-col gap-[2rem]">
+                            <CafeReviewContent reviews={cafeDetailMock.reviews} />
+                        </div>
+                    )
                 )}
             </div>
         </div>
