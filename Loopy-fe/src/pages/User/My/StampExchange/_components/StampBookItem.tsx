@@ -1,37 +1,34 @@
-import { useNavigate } from "react-router-dom";
 import type { StampBook } from "../../../../../apis/myStamp/type";
 
 interface Props {
   stampBook: StampBook;
   onExchangeClick: (stampBookId: number) => void;
+  onSelect: (stampBook: StampBook) => void;
 }
 
-const StampBookItem = ({ stampBook, onExchangeClick }: Props) => {
-  const navigate = useNavigate();
+const StampBookItem = ({ stampBook, onExchangeClick, onSelect }: Props) => {
   const { id, currentStampCount, totalStampCount, cafeName, cafeAddress, imageUrl } = stampBook;
   const progress = (currentStampCount / totalStampCount) * 100;
 
+  const handleSelect = () => {
+    onSelect(stampBook);
+  };
+
   return (
-    <div className="flex items-start justify-center mt-[1.5rem]">
+    <div className="flex items-start justify-center mt-[1.5rem] cursor-pointer" onClick={handleSelect}>
       <div className="flex gap-4 w-full items-start">
         <img
           src={imageUrl}
           alt={cafeName}
-          className="w-[5rem] h-[5rem] rounded-[8px] object-cover cursor-pointer"
-          onClick={() => navigate(`/mystamppage/${id}`)}
+          className="w-[5rem] h-[5rem] rounded-[8px] object-cover"
         />
 
         <div className="flex flex-col flex-1">
           <div className="flex items-center justify-between">
-            <p
-              onClick={() => navigate(`/mystamppage/${id}`)}
-              className="text-[1.125rem] font-bold cursor-pointer"
-            >
-              {cafeName}
-            </p>
+            <p className="text-[1.125rem] font-bold">{cafeName}</p>
             <button
               onClick={(e) => {
-                e.stopPropagation();
+                e.stopPropagation(); 
                 onExchangeClick(id);
               }}
               className="text-[#7F7F7F] text-[0.875rem] font-semibold bg-[#F3F3F3] px-[0.625rem] py-[0.25rem] rounded-[6px]"
