@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import type { MyPageSteps } from "../../../../types/mySteps";
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
 }
 
 const QuickAccessMenu = ({ onNavigate, onRoute }: Props) => {
+  const navigate = useNavigate();
   const menus: { label: string; step?: keyof MyPageSteps; path?: string }[] = [
     { label: "스탬프 환전", step: "stampExchange" },
     { label: "챌린지", path: "/challenge" },
@@ -21,8 +23,13 @@ const QuickAccessMenu = ({ onNavigate, onRoute }: Props) => {
         >
           <button
             onClick={() => {
-              if (path) onRoute?.(path); 
-              else if (step) onNavigate(step, () => ({}));
+              if (path === "/challenge") {
+                navigate("/challenge"); 
+              } else if (path) {
+                onRoute?.(path); 
+              } else if (step) {
+                onNavigate(step, () => ({}));
+              }
             }}
             className="w-full flex flex-col items-center justify-center"
           >

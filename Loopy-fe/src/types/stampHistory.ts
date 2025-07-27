@@ -5,4 +5,5 @@ export interface StampHistory {
   imageUrl: string;
   completedStampCount: number;
   region: string;
+  isExpired: boolean;
 }

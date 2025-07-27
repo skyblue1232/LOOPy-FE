@@ -1,5 +1,6 @@
 import CommonHeader from '../../../../../components/header/CommonHeader';
 import Info from '../../../../../assets/images/Info.svg?react';
+import ArrowRight from '../../../../../assets/images/ArrowRight.svg?react';
 import CommonBottomPopup from '../../../../../components/popup/CommonBottomPopup';
 import StampPaper from '../../../MyStamp/components/StampPaper';
 import { GetRemainingDays } from '../../../MyStamp/components/GetRemainingDays';
@@ -17,6 +18,7 @@ const StampDetailPage = ({ stampBook, onBack }: StampDetailPageProps) => {
 
   const dueDate = new Date(stampBook.expiredAt);
   const diffDays = GetRemainingDays(dueDate);
+  const isExpired = diffDays < 0;
 
   const handlePurpleButtonClick = () => setPopupStep(2);
   const handleClosePopup = () => {
@@ -60,7 +62,7 @@ const StampDetailPage = ({ stampBook, onBack }: StampDetailPageProps) => {
             까지
           </div>
 
-          {diffDays <= 7 && (
+          {!isExpired && diffDays <= 7 && (
             <>
               <div className="flex items-center gap-2 p-3 rounded bg-[rgba(255,255,255,0.3)] mt-4">
                 <Info className="w-4 h-4 text-white" />
@@ -79,16 +81,39 @@ const StampDetailPage = ({ stampBook, onBack }: StampDetailPageProps) => {
             </>
           )}
 
-          <div className="bg-white rounded-t-xl mt-6 pt-6 pb-6 flex-grow -mx-[1.5rem] px-[1.5rem]">
+          <div className="relative bg-white rounded-t-xl mt-6 pt-6 pb-6 flex-grow -mx-[1.5rem] px-[1.5rem]">
             <div className="text-[1rem] flex gap-[0.5rem] items-center mb-4">
-              <span className="font-medium">스탬프 진행</span>
-              <span className="font-semibold text-[#6970F3]">
+                <span className="font-medium">스탬프 진행</span>
+                <span className="font-semibold text-[#6970F3]">
                 {stampBook.currentStampCount}/{stampBook.totalStampCount}
-              </span>
+                </span>
             </div>
+
             <div className="my-20">
-              <StampPaper currentStep={stampBook.currentStampCount} />
+                <StampPaper currentStep={stampBook.currentStampCount} />
             </div>
+
+            {isExpired && (
+              <>
+                <div className="absolute inset-0 bg-black/70 z-110 rounded-t-xl" />
+                <div className="absolute top-[1.5rem] left-0 w-full z-120 px-[1.5rem]">
+                  <div className="relative w-full flex items-center">
+                    <span className="text-[1.25rem] font-bold text-white mx-auto">
+                      1번째 스탬프지
+                    </span>
+                    <ArrowRight className="absolute right-0 w-[1.5rem] h-[1.5rem] text-white ml-auto" />
+                  </div>
+                </div>
+
+                <div className="absolute top-0 left-0 w-full h-full z-120 flex items-center justify-center px-[1.5rem]">
+                  <p className="text-white text-[1.125rem] font-bold text-center leading-[150%]">
+                    {stampBook.expiredAt}에 스탬프를 모두 모았어요! <br />
+                    새로운 스탬프지를 채워보세요
+                  </p>
+                </div>
+              </>
+            )}
+
           </div>
         </div>
 
