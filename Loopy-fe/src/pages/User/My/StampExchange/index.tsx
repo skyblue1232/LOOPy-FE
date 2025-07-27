@@ -4,6 +4,8 @@ import { useMyStampBooks } from "../../../../hooks/query/useMyStampbook";
 import StampBookItem from "./_components/StampBookItem";
 import CommonBottomPopup from "../../../../components/popup/CommonBottomPopup";
 import StampBookItemSkeleton from "./Skeleton/StampBookItemSkeleton";
+import StampDetailPage from "./_components/StampDetailPage";
+import type { StampBook } from "../../../../apis/myStamp/type";
 
 interface StampExchangeProps {
   onBack: () => void;
@@ -13,6 +15,7 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
   const { data, isLoading } = useMyStampBooks();
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedCafeName, setSelectedCafeName] = useState<string>("");
+  const [selectedStampBook, setSelectedStampBook] = useState<StampBook | null>(null);
 
   const handleExchangeClick = (id: number, cafeName: string) => {
     setSelectedId(id);
@@ -24,6 +27,10 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
     setSelectedId(null);
   };
 
+  const handleSelectStampBook = (book: StampBook) => {
+    setSelectedStampBook(book);
+  };
+
   return (
     <div className="mb-[4rem]">
       <CommonHeader title="스탬프 환전" onBack={onBack} />
@@ -33,7 +40,7 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
         자동 환전 후 스탬프는 소멸되어요!
       </div>
 
-      {isLoading ? (      
+      {isLoading ? (
         <div>
           {Array.from({ length: 10 }).map((_, i) => (
             <StampBookItemSkeleton key={i} />
@@ -45,6 +52,7 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
             <StampBookItem
               key={item.id}
               stampBook={item}
+              onSelect={() => handleSelectStampBook(item)}
               onExchangeClick={() => handleExchangeClick(item.id, item.cafeName)}
             />
           ))}
@@ -59,6 +67,16 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
         purpleButton="환전하기"
         purpleButtonOnClick={handleConfirmExchange}
       />
+
+      {/* ✅ 선택된 스탬프북이 있을 경우 상세 페이지 오버레이 */}
+      {selectedStampBook && (
+        <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+          <StampDetailPage
+            stampBook={selectedStampBook}
+            onBack={() => setSelectedStampBook(null)}
+          />
+        </div>
+      )}
     </div>
   );
 };
