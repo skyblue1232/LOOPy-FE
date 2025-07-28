@@ -7,4 +7,5 @@ export interface FormData {
   verifyCode: string;
   agreeTerms?: boolean; 
   agreePrivacy?: boolean;
+  role: "CUSTOMER" | "OWNER"
 }

@@ -1,8 +1,12 @@
 import { useState } from "react";
 import AdminSigninPage from "./_components/AdminSinginPage";
+import AdminStepPhoneVerify from "./_components/AdminStepPhoneVerify";
+import AdminSignupSuccess from "./_components/AdminSignupSuccess.tsx";
 import type { FormData } from "../../../types/form";
 
 const AdminSigninPageIndex = () => {
+  const [step, setStep] = useState<"account" | "phone" | "success">("account");
+
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -10,20 +14,34 @@ const AdminSigninPageIndex = () => {
     nickname: "",
     phone: "",
     verifyCode: "",
-    agreeTerms: true,
-    agreePrivacy: true,
+    agreeTerms: false,
+    agreePrivacy: false,
+    role: "OWNER",
   });
 
-  const handleNext = () => {
-    console.log("다음 단계로 이동"); 
-  };
+  const handleNextStep = () => setStep("phone");
+  const handleSignupSuccess = () => setStep("success");
 
   return (
-    <AdminSigninPage
-      formData={formData}
-      setFormData={setFormData}
-      onNext={handleNext}
-    />
+    <div className="w-full min-h-screen bg-white flex justify-center">
+      {step === "account" && (
+        <AdminSigninPage
+          formData={formData}
+          setFormData={setFormData}
+          onNext={handleNextStep}
+        />
+      )}
+
+      {step === "phone" && (
+        <AdminStepPhoneVerify
+          formData={formData}
+          setFormData={setFormData}
+          onNext={handleSignupSuccess}
+        />
+      )}
+
+      {step === "success" && <AdminSignupSuccess />}
+    </div>
   );
 };
 

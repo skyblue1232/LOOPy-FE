@@ -8,7 +8,7 @@ export const mapFormDataToSignupRequest = (
   password: formData.password,
   nickname: formData.nickname,
   phoneNumber: formData.phone.replaceAll("-", ""),
-  role: "CUSTOMER", 
+  role: formData.role, 
   allowKakaoAlert: true,
   agreements: {
     termsAgreed: true,
