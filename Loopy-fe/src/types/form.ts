@@ -5,4 +5,7 @@ export interface FormData {
   nickname: string;
   phone: string;
   verifyCode: string;
+  agreeTerms?: boolean; 
+  agreePrivacy?: boolean;
+  role: "CUSTOMER" | "OWNER"
 }
