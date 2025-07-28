@@ -110,7 +110,7 @@ export default function CafeInfoContent({
                         <div className="mt-[2rem] flex items-center justify-between">
                             <span className="text-[1rem] font-semibold text-[#000000]">대표 메뉴</span>
                             <button
-                            onClick={() => navigate("/detail/menu")}
+                            onClick={() => navigate("/detail/${cafeId}/menu")}
                             className="text-[0.875rem] font-normal text-[#7F7F7F] flex items-center leading-none"
                             >
                                 메뉴 전체보기 

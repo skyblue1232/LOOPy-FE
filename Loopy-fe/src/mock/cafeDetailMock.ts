@@ -1,97 +1,142 @@
-import type { CafeDetailData } from "../types/cafeData";
+import type { CafeDetailSuccess } from "../apis/cafeDetail/type";
 
-export const cafeDetailMock: CafeDetailData & {
-    distanceText: string;
-    images: string[];
-} = {
-    name: "카페 위니",
-    address: "서울시 마포구 양화로 12길 34",
-    distanceText: "500m",
-    images: [
-        "https://cdn.pixabay.com/photo/2017/03/17/10/29/coffee-2151200_1280.jpg",
-        "https://cdn.pixabay.com/photo/2020/09/21/05/58/coffee-5589038_1280.jpg",
-        "https://cdn.pixabay.com/photo/2019/10/21/16/48/table-4566563_1280.jpg",
-        "https://cdn.pixabay.com/photo/2016/11/19/12/54/drink-1839134_1280.jpg",
-        "https://cdn.pixabay.com/photo/2021/02/02/02/34/cafe-5972490_1280.jpg",
-    ],
-    tags: [
-        "24시간 운영",
-        "와이파이 제공",
-        "애견 동반",
-        "주차 가능",
-        "1인석",
-        "텀블러 할인",
-        "포장 할인",
-        "저당/무가당",
-    ],
-    keywords: ["분위기좋음", "조용한"],
-    phone: "02-123-4567",
-    instagram: "@solhyang_cafe",
-    description:
-        "향긋한 원두 향이 가득한 브런치 겸용 카페입니다. 천장 높은 통창과 다양한 식물 인테리어로 아늑한 분위기를 느낄 수 있어요. 평일 오전에는 조용하게 작업하기에도 좋아요.",
-    hours: [
-        { day: "월", time: "10:00 – 20:00 (19:30 라스트오더)" },
-        { day: "화", time: "10:00 – 20:00 (19:30 라스트오더)" },
-        { day: "수", time: "10:00 – 20:00 (19:30 라스트오더)" },
-        { day: "목", time: "10:00 – 20:00 (19:30 라스트오더)" },
-        { day: "금", time: "10:00 – 20:00 (19:30 라스트오더)" },
-        { day: "토", time: "11:00 – 19:00 (18:30 라스트오더)" },
-        { day: "일", time: "정기 휴무 (매주 일요일)" },
-    ],
-    menus: [
-        {
-        name: "아이스 아메리카노",
-        description: "시원한 얼음과 함께 즐기는 진한 에스프레소",
-        price: "3,800",
-        imageSrc: "https://cdn.pixabay.com/photo/2022/11/01/05/18/coffee-7561288_1280.jpg",
-        },
-        {
-        name: "말차 라떼",
-        description: "쌉쌀하고 고소한 프리미엄 말차",
-        price: "4,200",
-        imageSrc: "https://cdn.pixabay.com/photo/2022/11/01/05/18/coffee-7561288_1280.jpg",
-        },
-        {
-        name: "딸기 라떼",
-        description: "생딸기 베이스의 달콤한 라떼",
-        price: "4,500",
-        imageSrc: "https://cdn.pixabay.com/photo/2022/11/01/05/18/coffee-7561288_1280.jpg",
-        },
-    ],
-    reviews: [
-        {
-        id: 1,
-        user: {
-            profileImage: "https://cdn.pixabay.com/photo/2020/10/04/10/43/horse-5625922_1280.jpg",
-            nickname: "루피2025",
-            stampStatus: "스탬프지 5장 적립 중",
-        },
-        date: "08.15.금",
-        images: [
-            "https://cdn.pixabay.com/photo/2017/03/17/10/29/coffee-2151200_1280.jpg",
-            "https://cdn.pixabay.com/photo/2020/09/21/05/58/coffee-5589038_1280.jpg",
-            "https://cdn.pixabay.com/photo/2019/10/21/16/48/table-4566563_1280.jpg",
-            "https://cdn.pixabay.com/photo/2016/11/19/12/54/drink-1839134_1280.jpg",
-            "https://cdn.pixabay.com/photo/2021/02/02/02/34/cafe-5972490_1280.jpg",
-        ],
-        content:
-            "여기 시그니처 메뉴인 솔티드 카라멜 라떼가 진짜 미쳤어요. 매장이 맛있고 음료가 예뻐서 단골되려고요!",
-        },
-        {
-        id: 2,
-        user: {
-            profileImage: "https://cdn.pixabay.com/photo/2020/10/04/10/43/horse-5625922_1280.jpg",
-            nickname: "우솝",
-            stampStatus: "스탬프지 2장 적립 중",
-        },
-        date: "08.16.토",
-        images: [
-            "https://cdn.pixabay.com/photo/2017/03/17/10/29/coffee-2151200_1280.jpg",
-            "https://cdn.pixabay.com/photo/2020/09/21/05/58/coffee-5589038_1280.jpg",
-            "https://cdn.pixabay.com/photo/2019/10/21/16/48/table-4566563_1280.jpg",
-        ],
-        content:
-            "분위기 너무 좋고 직원분들도 친절했어요. 다음엔 다른 메뉴도 먹어보려구요!",
-        },
-    ],
+export const cafeDetailMock: CafeDetailSuccess = {
+  cafe: {
+    id: 1,
+    name: "로스터리 카페",
+    address: "서울시 강남구 테헤란로 123",
+    businessHours: "평일 07:00-22:00, 주말 08:00-23:00",
+    phone: "02-1234-5678",
+    websiteUrl: "https://roastery-cafe.com",
+    description: "신선한 원두를 직접 로스팅하는 스페셜티 커피 전문점입니다.",
+    keywords: ["커피", "로스팅", "스페셜티", "조용한"],
+    storeFilters: {
+      "1인석": true,
+      "단체석": false,
+      "노트북석": true,
+      "애견 동반": false,
+      "예약 가능": false,
+      "주차 가능": true,
+      "24시간 운영": false,
+      "와이파이 제공": true,
+    },
+    takeOutFilters: {
+      "포장 할인": false,
+      "텀블러 할인": true,
+    },
+    menuFilters: {
+      "비건": false,
+      "디카페인": true,
+      "글루텐프리": true,
+      "저당/무카당": true,
+    },
+  },
+  photos: [
+    {
+      id: 1,
+      url: "https://example.com/photos/roastery-exterior.jpg",
+      displayOrder: 1,
+    },
+    {
+      id: 2,
+      url: "https://example.com/photos/roastery-interior.jpg",
+      displayOrder: 2,
+    },
+    {
+      id: 3,
+      url: "https://example.com/photos/roastery-counter.jpg",
+      displayOrder: 3,
+    },
+    {
+      id: 4,
+      url: "https://example.com/photos/roastery-beans.jpg",
+      displayOrder: 4,
+    },
+    {
+      id: 5,
+      url: "https://example.com/photos/roastery-seating.jpg",
+      displayOrder: 5,
+    },
+  ],
+  menu: [
+    {
+      id: 1,
+      name: "시그니처 아메리카노",
+      price: 4500,
+      description: "하우스 블렌드 원두로 추출한 깔끔한 아메리카노",
+      imgUrl: "https://example.com/menu/signature-americano.jpg",
+      isSoldOut: false,
+    },
+    {
+      id: 2,
+      name: "바닐라 라떼",
+      price: 5500,
+      description: "마다가스카르 바닐라 시럽이 들어간 부드러운 라떼",
+      imgUrl: "https://example.com/menu/vanilla-latte.jpg",
+      isSoldOut: false,
+    },
+    {
+      id: 3,
+      name: "케냐 AA 핸드드립",
+      price: 7000,
+      description: "산미가 살아있는 케냐 원두 핸드드립",
+      imgUrl: "https://example.com/menu/kenya-drip.jpg",
+      isSoldOut: true,
+    },
+    {
+      id: 4,
+      name: "티라미수",
+      price: 6500,
+      description: "이탈리아 전통 방식으로 만든 수제 티라미수",
+      imgUrl: "https://example.com/menu/tiramisu.jpg",
+      isSoldOut: false,
+    },
+    {
+      id: 5,
+      name: "콜드브루",
+      price: 5000,
+      description: "18시간 저온추출한 시원한 콜드브루",
+      imgUrl: "https://example.com/menu/coldbrew.jpg",
+      isSoldOut: false,
+    },
+  ],
+  coupons: [
+    {
+      id: 1,
+      name: "시그니처 아메리카노 무료",
+      validDays: 30,
+      discountType: "fixed",
+      discountValue: 4500,
+      applicableMenu: null,
+      expiredAt: "2025-12-31T23:59:59.000Z",
+    },
+    {
+      id: 2,
+      name: "전 메뉴 15% 할인",
+      validDays: 7,
+      discountType: "percentage",
+      discountValue: 15,
+      applicableMenu: null,
+      expiredAt: "2025-11-30T23:59:59.000Z",
+    },
+    {
+      id: 5,
+      name: "디저트 무료 쿠폰",
+      validDays: 60,
+      discountType: "fixed",
+      discountValue: 6500,
+      applicableMenu: null,
+      expiredAt: "2026-02-28T23:59:59.000Z",
+    },
+  ],
+  stampBook: {
+    id: 1,
+    stampBookId: 1,
+    currentCount: 3,
+    goalCount: 10,
+    expiresAt: "2025-12-31T23:59:59.000Z",
+  },
+  bookmark: {
+    isBookmarked: false,
+  },
 };
