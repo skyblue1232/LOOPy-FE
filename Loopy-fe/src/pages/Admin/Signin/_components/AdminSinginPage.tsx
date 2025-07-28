@@ -43,11 +43,11 @@ const AdminSigninPage = ({ formData, setFormData, onNext }: AdminSigninPageProps
   if (agreementDetailKey) {
     return (
         <div className="min-h-screen w-full bg-white flex flex-col font-suit">
-        <CommonHeader
-            title=""
-            onBack={() => setAgreementDetailKey(null)}
-        />
-        <AgreementDetailView agreementKey={agreementDetailKey} />
+          <CommonHeader
+              title=""
+              onBack={() => setAgreementDetailKey(null)}
+          />
+          <AgreementDetailView agreementKey={agreementDetailKey} />
         </div>
     );
   }
@@ -60,7 +60,7 @@ const AdminSigninPage = ({ formData, setFormData, onNext }: AdminSigninPageProps
           <Logo className="w-[2rem] h-[2rem]" />
         </div>
 
-        <h1 className="text-[1.25rem] font-bold text-[#252525] w-full text-left mb-[2.5rem]">회원가입</h1>
+        <h1 className="text-[1.5rem] font-bold text-[#252525] w-full text-left mb-[2.5rem]">회원가입</h1>
 
         <div className="w-full flex flex-col mb-[1.5rem]">
           <p className="text-[1rem] font-semibold text-[#252525] mb-[0.75rem]">이메일</p>
@@ -94,7 +94,7 @@ const AdminSigninPage = ({ formData, setFormData, onNext }: AdminSigninPageProps
             )}
           </div>
 
-          <div className="h-[0.5px] w-full bg-[#DFDFDF] mb-[1.5rem]" />
+          <div className="h-[0.5px] w-full bg-[#DFDFDF] mb-[0.75rem]" />
           <div className="flex flex-col mb-[2rem]">
             <div className="-mb-[0.5rem]">
               <AgreementItem
