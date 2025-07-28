@@ -27,6 +27,7 @@ import ReviewWritePage from './pages/User/Review';
 import OnboardingLayout from './layouts/OnboardingLayout.tsx';
 import LoginSuccess from './pages/auth/LoginSuccess.tsx';
 import MyPageFunnelLayout from './layouts/MyPageFunnelLayout.tsx';
+import AdminHomePage from './pages/Admin/Home/index.tsx';
 // import { AuthCheck } from './utils/authCheck';
 
 const publicRoutes = createBrowserRouter([
@@ -160,6 +161,7 @@ const publicRoutes = createBrowserRouter([
     children: [
       { index: true, element: <AdminLoginPage /> },
       { path: 'signin', element: <AdminSigninPage /> },
+      { path: 'home', element: <AdminHomePage /> },
     ],
   },
 ]);
