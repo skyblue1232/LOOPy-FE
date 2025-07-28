@@ -8,11 +8,11 @@ export const cafeDetailMock: CafeDetailData & {
     address: "서울시 마포구 양화로 12길 34",
     distanceText: "500m",
     images: [
-        "src/assets/images/CafePic.svg",
-        "src/assets/images/CafePic2.svg",
-        "src/assets/images/CafePic3.svg",
-        "src/assets/images/CafePic2.svg",
-        "src/assets/images/CafePic3.svg",
+        "https://cdn.pixabay.com/photo/2017/03/17/10/29/coffee-2151200_1280.jpg",
+        "https://cdn.pixabay.com/photo/2020/09/21/05/58/coffee-5589038_1280.jpg",
+        "https://cdn.pixabay.com/photo/2019/10/21/16/48/table-4566563_1280.jpg",
+        "https://cdn.pixabay.com/photo/2016/11/19/12/54/drink-1839134_1280.jpg",
+        "https://cdn.pixabay.com/photo/2021/02/02/02/34/cafe-5972490_1280.jpg",
     ],
     tags: [
         "24시간 운영",
@@ -42,37 +42,37 @@ export const cafeDetailMock: CafeDetailData & {
         {
         name: "아이스 아메리카노",
         description: "시원한 얼음과 함께 즐기는 진한 에스프레소",
-        price: "₩3,800",
-        imageSrc: "/src/assets/images/sample_menu1.jpg",
+        price: "3,800",
+        imageSrc: "https://cdn.pixabay.com/photo/2022/11/01/05/18/coffee-7561288_1280.jpg",
         },
         {
         name: "말차 라떼",
         description: "쌉쌀하고 고소한 프리미엄 말차",
-        price: "₩4,200",
-        imageSrc: "/src/assets/images/sample_menu2.jpg",
+        price: "4,200",
+        imageSrc: "https://cdn.pixabay.com/photo/2022/11/01/05/18/coffee-7561288_1280.jpg",
         },
         {
         name: "딸기 라떼",
         description: "생딸기 베이스의 달콤한 라떼",
-        price: "₩4,500",
-        imageSrc: "/src/assets/images/sample_menu3.jpg",
+        price: "4,500",
+        imageSrc: "https://cdn.pixabay.com/photo/2022/11/01/05/18/coffee-7561288_1280.jpg",
         },
     ],
     reviews: [
         {
         id: 1,
         user: {
-            profileImage: "/src/assets/images/RedImage.svg",
+            profileImage: "https://cdn.pixabay.com/photo/2020/10/04/10/43/horse-5625922_1280.jpg",
             nickname: "루피2025",
             stampStatus: "스탬프지 5장 적립 중",
         },
         date: "08.15.금",
         images: [
-            "/src/assets/images/CafePic.svg",
-            "/src/assets/images/CafePic2.svg",
-            "/src/assets/images/CafePic3.svg",
-            "/src/assets/images/CafePic.svg",
-            "/src/assets/images/CafePic2.svg",
+            "https://cdn.pixabay.com/photo/2017/03/17/10/29/coffee-2151200_1280.jpg",
+            "https://cdn.pixabay.com/photo/2020/09/21/05/58/coffee-5589038_1280.jpg",
+            "https://cdn.pixabay.com/photo/2019/10/21/16/48/table-4566563_1280.jpg",
+            "https://cdn.pixabay.com/photo/2016/11/19/12/54/drink-1839134_1280.jpg",
+            "https://cdn.pixabay.com/photo/2021/02/02/02/34/cafe-5972490_1280.jpg",
         ],
         content:
             "여기 시그니처 메뉴인 솔티드 카라멜 라떼가 진짜 미쳤어요. 매장이 맛있고 음료가 예뻐서 단골되려고요!",
@@ -80,15 +80,15 @@ export const cafeDetailMock: CafeDetailData & {
         {
         id: 2,
         user: {
-            profileImage: "/src/assets/images/RedImage.svg",
+            profileImage: "https://cdn.pixabay.com/photo/2020/10/04/10/43/horse-5625922_1280.jpg",
             nickname: "우솝",
             stampStatus: "스탬프지 2장 적립 중",
         },
         date: "08.16.토",
         images: [
-            "/src/assets/images/CafePic.svg",
-            "/src/assets/images/CafePic2.svg",
-            "/src/assets/images/CafePic3.svg",
+            "https://cdn.pixabay.com/photo/2017/03/17/10/29/coffee-2151200_1280.jpg",
+            "https://cdn.pixabay.com/photo/2020/09/21/05/58/coffee-5589038_1280.jpg",
+            "https://cdn.pixabay.com/photo/2019/10/21/16/48/table-4566563_1280.jpg",
         ],
         content:
             "분위기 너무 좋고 직원분들도 친절했어요. 다음엔 다른 메뉴도 먹어보려구요!",

@@ -7,7 +7,19 @@ export interface AlarmCardData {
 export const mockAlarmData: AlarmCardData[] = [
   {
     AlarmContent:
-      '카페 위니에서 스탬프를 적립하셨군요!\n리뷰도 작성해보시겠어요?',
+      '카페 위니에서 스탬프를 적립하셨군요!\n리뷰도 작성해보시겠어요? ',
+    isRead: false,
+    createdAt: '2025-07-21T08:00:00Z',
+  },
+  {
+    AlarmContent:
+      '카페 위니에서 스탬프를 적립하셨군요!\n리뷰도 작성해보시겠어요? ',
+    isRead: false,
+    createdAt: '2025-07-21T08:00:00Z',
+  },
+  {
+    AlarmContent:
+      '카페 위니에서 스탬프를 적립하셨군요!\n리뷰도 작성해보시겠어요? ',
     isRead: false,
     createdAt: '2025-07-16T08:00:00Z',
   },

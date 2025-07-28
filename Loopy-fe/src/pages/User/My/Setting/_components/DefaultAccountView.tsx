@@ -38,7 +38,7 @@ const DefaultAccountView = ({
             onClick={() => console.log("카카오 연동 시도")}
             className="w-full h-[3.125rem] bg-[#FAE64D] p-[1rem] rounded-[8px] relative flex items-center justify-center"
           >
-            <div className="absolute left-[16px] w-6 h-6">
+            <div className="absolute left-[16px] w-5 h-5">
               <KakaoIcon className="w-full h-full" />
             </div>
             <span className="text-[#252525] text-[1rem] font-semibold">
@@ -48,7 +48,7 @@ const DefaultAccountView = ({
         </div>
       )}
 
-      <div className="mt-[1.5rem] w-full h-[1px] border border-[#DFDFDF]" />
+      <div className="mt-[1.5rem] w-full h-[0.8px] border border-[#DFDFDF]" />
 
       <div className="mt-[2rem]">
         <button

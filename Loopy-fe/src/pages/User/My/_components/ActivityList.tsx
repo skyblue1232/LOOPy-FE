@@ -1,12 +1,12 @@
 import NextIcon from "../../../../assets/images/Next.svg?react";
-import type { MyPageStep } from "../../../../types/mySteps";
+import type { MyPageSteps } from "../../../../types/mySteps";
 
 interface Props {
-  onNavigate: (step: MyPageStep) => void;
+  onNavigate: (step: keyof MyPageSteps, context: (prev: any) => any) => void;
 }
 
 const ActivityList = ({ onNavigate }: Props) => {
-  const menus: { label: string; step: MyPageStep }[] = [
+  const menus: { label: string; step: keyof MyPageSteps }[] = [
     { label: "스탬프 히스토리", step: "stampHistory" },
     { label: "내가 작성한 리뷰", step: "review" },
     { label: "나의 추천 필터", step: "filter" },
@@ -19,7 +19,7 @@ const ActivityList = ({ onNavigate }: Props) => {
         {menus.map(({ label, step }) => (
           <button
             key={label}
-            onClick={() => onNavigate(step)}
+            onClick={() => onNavigate(step, () => ({}))}
             className={`flex items-center justify-between text-left ${
               label === "내가 작성한 리뷰" ? "my-[1rem]" : ""
             }`}

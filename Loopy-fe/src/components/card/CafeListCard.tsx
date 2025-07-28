@@ -8,12 +8,16 @@ interface Props {
     address: string;
     images: string[]; // 첫 번째 이미지만 사용
     keywords: string[];
+    onClick?: () => void;
 }
 
-const CafeListCard = ({ name, distanceText, address, images, keywords, }: Props) => {
+const CafeListCard = ({ name, distanceText, address, images, keywords, onClick }: Props) => {
 
     return (
-        <div className="flex w-full bg-transparent rounded-lg relative">
+        <div 
+            onClick={onClick}
+            className="flex w-full bg-transparent rounded-lg relative"
+        >
             <img
                 src={images[0]}
                 alt={name}

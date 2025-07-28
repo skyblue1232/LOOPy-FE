@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CommonBottomBar from "../../../../components/bottomBar/CommonBottomBar";
 import CommonCard from "../../../../components/card/CommonCard";
-import type { MyPageStep } from "../../../../types/mySteps";
+import type { MyPageSteps } from "../../../../types/mySteps";
 import SettingIcon from "../../../../assets/images/Setting.svg?react";
 import ActivityList from "./ActivityList";
 import CafeNotification from "./CafeNotification";
@@ -10,7 +10,7 @@ import QuickAccessMenu from "./QuickAccessMenu";
 import MainMyPageSkeleton from "../Skeleton/MainMypageSkeleton";
 
 interface Props {
-  onNavigate: (step: MyPageStep) => void;
+  onNavigate: (step: keyof MyPageSteps) => void; 
 }
 
 const MainMyPage = ({ onNavigate }: Props) => {
@@ -19,7 +19,7 @@ const MainMyPage = ({ onNavigate }: Props) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1000); 
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -32,7 +32,7 @@ const MainMyPage = ({ onNavigate }: Props) => {
       <div className="py-[1.5rem] flex justify-between items-center">
         <h1 className="text-[1.25rem] font-bold">마이페이지</h1>
         <SettingIcon
-          className="w-[1.25rem] h-[1.25rem]"
+          className="w-[1.5rem] h-[1.5rem]"
           onClick={() => onNavigate("setting")}
         />
       </div>
@@ -43,7 +43,7 @@ const MainMyPage = ({ onNavigate }: Props) => {
       </CommonCard>
 
       <CommonCard padding="p-[1.5rem]" className="bg-white mb-[1rem]">
-        <ActivityList onNavigate={onNavigate} />
+        <ActivityList onNavigate={(step) => onNavigate(step)} />
       </CommonCard>
 
       <CommonCard padding="p-[1.5rem]" className="bg-white mb-[1.5rem]">

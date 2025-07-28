@@ -96,7 +96,7 @@ export default function ReviewWritePage() {
 
             {/* 완료 버튼 */}
             <div
-                className={`absolute left-0 w-full px-[1.5rem] transition-all duration-300`}
+                className={`absolute bottom-[2rem] left-0 w-full px-[1.5rem] transition-all duration-150`}
             >
                 <CommonButton
                     text="완료하기"

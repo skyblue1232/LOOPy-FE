@@ -26,10 +26,10 @@ const EventCard = ({ imageSrc, monthLabel, title, description, onClick }: Props)
                 <span className="text-[0.75rem] font-normal text-[#6970F3]">
                     {monthLabel}
                 </span>
-                <span className="mt-[0.75rem] text-[1rem] font-semibold text-[#000000] leading-[1.25rem] truncate">
+                <span className="mt-[0.5rem] text-[1rem] font-semibold text-[#000000] leading-[1.25rem] truncate">
                     {title}
                 </span>
-                <span className="mt-[0.5rem] text-[0.875rem] font-normal text-[#7F7F7F] leading-[1.125rem]">
+                <span className="mt-[0.25rem] text-[0.875rem] font-normal text-[#7F7F7F] leading-[1.125rem]">
                     {description}
                 </span>
                 </div>
@@ -37,7 +37,7 @@ const EventCard = ({ imageSrc, monthLabel, title, description, onClick }: Props)
 
             <button onClick={onClick} className="ml-[1rem]">
                 <ArrowRightIcon
-                    className="w-[1rem] h-[1rem] text-[#A8A8A8]"
+                    className="w-[1.5rem] h-[1.5rem] text-[#A8A8A8]"
                 />
             </button>
         </CommonCard>

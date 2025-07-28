@@ -8,6 +8,7 @@ export const stampHistoryDummy: StampHistory[] = [
     imageUrl: "https://cdn.pixabay.com/photo/2022/09/14/18/32/cafe-7454951_1280.jpg",
     completedStampCount: 2,
     region: "서대문구 연희동",
+    isExpired: true,
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ export const stampHistoryDummy: StampHistory[] = [
     imageUrl: "https://media.istockphoto.com/id/2176810537/ko/%EC%82%AC%EC%A7%84/lady-having-coffee-in-paris-sidewalk-cafe.webp?b=1&s=612x612&w=0&k=20&c=9ZDB6INvNfkUB5x__8bI0XgrlPDA-2bu0VHt-TZfkWE=",
     completedStampCount: 2,
     region: "서대문구 연희동",
+    isExpired: true,
   },
   {
     id: 3,
@@ -24,6 +26,7 @@ export const stampHistoryDummy: StampHistory[] = [
     imageUrl: "https://cdn.pixabay.com/photo/2017/04/25/08/02/coffee-beans-2258839_1280.jpg",
     completedStampCount: 3,
     region: "서대문구 연희동",
+    isExpired: true,
   },
   {
     id: 4,
@@ -32,6 +35,7 @@ export const stampHistoryDummy: StampHistory[] = [
     imageUrl: "https://cdn.pixabay.com/photo/2017/07/31/19/27/coffee-2560260_1280.jpg",
     completedStampCount: 1,
     region: "서대문구 연희동",
+    isExpired: true,
   },
   {
     id: 5,
@@ -40,5 +44,6 @@ export const stampHistoryDummy: StampHistory[] = [
     imageUrl: "https://cdn.pixabay.com/photo/2017/08/02/17/25/coffee-2572522_1280.jpg",
     completedStampCount: 5,
     region: "서대문구 연희동",
+    isExpired: true,
   },
 ];

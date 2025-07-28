@@ -32,21 +32,21 @@ export default function BusinessTimeSection({ hours }: BusinessTimeSectionProps)
     return (
         <div>
             <div
-                className="flex items-start justify-between text-[0.875rem] font-normal text-[#3B3B3B] cursor-pointer"
+                className="flex items-start justify-between text-[0.875rem] font-normal text-[#3B3B3B] leading-none cursor-pointer"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <div className="flex items-center gap-[0.5rem]">
                     <ClockIcon className="h-[1rem]" />
                     <span>{todayHour.day}</span>
                     <span>{todayHour.time}</span>
-                    <Icon className="w-[1rem] h-[1rem]" />
+                    <Icon className="w-[0.75rem] h-[0.75rem]" />
                 </div>
             </div>
 
             {isOpen && (
                 <div className="text-[0.875rem] font-normal text-[#3B3B3B]">
                     {restHours.map((item) => (
-                        <div key={item.day} className="flex items-center gap-[0.5rem] pl-[1.5rem]">
+                        <div key={item.day} className="flex items-center gap-[0.5rem] pl-[1.5rem] pt-[0.25rem] leading-none">
                             <span>{item.day}</span>
                             <span>{item.time}</span>
                         </div>
