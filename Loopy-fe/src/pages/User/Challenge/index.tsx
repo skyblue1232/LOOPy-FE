@@ -17,20 +17,15 @@ const ChallengePage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1500); // 로딩 시간 조정 가능
+    }, 1500);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <div className="w-full min-h-screen bg-white">
-      {/* 상단 헤더 */}
       <CommonHeader title="챌린지" onBack={() => navigate(-1)} />
-
-      {/* 탭 메뉴 */}
       <ChallengeTab activeTab={activeTab} onChangeTab={setActiveTab} />
-
-      {/* 콘텐츠 영역 */}
-      <div className="mt-[1.5rem] mb-[3rem] px-4">
+      <div className="mt-[1.5rem] mb-[3rem]">
         {loading ? (
           activeTab === 'participating' ? (
             <ChallengeListSkeleton />

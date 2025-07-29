@@ -12,7 +12,7 @@ const ChallengeCard = ({
       <img
         src={challengeImage}
         alt={challengeName}
-        className="w-[8.5rem] h-[5.25rem] object-cover mb-2 rounded-md"
+        className="w-[8.5rem] h-[5.25rem] object-cover mb-2"
       />
       <div className="text-[1rem] font-semibold self-start px-4 whitespace-pre-wrap">
         {challengeName}
