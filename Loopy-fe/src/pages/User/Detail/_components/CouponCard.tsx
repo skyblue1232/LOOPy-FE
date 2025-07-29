@@ -7,6 +7,9 @@ interface CouponCardProps {
     title: string;           // ex) 아메리카노 200원 할인쿠폰
     description: string;     // ex) 발급 후 14일 동안 사용 가능
     onDownload: () => void;
+    cafeId: string;               // ← 필수
+    couponTemplateId: number;
+    validDays: number;
 }
 
 const CouponCard = ({

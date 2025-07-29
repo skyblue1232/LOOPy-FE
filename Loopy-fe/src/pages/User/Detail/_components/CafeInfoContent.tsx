@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+import { useIssueCoupon } from "../../../../hooks/mutations/useIssueCoupon";
 import BusinessTimeSection from "./BusinessTimeSection";
 import KeywordTags from "../../../../components/etc/KeywordTags";
 import MyStampCard from "./MyStampCard";
@@ -41,6 +42,8 @@ export default function CafeInfoContent({
     const navigate = useNavigate();
     const topMenus = menus.slice(0,2);
     const [showCouponModal, setShowCouponModal] = useState(false);
+    const { cafeId } = useParams();
+    const { mutate: issueCoupon } = useIssueCoupon();
 
     return (
         <>
@@ -100,6 +103,9 @@ export default function CafeInfoContent({
                         storeName="카페 위니"
                         title="아메리카노 200원 할인쿠폰"
                         description="발급 후 14일 동안 사용 가능"
+                        cafeId="1"
+                        couponTemplateId={1}
+                        validDays={14}
                         onDownload={() => setShowCouponModal(true)}
                     />
                 </div>
@@ -139,8 +145,26 @@ export default function CafeInfoContent({
                         <CouponReceivedModal
                             onClose={() => setShowCouponModal(false)}
                             onConfirm={() => {
-                            setShowCouponModal(false);
-                            console.log("쿠폰함 이동");
+                                issueCoupon(
+                                    {
+                                        cafeId: '1',
+                                        body: {
+                                        id: 1,
+                                        validDays: 14,
+                                        },
+                                    },
+                                    {
+                                        onSuccess: (data) => {
+                                        if (data?.errorCode === 'C002') {
+                                            alert("이미 발급받은 쿠폰입니다.");
+                                        } else {
+                                            alert("쿠폰이 발급되었습니다!");
+                                            // 필요 시 쿠폰함 이동 처리
+                                        }
+                                        },
+                                    }
+                                );
+                                setShowCouponModal(false);
                             }}
                         />
                     </div>

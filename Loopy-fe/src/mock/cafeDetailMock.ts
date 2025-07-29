@@ -5,7 +5,10 @@ export const cafeDetailMock: CafeDetailSuccess = {
     id: 1,
     name: "로스터리 카페",
     address: "서울시 강남구 테헤란로 123",
-    businessHours: "평일 07:00-22:00, 주말 08:00-23:00",
+    businessHours: {
+      주말: "08:00-23:00",
+      평일: "07:00-22:00",
+    },
     phone: "02-1234-5678",
     websiteUrl: "https://roastery-cafe.com",
     description: "신선한 원두를 직접 로스팅하는 스페셜티 커피 전문점입니다.",
@@ -28,7 +31,7 @@ export const cafeDetailMock: CafeDetailSuccess = {
       "비건": false,
       "디카페인": true,
       "글루텐프리": true,
-      "저당/무카당": true,
+      "저당/무가당": true,
     },
   },
   photos: [

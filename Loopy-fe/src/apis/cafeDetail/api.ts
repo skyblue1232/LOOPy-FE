@@ -5,7 +5,7 @@ import { cafeDetailMock } from '../../mock/cafeDetailMock';
 export const getCafeDetail = async (cafeId: string): Promise<CafeDetailSuccess> => {
   try {
     const res = await axiosInstance.get<CafeDetailResponse>(
-      `/api/v1/cafe/${cafeId}`
+      `/api/v1/cafes/${cafeId}`
     );
     return res.data.success;
   } catch (error) {

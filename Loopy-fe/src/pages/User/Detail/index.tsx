@@ -14,7 +14,7 @@ import type { CafeDetailSuccess } from "../../../apis/cafeDetail/type";
 import { parseBusinessHours } from "../../../utils/parseBusinessHours";
 
 const DetailPage = () => {
-  const { cafeId } = useParams();
+  const { cafeId = '1' } = useParams(); // 임의 지정
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<"info" | "review">("info");

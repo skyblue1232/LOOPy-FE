@@ -2,7 +2,7 @@ export interface Cafe {
   id: number;
   name: string;
   address: string;
-  businessHours: string;
+  businessHours: Record<string, string>;
   phone: string;
   websiteUrl: string;
   description: string;

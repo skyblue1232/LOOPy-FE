@@ -8,7 +8,7 @@ export const getCafeReviews = async (
     token?: string
 ): Promise<ReviewPage> => {
     try {
-        const res = await axiosInstance.get(`/api/v1/cafe/${cafeId}/review`, {
+        const res = await axiosInstance.get(`/api/v1/cafes/${cafeId}/review`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
