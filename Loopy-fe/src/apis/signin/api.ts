@@ -9,17 +9,13 @@ export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
     console.warn("서버 미응답. mock 응답 반환:", data);
 
     return {
-      resultType: "SUCCESS",
-      error: null,
-      success: {
-        message: "임시 회원가입: 회원가입 성공 (서버 없음)",
-        token: "mocked-token-123456",
-        user: {
-          id: "999",
-          email: data.email,
-          nickname: data.nickname,
-          currentRole: data.role,
-        },
+      message: "임시 회원가입: 회원가입 성공 (서버 없음)",
+      token: "mocked-token-123456",
+      user: {
+        id: "999",
+        email: data.email,
+        nickname: data.nickname,
+        currentRole: data.role,
       },
     };
   }

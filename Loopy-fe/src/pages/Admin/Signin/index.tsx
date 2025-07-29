@@ -13,9 +13,12 @@ const AdminSigninPageIndex = () => {
     confirmPassword: "",
     nickname: "",
     phone: "",
+    allowKakaoAlert: true,
     verifyCode: "",
     agreeTerms: false,
     agreePrivacy: false,
+    agreemarketing: true,
+    agreelocation: true,
     role: "OWNER",
   });
 
