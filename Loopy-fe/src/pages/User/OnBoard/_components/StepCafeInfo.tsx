@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CommonButton from "../../../../components/button/CommonButton";
 import { useOnboardingContext } from "../../../../contexts/OnboardingContext";
-import { usePatchPreferredKeywords } from "../../../../hooks/query/onboard/usePreferredArea";
+import { usePatchPreferredKeywords } from "../../../../hooks/mutation/onboard/usePreferredArea";
 import TagSection from "./TagSection";
 
 const storeTags = ["노트북", "1인석", "단체석", "주차 가능", "예약 가능", "와이파이 제공", "애견 동반", "24시간 운영"];
