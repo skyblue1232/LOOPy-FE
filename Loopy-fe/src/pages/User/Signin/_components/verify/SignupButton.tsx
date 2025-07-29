@@ -1,18 +1,38 @@
+import { useNavigate } from "react-router-dom";
 import CommonButton from "../../../../../components/button/CommonButton";
+import { useSignup } from "../../../../../hooks/query/signin/useSignup";
+import type { SignupRequest } from "../../../../../apis/signin/type";
 
 interface SignupButtonProps {
-  onClick: () => void;
+  signupData: SignupRequest;
+  isFormValid: boolean;
+  validateCode: () => boolean;
   isKeyboardOpen: boolean;
-  isValid: boolean;
-  isPending: boolean;
 }
 
 const SignupButton = ({
-  onClick,
+  signupData,
+  isFormValid,
+  validateCode,
   isKeyboardOpen,
-  isValid,
-  isPending,
 }: SignupButtonProps) => {
+  const navigate = useNavigate();
+  const { mutate: signup, isPending } = useSignup();
+
+  const handleClick = () => {
+    if (!isFormValid || !validateCode() || isPending) return;
+
+    signup(signupData, {
+      onSuccess: (res) => {
+        console.log("회원가입 응답:", res);
+        navigate("/", { replace: true });
+      },
+      onError: (err) => {
+        console.error("네트워크 오류", err.message);
+      },
+    });
+  };
+
   return (
     <div
       className={`absolute left-0 w-full px-[1.5rem] transition-all duration-300 ${
@@ -21,11 +41,11 @@ const SignupButton = ({
     >
       <CommonButton
         text="회원가입하기"
-        onClick={onClick}
+        onClick={handleClick}
         className={`w-full ${
-          isValid ? "bg-[#6970F3] text-white" : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
+          isFormValid ? "bg-[#6970F3] text-white" : "bg-[#CCCCCC] text-[#7F7F7F]"
         }`}
-        disabled={!isValid || isPending}
+        disabled={!isFormValid || isPending}
       />
     </div>
   );

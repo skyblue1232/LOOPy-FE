@@ -5,7 +5,7 @@ export interface StampItem {
   address: string;
   stampCount: number;
   stampMax: number;
-  stampPaper: number; // 스탬프지 개수
+  stampPaper: number;
   dueDate: Date;
 }
 

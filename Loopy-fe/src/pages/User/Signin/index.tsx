@@ -6,15 +6,7 @@ import StepVerify from "./_components/StepSignin/StepVerify";
 import AgreementPage from "./_components/AgreementPage";
 import CommonHeader from "../../../components/header/CommonHeader";
 import { useState } from "react";
-
-interface FormData {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  nickname: string;
-  phone: string;
-  verifyCode: string;
-}
+import type { FormData } from "../../../types/form.ts";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -27,6 +19,12 @@ const SignupPage = () => {
     nickname: "",
     phone: "",
     verifyCode: "",
+    role: "CUSTOMER",
+    allowKakaoAlert: true,
+    agreeTerms: false,
+    agreePrivacy: false,
+    agreemarketing: true,
+    agreelocation: true,
   });
 
   const goToHome = () => navigate("/");
@@ -51,7 +49,6 @@ const SignupPage = () => {
         <StepVerify
           formData={formData}
           setFormData={setFormData}
-          onNext={goToHome}
         />
       )}
     </div>

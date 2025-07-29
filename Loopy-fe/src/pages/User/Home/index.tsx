@@ -12,13 +12,13 @@ import HomePageSkeleton from './Skeleton/HomeSkeleton';
 
 const HomePage = () => {
   const [sortType, setSortType] = useState('most');
-  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1500); // 1.5초 후 로딩 해제
+    }, 1500);
     return () => clearTimeout(timer);
   }, []);
 

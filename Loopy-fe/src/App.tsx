@@ -27,6 +27,10 @@ import ReviewWritePage from './pages/User/Review';
 import OnboardingLayout from './layouts/OnboardingLayout.tsx';
 import LoginSuccess from './pages/auth/LoginSuccess.tsx';
 import MyPageFunnelLayout from './layouts/MyPageFunnelLayout.tsx';
+import AdminHomePage from './pages/Admin/Home/index.tsx';
+import AdminChallengePage from './pages/Admin/Challenge/index.tsx';
+import AdminCouponPage from './pages/Admin/Coupon/index.tsx';
+import AdminStampPage from './pages/Admin/Stamp/index.tsx';
 // import { AuthCheck } from './utils/authCheck';
 
 const publicRoutes = createBrowserRouter([
@@ -48,7 +52,7 @@ const publicRoutes = createBrowserRouter([
         handle: { isPublic: true },
       },
       {
-        path: "login/success",
+        path: 'login/success',
         element: <LoginSuccess />,
         handle: { isPublic: true },
       },
@@ -160,6 +164,10 @@ const publicRoutes = createBrowserRouter([
     children: [
       { index: true, element: <AdminLoginPage /> },
       { path: 'signin', element: <AdminSigninPage /> },
+      { path: 'home', element: <AdminHomePage /> },
+      { path: 'challenge', element: <AdminChallengePage /> },
+      { path: 'coupon', element: <AdminCouponPage /> },
+      { path: 'stamp', element: <AdminStampPage /> },
     ],
   },
 ]);

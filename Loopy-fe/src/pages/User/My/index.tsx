@@ -1,18 +1,17 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMyPageFunnel } from "../../../contexts/MyFunnelProvider";
-
 import MainMyPage from "./_components/MainMyPage";
 import SettingPage from "./Setting";
 import StampExchangePage from "./StampExchange";
 import CouponBoxPage from "./CouponBox";
 import StampHistoryPage from "./StampHistory";
-import ReviewPage from "./Review";
 import FilterPage from "./Filter";
 import CafeNoticePage from "./CafeNotice";
 import EditProfile from "./Setting/_components/EditProfile";
 import ManageAccount from "./Setting/_components/ManageAccount";
 import WithdrawAccountView from "./Setting/_components/WithdrawAccountView";
+import MyReviewPage from "./MyReview";
 
 const MyPage = () => {
   const funnel = useMyPageFunnel();
@@ -61,7 +60,7 @@ const MyPage = () => {
         <StampHistoryPage onBack={() => history.push("my", {})} />
       )}
       review={({ history }) => (
-        <ReviewPage onBack={() => history.push("my", {})} />
+        <MyReviewPage onBack={() => history.push("my", {})} />
       )}
       filter={({ history }) => (
         <FilterPage onBack={() => history.push("my", {})} />

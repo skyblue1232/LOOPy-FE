@@ -7,11 +7,7 @@ export const useLogin = () => {
     mutationFn: login,
 
     onSuccess: (data) => {
-      if (data.resultType === "SUCCESS") {
-        console.log("로그인 성공:", data.success);
-      } else {
-        console.error("로그인 실패 (서버 응답):", data.error);
-      }
+      console.log("로그인 성공:", data);
     },
 
     onError: (error) => {
@@ -19,7 +15,7 @@ export const useLogin = () => {
     },
 
     onSettled: () => {
-      console.log("로그인 요청 완료됨 (성공/실패 관계없이)");
+      console.log("로그인 요청 완료됨");
     },
   });
 };

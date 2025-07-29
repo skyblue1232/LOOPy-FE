@@ -5,4 +5,10 @@ export interface FormData {
   nickname: string;
   phone: string;
   verifyCode: string;
+  allowKakaoAlert: boolean;
+  agreeTerms: boolean; 
+  agreePrivacy: boolean;
+  agreemarketing: boolean,
+  agreelocation: boolean,
+  role: "CUSTOMER" | "OWNER"
 }

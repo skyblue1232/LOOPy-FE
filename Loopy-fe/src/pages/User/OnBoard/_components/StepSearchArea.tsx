@@ -5,7 +5,7 @@ import CurrentLocationButton from "./search/CurrentLocationButton";
 import SearchResultList from "./search/SearchResultList";
 import SearchResultSkeleton from "../Skeleton/SearchResultSkeleton";
 import { useOnboardingContext } from "../../../../contexts/OnboardingContext"; 
-import { usePatchPreferredArea } from "../../../../hooks/query/onboard/usePreferredArea";
+import { usePatchPreferredArea } from "../../../../hooks/mutation/onboard/usePreferredArea";
 
 const StepSearchArea = ({ onNext }: { onNext: () => void }) => {
   const {
