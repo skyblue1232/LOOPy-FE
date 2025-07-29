@@ -11,9 +11,9 @@ interface AgreementPageProps {
 
 const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
   const [agreements, setAgreements] = useState<AgreementState>({
-    terms: true,
-    privacy: true,
-    location: true,
+    terms: false,
+    privacy: false,
+    location: false,
     marketing: false,
   });
 
