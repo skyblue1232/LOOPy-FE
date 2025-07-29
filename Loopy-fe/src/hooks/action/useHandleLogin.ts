@@ -23,7 +23,7 @@ export const useHandleLogin = () => {
             navigate("/onboard", { replace: true });
           }
         } else {
-          console.warn("로그인 응답은 왔으나 조건 불일치:", res);
+          console.warn("로그인 응답은 왔으나 조건 불일치:", res.user);
         }
       },
 
