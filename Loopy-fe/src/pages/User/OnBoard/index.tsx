@@ -10,7 +10,7 @@ const OnboardingPage = () => {
 
   const handleBack = () => {
     if (step === "search") {
-      navigate(-1); 
+      navigate('/'); 
     } else if (step === "cafe") {
       back("search")(); 
     }
