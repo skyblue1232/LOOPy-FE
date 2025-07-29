@@ -2,29 +2,45 @@ import KakaoIcon from "../../../../../assets/images/KakaoLogo.svg?react";
 
 interface Props {
   email?: string;
-  isKakaoLinked?: boolean;
+  allowKakaoAlert?: boolean;
   onClickLogout: () => void;
   onClickWithdraw: () => void;
 }
 
 const DefaultAccountView = ({
   email = "",
-  isKakaoLinked = false,
+  allowKakaoAlert = false,
   onClickLogout,
   onClickWithdraw,
 }: Props) => {
-  const displayEmail = isKakaoLinked ? email || "user@gmail.com" : "user@gmail.com";
+  const handleKakaoConnect = () => {
+    const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
+    const role = "CUSTOMER";
+
+    const redirectRawUri = `${import.meta.env.VITE_KAKAO_REDIRECT_URI}?role=${role}`;
+    const redirectUri = encodeURIComponent(redirectRawUri);
+
+    const kakaoAuthUrl =
+      `https://kauth.kakao.com/oauth/authorize` +
+      `?response_type=code` +
+      `&client_id=${clientId}` +
+      `&redirect_uri=${redirectUri}`;
+
+    window.location.href = kakaoAuthUrl;
+  };
 
   return (
     <div className="flex flex-col mt-[1.5rem]">
-      {isKakaoLinked ? (
+      {allowKakaoAlert ? (
         <div>
           <p className="text-[0.875rem] text-[#7F7F7F] mb-[0.5rem]">
             소셜 계정이 연동되었습니다.
           </p>
           <div className="flex justify-between items-center py-[1.5rem] border-b border-[#DFDFDF]">
             <span className="font-semibold text-[1rem]">Kakao</span>
-            <span className="text-[1rem] text-[#7F7F7F]">{displayEmail}</span>
+            <span className="text-[1rem] text-[#7F7F7F]">
+              {email || "연동된 이메일 없음"}
+            </span>
           </div>
         </div>
       ) : (
@@ -35,7 +51,7 @@ const DefaultAccountView = ({
             카카오로 최초 확인, 일회만 받기 때문에 안전해요.
           </p>
           <button
-            onClick={() => console.log("카카오 연동 시도")}
+            onClick={handleKakaoConnect}
             className="w-full h-[3.125rem] bg-[#FAE64D] p-[1rem] rounded-[8px] relative flex items-center justify-center"
           >
             <div className="absolute left-[16px] w-5 h-5">

@@ -1,4 +1,4 @@
-import axiosInstance from "../axios";
+import axiosInstance from "../../axios";
 import type { SignupRequest, SignupResponse } from "./type";
 
 export const signup = async (data: SignupRequest): Promise<SignupResponse> => {

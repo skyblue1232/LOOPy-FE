@@ -1,10 +1,12 @@
-import { useLogin } from "../query/login/useLogin";
+import { useLogin } from "../mutation/login/useLogin";
+import { usePatchUserActivate } from "../mutation/active/useActiveStatus";
 import { useNavigate } from "react-router-dom";
-import type { LoginRequest } from "../../apis/login/type";
+import type { LoginRequest } from "../../apis/auth/login/type";
 
 export const useHandleLogin = () => {
   const navigate = useNavigate();
   const { mutate: loginMutate } = useLogin();
+  const { mutate: activateUser } = usePatchUserActivate(); 
 
   const handleLogin = (data: LoginRequest) => {
     loginMutate(data, {
@@ -15,6 +17,15 @@ export const useHandleLogin = () => {
           console.log("로그인 성공:", user);
 
           localStorage.setItem("accessToken", token);
+          activateUser(undefined, {
+            onSuccess: () => {
+              console.log("계정 활성화 완료");
+            },
+            onError: (err) => {
+              console.warn("계정 활성화 실패:", err);
+            },
+          });
+
           const isOnboarded = localStorage.getItem(`onboarded_user_${user.id}`) === "true";
 
           if (isOnboarded) {
@@ -23,7 +34,7 @@ export const useHandleLogin = () => {
             navigate("/onboard", { replace: true });
           }
         } else {
-          console.warn("로그인 응답은 왔으나 조건 불일치:", res.user);
+          console.warn("로그인 응답 조건 불일치:", res.user);
         }
       },
 

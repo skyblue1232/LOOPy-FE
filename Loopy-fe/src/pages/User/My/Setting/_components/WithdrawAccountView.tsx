@@ -2,15 +2,27 @@ import { useState } from "react";
 import CheckCircle from "../../../Signin/_components/CheckCircle";
 import CommonButton from "../../../../../components/button/CommonButton";
 import { useKeyboardOpen } from "../../../../../hooks/useKeyboardOpen";
+import { usePatchUserInactive } from "../../../../../hooks/mutation/active/useActiveStatus";
+import { useNavigate } from "react-router-dom";
 
-interface Props {
-  onConfirm: () => void;
-  onBack: () => void;
-}
-
-const WithdrawAccountView = ({ onConfirm }: Props) => {
+const WithdrawAccountView = () => {
   const [agree, setAgree] = useState(false);
-  const isKeyboardOpen = useKeyboardOpen(); 
+  const isKeyboardOpen = useKeyboardOpen();
+  const navigate = useNavigate();
+
+  const { mutate: patchInactive } = usePatchUserInactive(
+    () => {
+      navigate("/");
+    },
+    (err) => {
+      console.error("휴면 전환 실패", err);
+      alert("회원탈퇴에 실패했습니다. 다시 시도해주세요.");
+    }
+  );
+
+  const handleWithdraw = () => {
+    patchInactive();
+  };
 
   return (
     <div className="flex flex-col pt-[1.5rem]">
@@ -47,7 +59,7 @@ const WithdrawAccountView = ({ onConfirm }: Props) => {
 
         <CommonButton
           text="회원탈퇴하기"
-          onClick={onConfirm}
+          onClick={handleWithdraw}
           className={`w-full mt-[1.5rem] ${
             agree
               ? "bg-[#6970F3] text-white"

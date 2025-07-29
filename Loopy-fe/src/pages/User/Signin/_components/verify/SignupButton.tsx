@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import CommonButton from "../../../../../components/button/CommonButton";
-import { useSignup } from "../../../../../hooks/query/signin/useSignup";
+import { useSignup } from "../../../../../hooks/mutation/signin/useSignup";
 import type { SignupRequest } from "../../../../../apis/signin/type";
 
 interface SignupButtonProps {
