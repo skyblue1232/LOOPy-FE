@@ -16,7 +16,10 @@ const SocialLoginSection = () => {
         <KakaoLogin
           onClick={() => {
             const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
-            const redirectUri = encodeURIComponent(import.meta.env.VITE_KAKAO_REDIRECT_URI);
+            const role = "CUSTOMER"; 
+
+            const redirectRawUri = `${import.meta.env.VITE_KAKAO_REDIRECT_URI}?role=${role}`;
+            const redirectUri = encodeURIComponent(redirectRawUri);
 
             const kakaoAuthUrl =
               `https://kauth.kakao.com/oauth/authorize` +
