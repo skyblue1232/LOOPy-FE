@@ -3,17 +3,15 @@ import VerifyCodeInput from "../verify/VeryfyCodeInput";
 import SignupButton from "../verify/SignupButton";
 import { useKeyboardOpen } from "../../../../../hooks/useKeyboardOpen";
 import { usePhoneVerification } from "../../../../../hooks/usePhoneVerification";
-import { useSignup } from "../../../../../hooks/query/signin/useSignup";
 import { mapFormDataToSignupRequest } from "../../../../../utils/mapper";
 import type { FormData } from "../../../../../types/form";
 
 interface StepPhoneVerifyProps {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-  onNext: () => void;
 }
 
-const StepPhoneVerify = ({ formData, setFormData, onNext }: StepPhoneVerifyProps) => {
+const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
   const isKeyboardOpen = useKeyboardOpen();
   const {
     isRequested,
@@ -24,32 +22,17 @@ const StepPhoneVerify = ({ formData, setFormData, onNext }: StepPhoneVerifyProps
     validateCode,
     setVerifyError,
   } = usePhoneVerification(formData.phone, formData.verifyCode);
-  const { mutate: signup, isPending } = useSignup();
-
   const handlePhoneChange = (phone: string) =>
     setFormData((prev) => ({ ...prev, phone }));
+
   const handleVerifyCodeChange = (code: string) => {
     setVerifyError(false);
     setFormData((prev) => ({ ...prev, verifyCode: code }));
   };
 
-  const handleNext = () => {
-    if (!isFormValid || !validateCode()) return;
-    const signupData = {
-      ...mapFormDataToSignupRequest(formData),
-      role: "CUSTOMER" as const,
-    };
-
-    signup(signupData, {
-      onSuccess: (res) => {
-        if (res.resultType === "SUCCESS") {
-          onNext();
-        } else {
-          console.log(res.error || "회원가입 실패");
-        }
-      },
-      onError: (res) => console.log(res.message || "네트워크 오류 발생"),
-    });
+  const signupData = {
+    ...mapFormDataToSignupRequest(formData),
+    role: "CUSTOMER" as const,
   };
 
   return (
@@ -83,10 +66,10 @@ const StepPhoneVerify = ({ formData, setFormData, onNext }: StepPhoneVerifyProps
       )}
 
       <SignupButton
-        onClick={handleNext}
+        signupData={signupData}
+        isFormValid={isFormValid}
+        validateCode={validateCode}
         isKeyboardOpen={isKeyboardOpen}
-        isValid={isFormValid}
-        isPending={isPending}
       />
     </div>
   );

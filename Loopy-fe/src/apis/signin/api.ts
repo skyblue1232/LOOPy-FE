@@ -18,7 +18,6 @@ export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
           id: "999",
           email: data.email,
           nickname: data.nickname,
-          roles: [data.role],
           currentRole: data.role,
         },
       },

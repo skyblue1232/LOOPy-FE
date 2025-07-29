@@ -21,8 +21,7 @@ export interface SignupSuccessResponse {
   user: {
     id: string;
     email: string;
-    nickname: string;
-    roles: ("CUSTOMER" | "OWNER")[];    
+    nickname: string;   
     currentRole: "CUSTOMER" | "OWNER";  
   };
 }

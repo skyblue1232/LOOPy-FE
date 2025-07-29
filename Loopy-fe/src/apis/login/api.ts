@@ -9,18 +9,13 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
     console.error("서버 미응답. mock 응답 반환:", data);
 
     return {
-      resultType: "SUCCESS",
-      error: null,
-      success: {
-        message: "임시 로그인: 로그인 성공",
-        token: "mock.jwt.token.value",
-        user: {
-          id: "999",
-          email: data.email,
-          nickname: "테스터",
-          roles: [data.role],       
-          currentRole: data.role,   
-        },
+      message: "임시 로그인: 로그인 성공",
+      token: "mock.jwt.token.value",
+      user: {
+        id: "999",
+        email: data.email,
+        nickname: "테스터",
+        currentRole: data.role,
       },
     };
   }

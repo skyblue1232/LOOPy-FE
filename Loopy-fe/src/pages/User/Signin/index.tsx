@@ -44,7 +44,6 @@ const SignupPage = () => {
         <StepVerify
           formData={formData}
           setFormData={setFormData}
-          onNext={goToHome}
         />
       )}
     </div>
