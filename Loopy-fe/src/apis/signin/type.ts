@@ -1,5 +1,3 @@
-import type { ApiResponse } from "../types/ApiResponse";
-
 export interface SignupRequest {
   email: string;
   password: string;
@@ -15,7 +13,7 @@ export interface SignupRequest {
   };
 }
 
-export interface SignupSuccessResponse {
+export interface SignupResponse {
   message: string;
   token: string;
   user: {
@@ -26,5 +24,3 @@ export interface SignupSuccessResponse {
   };
 }
 
-
-export type SignupResponse = ApiResponse<SignupSuccessResponse>;

@@ -1,18 +1,48 @@
 import CommonButton from "../../../../components/button/CommonButton";
+import { useSignup } from "../../../../hooks/query/signin/useSignup";
+import { mapFormDataToSignupRequest } from "../../../../utils/mapper";
+import type { FormData } from "../../../../types/form";
 
 interface AdminSignupButtonProps {
-  onClick: () => void;
+  formData: FormData;
   isKeyboardOpen: boolean;
   isValid: boolean;
-  isPending: boolean;
+  validateCode: () => boolean;
+  onNext: () => void;
 }
 
 const AdminSignupButton = ({
-  onClick,
+  formData,
   isKeyboardOpen,
   isValid,
-  isPending,
+  validateCode,
+  onNext,
 }: AdminSignupButtonProps) => {
+  const { mutate: signup, isPending } = useSignup();
+
+  const handleClick = () => {
+    if (!isValid || !validateCode() || isPending) return;
+
+    const signupData = {
+      ...mapFormDataToSignupRequest(formData),
+      role: "OWNER" as const,
+    };
+
+    signup(signupData, {
+      onSuccess: (res) => {
+        if (res && res.token && res.user) {
+          console.log("회원가입 성공:", res.user);
+          onNext();
+        } else {
+          console.log("회원가입 실패: 응답 이상");
+        }
+      },
+      onError: (err) => {
+        console.error("네트워크 오류:", err.message);
+      },
+    });
+  };
+
   return (
     <div
       className={`absolute left-1/2 transform -translate-x-1/2 w-full max-w-[393px] transition-all duration-300 ${
@@ -21,7 +51,7 @@ const AdminSignupButton = ({
     >
       <CommonButton
         text="회원가입하기"
-        onClick={onClick}
+        onClick={handleClick}
         className={`w-full ${
           isValid
             ? "bg-[#6970F3] text-white"

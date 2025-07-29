@@ -20,6 +20,11 @@ const SignupPage = () => {
     phone: "",
     verifyCode: "",
     role: "CUSTOMER",
+    allowKakaoAlert: true,
+    agreeTerms: false,
+    agreePrivacy: false,
+    agreemarketing: true,
+    agreelocation: true,
   });
 
   const goToHome = () => navigate("/");
