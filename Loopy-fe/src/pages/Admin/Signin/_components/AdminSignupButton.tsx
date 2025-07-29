@@ -1,5 +1,5 @@
 import CommonButton from "../../../../components/button/CommonButton";
-import { useSignup } from "../../../../hooks/query/signin/useSignup";
+import { useSignup } from "../../../../hooks/mutation/signin/useSignup";
 import { mapFormDataToSignupRequest } from "../../../../utils/mapper";
 import type { FormData } from "../../../../types/form";
 

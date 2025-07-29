@@ -1,24 +1,57 @@
+import { useEffect, useState } from "react";
 import CommonInput from "../../../../../components/input/CommonInput";
 import CommonButton from "../../../../../components/button/CommonButton";
-import { useState } from "react";
-import { useKeyboardOpen } from "../../../../../hooks/useKeyboardOpen";
 import CommonHeader from "../../../../../components/header/CommonHeader";
+import { useKeyboardOpen } from "../../../../../hooks/useKeyboardOpen";
+import { usePatchNickname } from "../../../../../hooks/mutation/userInfo/usePatchNickname";
+import { useMyInfo } from "../../../../../hooks/query/userInfo/useMyInfo";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface EditProfileProps {
   onBack: () => void;
 }
 
 const EditProfile = ({ onBack }: EditProfileProps) => {
-  const [nickname, setNickname] = useState("루피25");
+  const { data: myInfo, isLoading } = useMyInfo();
+  const [nickname, setNickname] = useState("");
   const isKeyboardOpen = useKeyboardOpen();
+  const { mutate, isPending } = usePatchNickname();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (myInfo) {
+      setNickname(myInfo.nickname);
+    }
+  }, [myInfo]);
 
   const isValid = nickname.trim().length > 0;
 
   const handleSave = () => {
     if (!isValid) return;
-    console.log("닉네임 저장:", nickname);
-    onBack();
+    console.log("myInfo.nickname", myInfo?.nickname);
+
+    mutate(
+      { nickname },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["myInfo"] });
+          onBack();
+        },
+        onError: (err) => {
+          console.error("닉네임 변경 실패:", err);
+          alert("닉네임 변경에 실패했어요.");
+        },
+      }
+    );
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[calc(100vh-75px)]">
+        <div className="w-8 h-8 border-4 border-[#DFDFDF] border-t-[#6970F3] rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -32,7 +65,7 @@ const EditProfile = ({ onBack }: EditProfileProps) => {
             onChange={(e) => setNickname(e.target.value)}
           />
         </div>
-  
+
         <div
           className={`absolute left-0 w-full px-[1.5rem] transition-all duration-300 ${
             isKeyboardOpen ? "bottom-[4rem]" : "bottom-[2rem]"
@@ -42,9 +75,11 @@ const EditProfile = ({ onBack }: EditProfileProps) => {
             text="저장하기"
             onClick={handleSave}
             className={`w-full ${
-              isValid ? "bg-[#6970F3] text-white" : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
+              isValid
+                ? "bg-[#6970F3] text-white"
+                : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
             }`}
-            disabled={!isValid}
+            disabled={!isValid || isPending}
           />
         </div>
       </div>
