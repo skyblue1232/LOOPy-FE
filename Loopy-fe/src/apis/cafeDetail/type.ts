@@ -30,10 +30,10 @@ export interface MenuItem {
 export interface Coupon {
   id: number;
   name: string;
-  validDays: number;
   discountType: 'fixed' | 'percentage';
   discountValue: number;
-  applicableMenu: string | null;
+  applicableMenu: MenuItem | null;
+  createdAt: string;
   expiredAt: string;
 }
 

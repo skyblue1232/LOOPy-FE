@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
-import type { InfiniteData } from "@tanstack/react-query";
+import { useQuery, /*useInfiniteQuery*/ } from "@tanstack/react-query";
+//import type { InfiniteData } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { useInView } from "react-intersection-observer";
+//import { useInView } from "react-intersection-observer";
 import CafeTagButton from "./CafeTagButton";
 import CafeInfoContent from "./CafeInfoContent";
 import type { BusinessHour, CafeDetailData } from "../../../../types/cafeData";
@@ -10,7 +10,7 @@ import { cafeDetailMock } from "../../../../mock/cafeDetailMock";
 import { cafeReviewMock } from "../../../../mock/cafeReviewMock";
 import { formatReview } from "../../../../utils/formatReview";
 import { getCafeReviews } from "../../../../apis/review/api";
-import type { ReviewPage } from "../../../../apis/review/type";
+//import type { ReviewPage } from "../../../../apis/review/type";
 import CafeReviewContent from "./CafeReviewContent";
 import AlarmSubscribeButton from "./AlarmSubscribeButton";
 import BookmarkButton from "../../../../components/button/BookmarkButton";
@@ -18,6 +18,7 @@ import ArrowDownIcon from "/src/assets/images/ArrowDown_Grey2.svg?react";
 import ArrowUpIcon from "/src/assets/images/ArrowUp_Grey2.svg?react";
 import CafeInfoContentSkeleton from "../Skeleton/CafeInfoContentSkeleton";
 import CafeReviewContentSkeleton from "../Skeleton/CafeReviewSkeleton";
+import type { Coupon } from "../../../../apis/cafeDetail/type";
 
 interface CafeInfoPanelProps extends CafeDetailData {
     selectedTab: "info" | "review";
@@ -33,6 +34,9 @@ interface CafeInfoPanelProps extends CafeDetailData {
     storeFilters?: Record<string, boolean>;
     takeOutFilters?: Record<string, boolean>;
     menuFilters?: Record<string, boolean>;
+    coupons: Coupon[];
+    cafeId: string;
+    cafeName: string;
 }
 
 const days = ["일", "월", "화", "수", "목", "금", "토"];
@@ -53,6 +57,7 @@ export default function CafeInfoPanel({
     storeFilters,
     takeOutFilters,
     menuFilters,
+    coupons,
 }: CafeInfoPanelProps) {
     const [showAllTags, setShowAllTags] = useState(false);
     const today = days[new Date().getDay()];
@@ -220,6 +225,9 @@ export default function CafeInfoPanel({
                                     imageSrc: m.imgUrl,
                                 }))
                             }
+                            coupons={coupons}
+                            cafeId={cafeId!}
+                            cafeName={name}
                         />
                     )
                 )}

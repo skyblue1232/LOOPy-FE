@@ -74,6 +74,9 @@ const DetailPage = () => {
               storeFilters={data.cafe.storeFilters}
               takeOutFilters={data.cafe.takeOutFilters}
               menuFilters={data.cafe.menuFilters}
+              coupons={data.coupons}
+              cafeId={String(cafe.id)}
+              cafeName={cafe.name}
             />
           )}
         </div>

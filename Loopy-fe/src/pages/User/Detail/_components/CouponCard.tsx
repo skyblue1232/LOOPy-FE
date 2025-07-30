@@ -3,13 +3,12 @@ import DownloadIcon from "/src/assets/images/Download.svg?react";
 
 interface CouponCardProps {
     imageSrc: string;
-    storeName: string;       // ex) 카페 위니
-    title: string;           // ex) 아메리카노 200원 할인쿠폰
-    description: string;     // ex) 발급 후 14일 동안 사용 가능
-    onDownload: () => void;
-    cafeId: string;               // ← 필수
+    storeName: string;
+    title: string;
+    description: string;
+    cafeId: string;
     couponTemplateId: number;
-    validDays: number;
+    onDownload: () => void;
 }
 
 const CouponCard = ({

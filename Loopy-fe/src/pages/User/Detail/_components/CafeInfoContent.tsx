@@ -11,6 +11,9 @@ import PhoneIcon from "/src/assets/images/Phone.svg?react";
 import GlobeIcon from "/src/assets/images/Globe.svg?react";
 import ArrowRightIcon from "/src/assets/images/ArrowRight_Grey2.svg?react";
 import CouponReceivedModal from "./CouponModal";
+import { couponIssueMock } from "../../../../mock/couponIssueMock";
+import { handleIssueCoupon } from "../../../../utils/handleIssueCoupon";
+import type { Coupon } from "../../../../apis/cafeDetail/type";
 
 export interface BusinessHour {
     day: string; 
@@ -29,6 +32,9 @@ interface Props {
         price: string;
         imageSrc: string;
     }[];
+    coupons: Coupon[];
+    cafeId: string;
+    cafeName: string;
 }
 
 export default function CafeInfoContent({
@@ -38,12 +44,15 @@ export default function CafeInfoContent({
     description,
     keywords,
     menus = [],
+    coupons,
+    cafeName,
 }: Props) {
     const navigate = useNavigate();
+    const { cafeId = '1' } = useParams(); 
     const topMenus = menus.slice(0,2);
     const [showCouponModal, setShowCouponModal] = useState(false);
-    const { cafeId } = useParams();
-    const { mutate: issueCoupon } = useIssueCoupon();
+    const [issuedCoupon, setIssuedCoupon] = useState(couponIssueMock); 
+    const { mutateAsync: issueCoupon } = useIssueCoupon();
 
     return (
         <>
@@ -93,22 +102,57 @@ export default function CafeInfoContent({
                     />
                 </div>
 
-                {/* 쿠폰 안내 */}
-                <div className="mt-[2rem] text-[1rem] font-semibold text-[#000000] leading-none">
-                    할인 쿠폰
-                </div>
-                <div className="mt-[1rem]">
-                    <CouponCard
-                        imageSrc="/src/assets/images/RedImage.svg"
-                        storeName="카페 위니"
-                        title="아메리카노 200원 할인쿠폰"
-                        description="발급 후 14일 동안 사용 가능"
-                        cafeId="1"
-                        couponTemplateId={1}
-                        validDays={14}
-                        onDownload={() => setShowCouponModal(true)}
-                    />
-                </div>
+                {coupons.length > 0 && (
+                    <>
+                        <div className="mt-[2rem] text-[1rem] font-semibold text-[#000000] leading-none">
+                        할인 쿠폰
+                        </div>
+                        <div className="mt-[1rem] flex flex-col gap-[1rem]">
+                            {coupons.map((coupon) => {
+                                const formatDateRange = (start: string, end: string) => {
+                                    const format = (dateStr: string) => {
+                                        const date = new Date(dateStr);
+                                        return `${date.getFullYear()}.${(date.getMonth() + 1)
+                                        .toString()
+                                        .padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+                                    };
+                                    return `${format(start)} ~ ${format(end)}`;
+                                };
+
+                                return (
+                                <CouponCard
+                                    key={coupon.id}
+                                    imageSrc="/src/assets/images/RedImage.svg"
+                                    storeName={cafeName}
+                                    title={coupon.name}
+                                    description={`${formatDateRange(coupon.createdAt, coupon.expiredAt)}`}
+                                    cafeId={cafeId}
+                                    couponTemplateId={coupon.id}
+                                    onDownload={async () => {
+                                        await handleIssueCoupon({
+                                            issueCoupon,
+                                            cafeId,
+                                            couponTemplateId: coupon.id,
+                                            createdAt: coupon.createdAt,
+                                            expiredAt: coupon.expiredAt,
+                                            onSuccess: (data) => {
+                                                setIssuedCoupon(data);
+                                                setShowCouponModal(true);
+                                            },
+                                            onAlreadyIssued: () => {
+                                                alert('이미 발급받은 쿠폰입니다.');
+                                            },
+                                            onError: (e) => {
+                                                console.error('쿠폰 발급 중 오류', e);
+                                            },
+                                        });
+                                    }}
+                                />
+                                );
+                            })}
+                        </div>
+                    </>
+                    )}
 
                 {/* 대표 메뉴 */}
                 {topMenus.length > 0 && (
@@ -145,26 +189,8 @@ export default function CafeInfoContent({
                         <CouponReceivedModal
                             onClose={() => setShowCouponModal(false)}
                             onConfirm={() => {
-                                issueCoupon(
-                                    {
-                                        cafeId: '1',
-                                        body: {
-                                        id: 1,
-                                        validDays: 14,
-                                        },
-                                    },
-                                    {
-                                        onSuccess: (data) => {
-                                        if (data?.errorCode === 'C002') {
-                                            alert("이미 발급받은 쿠폰입니다.");
-                                        } else {
-                                            alert("쿠폰이 발급되었습니다!");
-                                            // 필요 시 쿠폰함 이동 처리
-                                        }
-                                        },
-                                    }
-                                );
                                 setShowCouponModal(false);
+                                // 필요하면 쿠폰함으로 이동 추가
                             }}
                         />
                     </div>

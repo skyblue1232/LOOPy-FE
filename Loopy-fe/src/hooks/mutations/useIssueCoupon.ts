@@ -3,8 +3,10 @@ import { issueCoupon } from "../../apis/coupon/api";
 import { couponIssueMock } from "../../mock/couponIssueMock";
 
 interface IssueCouponParams {
-  cafeId: string;
-  body: { id: number; validDays: number };
+    cafeId: string;
+    id: number;
+    createdAt: string;
+    expiredAt: string;
 }
 
 export const useIssueCoupon = () => {
