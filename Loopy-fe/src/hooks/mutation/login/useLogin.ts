@@ -1,13 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { login } from "../../../apis/login/api";
-import type { LoginRequest, LoginResponse } from "../../../apis/login/type";
+import { login } from "../../../apis/auth/login/api";
+import type { LoginRequest, LoginResponse } from "../../../apis/auth/login/type";
 
 export const useLogin = () => {
   return useMutation<LoginResponse, Error, LoginRequest>({
     mutationFn: login,
 
     onSuccess: (data) => {
-      console.log("로그인 성공:", data);
+      console.log("로그인 성공:", data.message);
     },
 
     onError: (error) => {
