@@ -1,27 +1,44 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import TopPhotoSection from "./_components/TopPhotoSection";
 import CafeInfoPanel from "./_components/CafeInfoPanel";
 import CafePhotoModal from "./_components/CafePhotoModal";
-import { cafeDetailMock } from "../../../mock/cafeDetailMock";
 import ReviewButton from "./_components/ReviewButton";
 import TopPhotoSectionSkeleton from "./Skeleton/TopPhotoSectionSkeleton";
 import CafeInfoPanelSkeleton from "./Skeleton/CafeInfoPanelSkeleton";
 
+import { cafeDetailMock } from "../../../mock/cafeDetailMock";
+import { getCafeDetail } from "../../../apis/cafeDetail/api";
+import type { CafeDetailSuccess } from "../../../apis/cafeDetail/type";
+import { parseBusinessHours } from "../../../utils/parseBusinessHours";
+
 const DetailPage = () => {
+  const { cafeId = '1' } = useParams(); // 임의 지정
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<"info" | "review">("info");
-  const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
   const handleBack = () => {
     navigate(-1); 
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+  const { data, isLoading } = useQuery<CafeDetailSuccess>({
+    queryKey: ['cafeDetail', cafeId],
+    queryFn: async () => {
+      if (!cafeId) throw new Error('no cafeId');
+      try {
+        return await getCafeDetail(cafeId);
+      } catch (e) {
+        console.warn('getCafeDetail failed, fallback to mock:', e);
+        return cafeDetailMock;
+      }
+    },
+    enabled: !!cafeId,
+  });
+
+  const cafe = data?.cafe;
+  const photos = data?.photos || [];
 
   return (
     <div className="relative -mx-[1.5rem] h-screen overflow-y-scroll custom-scrollbar bg-white flex justify-center z-[100]">
@@ -31,7 +48,7 @@ const DetailPage = () => {
             <TopPhotoSectionSkeleton />
           ) : (
             <TopPhotoSection
-              images={cafeDetailMock.images}
+              images={photos.map((p) => p.url)}
               onOpenModal={() => setIsModalOpen(true)}
               onBack={handleBack}
             />
@@ -39,21 +56,27 @@ const DetailPage = () => {
         </div>
 
         <div className="z-10 relative -mt-[1.5rem]">
-          {isLoading ? (
+          {isLoading || !cafe ? (
             <CafeInfoPanelSkeleton />
           ) : (
             <CafeInfoPanel
-              name={cafeDetailMock.name}
-              address={cafeDetailMock.address}
-              tags={cafeDetailMock.tags}
-              keywords={cafeDetailMock.keywords}
+              name={cafe.name}
+              address={cafe.address}
+              tags={[]}
+              keywords={cafe.keywords}
               selectedTab={selectedTab}
               onTabChange={setSelectedTab}
-              hours={cafeDetailMock.hours}
-              phone={cafeDetailMock.phone}
-              instagram={cafeDetailMock.instagram}
-              description={cafeDetailMock.description}
+              hours={parseBusinessHours(cafe.businessHours)}
+              phone={cafe.phone}
+              instagram={cafe.websiteUrl}
+              description={cafe.description}
               isLoading={isLoading}
+              storeFilters={data.cafe.storeFilters}
+              takeOutFilters={data.cafe.takeOutFilters}
+              menuFilters={data.cafe.menuFilters}
+              coupons={data.coupons}
+              cafeId={String(cafe.id)}
+              cafeName={cafe.name}
             />
           )}
         </div>
@@ -66,7 +89,7 @@ const DetailPage = () => {
 
         {isModalOpen && (
           <CafePhotoModal
-            images={cafeDetailMock.images}
+            images={photos.map((p) => p.url)}
             onClose={() => setIsModalOpen(false)}
           />
         )}

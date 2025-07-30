@@ -82,7 +82,7 @@ const publicRoutes = createBrowserRouter([
         ],
       },
       {
-        path: 'detail',
+        path: 'detail/:cafeId',
         children: [
           {
             index: true,
