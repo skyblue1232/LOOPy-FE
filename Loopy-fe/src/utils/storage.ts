@@ -1,18 +1,24 @@
+import { encrypt, decrypt } from "./crypto"; 
+
 class Storage {
   static getAccessToken = () => {
-    return localStorage.getItem("accessToken") ?? undefined;
+    const encrypted = localStorage.getItem("accessToken");
+    return encrypted ? decrypt(encrypted) : undefined;
   };
 
   static setAccessToken = (accessToken: string) => {
-    localStorage.setItem("accessToken", accessToken);
+    const encrypted = encrypt(accessToken);
+    localStorage.setItem("accessToken", encrypted);
   };
 
   static getNickname = () => {
-    return localStorage.getItem("nickname") ?? undefined;
+    const encrypted = localStorage.getItem("nickname");
+    return encrypted ? decrypt(encrypted) : undefined;
   };
 
   static setNickname = (nickname: string) => {
-    localStorage.setItem("nickname", nickname);
+    const encrypted = encrypt(nickname);
+    localStorage.setItem("nickname", encrypted);
   };
 
   static clearStorage = () => {
