@@ -1,11 +1,12 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { auth } from "../firebase/firebase-config";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { signInWithPhoneNumber } from "firebase/auth";
 import debounce from "lodash.debounce";
+import { initializeRecaptcha } from "../firebase/initRecaptcha";
 
 declare global {
   interface Window {
-    recaptchaVerifier?: RecaptchaVerifier;
+    recaptchaVerifier?: any; 
   }
 }
 
@@ -31,24 +32,6 @@ export const usePhoneVerification = (
   const phoneRef = useRef(phone);
   phoneRef.current = phone;
 
-  const createRecaptchaIfNeeded = async () => {
-    if (!window.recaptchaVerifier) {
-      const container = document.getElementById("recaptcha");
-      if (!container) {
-        console.error("reCAPTCHA 컨테이너가 없음");
-        return;
-      }
-
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        { size: "invisible" }
-      );
-
-      await window.recaptchaVerifier.render();
-    }
-  };
-
   const sendCode = useCallback(async () => {
     const currentPhone = phoneRef.current;
 
@@ -58,7 +41,10 @@ export const usePhoneVerification = (
     const formatted = "+82" + currentPhone.replace(/-/g, "").slice(1);
 
     try {
-      await createRecaptchaIfNeeded();
+      await initializeRecaptcha(); 
+
+      const token = await window.recaptchaVerifier!.verify();
+  console.log("🪙 reCAPTCHA 토큰:", token);
 
       const result = await signInWithPhoneNumber(
         auth,
