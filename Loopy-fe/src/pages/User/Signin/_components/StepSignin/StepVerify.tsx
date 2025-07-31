@@ -5,6 +5,7 @@ import { useKeyboardOpen } from "../../../../../hooks/useKeyboardOpen";
 import { usePhoneVerification } from "../../../../../hooks/usePhoneVerification";
 import { mapFormDataToSignupRequest } from "../../../../../utils/mapper";
 import type { FormData } from "../../../../../types/form";
+import { useEffect } from "react";
 
 interface StepPhoneVerifyProps {
   formData: FormData;
@@ -20,7 +21,15 @@ const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
     isPhoneValid,
     requestCode,
     setVerifyError,
+    isVerified,
+    validateCode,
   } = usePhoneVerification(formData.phoneNumber, formData.verifyCode);
+
+  useEffect(() => {
+    if (formData.verifyCode.length === 6) {
+      validateCode();
+    }
+  }, [formData.verifyCode, validateCode]);
 
   const handlePhoneChange = (phoneNumber: string) => {
     setFormData((prev) => ({ ...prev, phoneNumber }));
@@ -68,7 +77,7 @@ const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
 
       <SignupButton
         signupData={signupData}
-        isFormValid={false} 
+        isFormValid={isVerified} 
         isKeyboardOpen={isKeyboardOpen}
       />
     </div>
