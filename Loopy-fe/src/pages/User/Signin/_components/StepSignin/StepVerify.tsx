@@ -13,17 +13,18 @@ interface StepPhoneVerifyProps {
 
 const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
   const isKeyboardOpen = useKeyboardOpen();
+
   const {
     isRequested,
     verifyError,
     isPhoneValid,
-    isFormValid,
     requestCode,
-    validateCode,
     setVerifyError,
-  } = usePhoneVerification(formData.phone, formData.verifyCode);
-  const handlePhoneChange = (phone: string) =>
-    setFormData((prev) => ({ ...prev, phone }));
+  } = usePhoneVerification(formData.phoneNumber, formData.verifyCode);
+
+  const handlePhoneChange = (phoneNumber: string) => {
+    setFormData((prev) => ({ ...prev, phoneNumber }));
+  };
 
   const handleVerifyCodeChange = (code: string) => {
     setVerifyError(false);
@@ -40,7 +41,7 @@ const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
       <p className="text-[1rem] font-semibold text-[#252525] mb-[0.5rem]">전화번호</p>
       <div className="flex gap-2">
         <div className="flex-1 w-full">
-          <PhoneInput phone={formData.phone} onChange={handlePhoneChange} />
+          <PhoneInput phoneNumber={formData.phoneNumber} onChange={handlePhoneChange} />
         </div>
         <div className="py-[0.25rem]">
           <button
@@ -67,8 +68,7 @@ const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
 
       <SignupButton
         signupData={signupData}
-        isFormValid={isFormValid}
-        validateCode={validateCode}
+        isFormValid={false} 
         isKeyboardOpen={isKeyboardOpen}
       />
     </div>

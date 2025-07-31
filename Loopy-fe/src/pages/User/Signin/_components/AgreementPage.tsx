@@ -2,43 +2,62 @@ import { useState } from "react";
 import CommonHeader from "../../../../components/header/CommonHeader";
 import AgreementListView from "./AgreementListView";
 import AgreementDetailView from "./AgreementDetailView";
-import type { AgreementKey, AgreementState } from "../../../../types/agreement";
+import type { AgreementKey } from "../../../../types/agreement";
+import type { FormData } from "../../../../types/form";
 
 interface AgreementPageProps {
+  formData: FormData;
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   onNext: () => void;
   onBack: () => void;
 }
 
-const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
-  const [agreements, setAgreements] = useState<AgreementState>({
-    terms: false,
-    privacy: false,
-    location: false,
-    marketing: false,
-  });
-
+const AgreementPage = ({ formData, setFormData, onNext, onBack }: AgreementPageProps) => {
   const [view, setView] = useState<"list" | "detail">("list");
   const [selectedAgreementKey, setSelectedAgreementKey] = useState<AgreementKey | null>(null);
+
+  const agreements = {
+    terms: formData.agreeTerms,
+    privacy: formData.agreePrivacy,
+    location: formData.agreelocation,
+    marketing: formData.agreemarketing,
+  };
 
   const isAllRequiredChecked =
     agreements.terms && agreements.privacy && agreements.location;
 
+  const agreementKeyToFormKey = (key: AgreementKey): keyof FormData => {
+    switch (key) {
+      case "terms":
+        return "agreeTerms";
+      case "privacy":
+        return "agreePrivacy";
+      case "location":
+        return "agreelocation";
+      case "marketing":
+        return "agreemarketing";
+    }
+  };
+
   const handleToggle = (key: AgreementKey) => {
-    setAgreements(prev => ({
+    const formKey = agreementKeyToFormKey(key);
+    setFormData(prev => ({
       ...prev,
-      [key]: !prev[key],
+      [formKey]: !prev[formKey],
     }));
   };
 
   const handleToggleAll = () => {
     const allChecked = Object.values(agreements).every(Boolean);
     const next = !allChecked;
-    setAgreements({
-      terms: next,
-      privacy: next,
-      location: next,
-      marketing: next,
-    });
+
+    setFormData(prev => ({
+      ...prev,
+      agreeTerms: next,
+      agreePrivacy: next,
+      agreelocation: next,
+      agreemarketing: next,
+    }));
   };
 
   const handleShowDetail = (key: AgreementKey) => {
@@ -68,10 +87,7 @@ const AgreementPage = ({ onNext, onBack }: AgreementPageProps) => {
     <div className="relative min-h-screen flex flex-col font-suit">
       {view === "list" && (
         <>
-          <CommonHeader
-            title="서비스 이용 동의"
-            onBack={onBack}
-          />
+          <CommonHeader title="서비스 이용 동의" onBack={onBack} />
           <AgreementListView
             agreements={agreements}
             onToggle={handleToggle}

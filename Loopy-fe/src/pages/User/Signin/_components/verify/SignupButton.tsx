@@ -1,26 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import CommonButton from "../../../../../components/button/CommonButton";
 import { useSignup } from "../../../../../hooks/mutation/signin/useSignup";
-import type { SignupRequest } from "../../../../../apis/signin/type";
+import type { SignupRequest } from "../../../../../apis/auth/signin/type";
 
 interface SignupButtonProps {
   signupData: SignupRequest;
   isFormValid: boolean;
-  validateCode: () => boolean;
   isKeyboardOpen: boolean;
 }
 
 const SignupButton = ({
   signupData,
   isFormValid,
-  validateCode,
   isKeyboardOpen,
 }: SignupButtonProps) => {
   const navigate = useNavigate();
   const { mutate: signup, isPending } = useSignup();
 
   const handleClick = () => {
-    if (!isFormValid || !validateCode() || isPending) return;
+    if (!isFormValid || isPending) return;
 
     signup(signupData, {
       onSuccess: (res) => {
