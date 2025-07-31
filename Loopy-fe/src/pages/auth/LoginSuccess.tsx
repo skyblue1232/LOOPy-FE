@@ -10,11 +10,12 @@ const LoginSuccess = () => {
   const nickname = params.get("nickname");
 
   useEffect(() => {
-    if (token) {
+    if (token && nickname) {
       Storage.setAccessToken(token);
+      Storage.setNickname(nickname); 
       navigate("/onboard");
     } else {
-      console.error("소셜 로그인 실패");
+      console.error("소셜 로그인 실패: 토큰 또는 닉네임 없음");
       navigate("/");
     }
   }, [token, nickname, navigate]);

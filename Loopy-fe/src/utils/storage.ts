@@ -7,6 +7,14 @@ class Storage {
     localStorage.setItem("accessToken", accessToken);
   };
 
+  static getNickname = () => {
+    return localStorage.getItem("nickname") ?? undefined;
+  };
+
+  static setNickname = (nickname: string) => {
+    localStorage.setItem("nickname", nickname);
+  };
+
   static clearStorage = () => {
     localStorage.clear();
   };
