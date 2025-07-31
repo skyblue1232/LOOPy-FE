@@ -45,7 +45,7 @@ const StampPaper: React.FC<StampProps> = ({ currentStep }) => {
               {isDone ? (
                 <div className="w-full h-full rounded-full border-[5px] border-[#DFDFDF] overflow-hidden">
                   <img
-                    src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=400&q=80"
+                    src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"
                     alt={`Step ${step}`}
                     className="w-full h-full object-cover"
                   />
@@ -73,6 +73,5 @@ const StampPaper: React.FC<StampProps> = ({ currentStep }) => {
     </div>
   );
 };
-
 
 export default StampPaper;

@@ -152,7 +152,7 @@ const publicRoutes = createBrowserRouter([
         element: <LevelDetailPage />,
       },
       {
-        path: 'mystamppage/:cafeId',
+        path: 'mystamppage/:stampBookId',
         // loader: AuthCheck.authPageCheck,
         element: <MyStampPage />,
       },

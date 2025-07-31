@@ -1,37 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
 import MyStamp from './components/MyStamp';
 import ProfileCard from './components/ProfileCard';
 import TopBar from './components/TopBar';
 import StampSort from './components/StampSort';
-import { stampList, profileCardData } from './mock/mockData';
 import DetailButton from './components/DetailButton';
 import ChallengeCarousel from './components/ChallengeCarousel';
 import HomePageSkeleton from './Skeleton/HomeSkeleton';
+import { useStampBooks } from '../../../hooks/query/stampBook/useStampBook';
+import { profileCardData } from './mock/mockData';
 
 const HomePage = () => {
-  const [sortType, setSortType] = useState('most');
-  const [loading, setLoading] = useState(true);
+  const [sortType, setSortType] = useState<'most' | 'due'>('most');
+  const apiSortBy = sortType === 'most' ? 'mostStamped' : 'shortestDeadline';
+
+  const {
+    data: stampBooks,
+    isLoading,
+    error,
+  } = useStampBooks({ sortBy: apiSortBy });
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <HomePageSkeleton />;
   }
 
-  const sortedList = [...stampList].sort((a, b) => {
-    if (sortType === 'most') return b.stampCount - a.stampCount;
-    if (sortType === 'due')
-      return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
-    return 0;
-  });
+  if (error) {
+    return (
+      <div className="p-4 text-center text-red-500">오류가 발생했습니다.</div>
+    );
+  }
+
+  if (!stampBooks || stampBooks.length === 0) {
+    return <div className="p-4 text-center">스탬프북이 없습니다.</div>;
+  }
 
   return (
     <div>
@@ -45,7 +49,7 @@ const HomePage = () => {
           <ProfileCard {...profileCardData} />
         </div>
         <div className="bg-white rounded-t-xl mt-8 pt-8 -mx-[1.5rem] px-[1.5rem]">
-          <div className=" font-bold text-[1.125rem] flex justify-between items-center leading-none mb-6">
+          <div className="font-bold text-[1.125rem] flex justify-between items-center leading-none mb-6">
             <span>루피와 진행 중인 챌린지</span>
             <DetailButton
               onClick={() => navigate('/challenge')}
@@ -56,23 +60,32 @@ const HomePage = () => {
           <div className="-mr-[1.5rem]">
             <ChallengeCarousel />
           </div>
-          <div className="flex justify-between items-center mt-8">
-            <div className="font-bold text-[1.125rem] flex items-center gap-2">
-              <span>내 스탬프지</span>
-              <span className="text-[#6970F3] text-[1.125rem]">
-                {stampList.length}개
-              </span>
-            </div>
-            <StampSort value={sortType} onChange={setSortType} />
-          </div>
-          <div className=" text-[0.875rem] text-gray-500 mt-3">
-            1달 내 재방문이 없으면 포인트로 자동 환전되어요
-          </div>
-          <div className="mt-6 pb-[4rem] flex flex-col items-center">
-            {sortedList.map((stamp, idx) => (
-              <MyStamp key={idx} {...stamp} />
-            ))}
-          </div>
+          {/* stampBooks가 있을 때만 아래 섹션 보여주기 */}
+          {stampBooks && stampBooks.length > 0 && (
+            <>
+              <div className="flex justify-between items-center mt-8">
+                <div className="font-bold text-[1.125rem] flex items-center gap-2">
+                  <span>내 스탬프지</span>
+                  <span className="text-[#6970F3] text-[1.125rem]">
+                    {stampBooks.length}개
+                  </span>
+                </div>
+                <StampSort value={sortType} onChange={setSortType} />
+              </div>
+              <div className="text-[0.875rem] text-gray-500 mt-3">
+                1달 내 재방문이 없으면 포인트로 자동 환전되어요
+              </div>
+              <div className="mt-6 pb-[4rem] flex flex-col items-center">
+                {stampBooks.map((stamp) => (
+                  <MyStamp
+                    key={stamp.id}
+                    stampBook={stamp}
+                    imageUrl={undefined}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

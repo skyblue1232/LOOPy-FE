@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import dayjs from 'dayjs';
-import type { AlarmCardData } from '../mock/mockData';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import type { NotificationDetail } from '../../../../apis/alarm/type';
 dayjs.extend(relativeTime);
 
 interface AlarmCardProps {
-  alarm: AlarmCardData;
+  alarm: NotificationDetail;
 }
 
 const getTimeAgo = (createdAt: string) => {
@@ -21,13 +21,13 @@ const getTimeAgo = (createdAt: string) => {
 };
 
 const AlarmCard: React.FC<AlarmCardProps> = ({ alarm }) => {
-  const { AlarmContent, createdAt } = alarm;
-  const timeAgo = getTimeAgo(createdAt);
+  const content = alarm.detail?.content || alarm.title;
+  const timeAgo = getTimeAgo(alarm.createdAt);
 
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isRead, setIsRead] = useState(alarm.isRead);
+  const [isRead, setIsRead] = useState(alarm.isRead ?? false);
 
-  const showMore = AlarmContent.length > 30;
+  const showMore = content.length > 30;
 
   const displayContent = showMore ? (
     <span
@@ -36,15 +36,15 @@ const AlarmCard: React.FC<AlarmCardProps> = ({ alarm }) => {
     >
       {!isExpanded ? (
         <>
-          {AlarmContent.slice(0, 30)}
+          {content.slice(0, 30)}
           <span className="text-[#A8A8A8]">...더보기</span>
         </>
       ) : (
-        AlarmContent
+        content
       )}
     </span>
   ) : (
-    AlarmContent
+    content
   );
 
   return (

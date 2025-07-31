@@ -1,58 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { fetchChallengeList } from '../../../apis/challenge/challengeList/api';
 import type { ChallengeListItem } from '../../../apis/challenge/challengeList/type';
 
 export const useAllChallengeList = () => {
-  const [allChallengeList, setAllChallengeList] = useState<ChallengeListItem[]>(
-    [],
-  );
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['allChallengeList'],
+    queryFn: fetchChallengeList,
+  });
 
-  useEffect(() => {
-    const getAllChallengeList = async () => {
-      try {
-        setIsLoading(true);
-        const data = await fetchChallengeList();
-        setAllChallengeList(data.success);
-      } catch (e) {
-        setIsError(true);
-        console.error('useAllChallengeList 훅에서 에러:', e);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getAllChallengeList();
-  }, []);
-
-  return { allChallengeList, isLoading, isError };
+  return {
+    allChallengeList: data?.success ?? [],
+    isLoading,
+    isError,
+  };
 };
 
 export const useParticipatingChallengeList = () => {
-  const [participatingChallengeList, setParticipatingChallengeList] = useState<
-    ChallengeListItem[]
-  >([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['participatingChallengeList'],
+    queryFn: fetchChallengeList,
+  });
 
-  useEffect(() => {
-    const getParticipatingChallengeList = async () => {
-      try {
-        setIsLoading(true);
-        const data = await fetchChallengeList();
-        const participated = data.success.filter((item) => item.isParticipated);
-        setParticipatingChallengeList(participated);
-      } catch (e) {
-        setIsError(true);
-        console.error('useParticipatingChallengeList 훅에서 에러:', e);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const participatingChallengeList: ChallengeListItem[] =
+    data?.success?.filter((item) => item.isParticipated) ?? [];
 
-    getParticipatingChallengeList();
-  }, []);
-
-  return { participatingChallengeList, isLoading, isError };
+  return {
+    participatingChallengeList,
+    isLoading,
+    isError,
+  };
 };
