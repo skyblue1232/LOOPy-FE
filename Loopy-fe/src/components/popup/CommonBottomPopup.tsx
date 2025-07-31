@@ -31,9 +31,6 @@ export default function CommonBottomPopup({
 
       {/* 팝업 박스 */}
       <div className="relative w-full sm:max-w-[24.56rem] bg-white rounded-t-[1rem] px-[1.5rem] pt-[2.5rem] pb-[3rem] z-50">
-        {/* Grab Handle */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-8 h-1 bg-[#DFDFDF] rounded-[0.25rem]" />
-
         {/* 타이틀 텍스트 */}
         {titleText && (
           <div className="mb-[1.25rem] text-[1.25rem] font-bold whitespace-pre-line">

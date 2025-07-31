@@ -48,7 +48,7 @@ const ChallengeDetailPage = () => {
 
           {challenge.isParticipated && (
             <p className="bg-[#F0F1FE] rounded text-[#6970F3] text-[0.875rem] font-semibold mt-6 px-[0.75rem] py-[0.25rem]">
-              ｛ {challenge.storeName} ｝에서 참여 중
+              카페 위니에서 참여 중
             </p>
           )}
 
@@ -63,7 +63,7 @@ const ChallengeDetailPage = () => {
           {/* 구분선 */}
           <div className="w-full max-w-md h-px bg-[#E0E0E0] mt-4 mb-6" />
 
-          {/* 상세 설명 (goalDescription 사용) */}
+          {/* 상세 설명 */}
           <p className="text-[0.875rem] font-regular leading-relaxed mb-6">
             {challenge.goalDescription}
           </p>
@@ -90,7 +90,7 @@ const ChallengeDetailPage = () => {
                 </span>
               </div>
               <span className="text-[1rem] font-medium">
-                {challenge.rewardPoint} 포인트
+                +{challenge.rewardPoint}p
               </span>
             </div>
           </div>
