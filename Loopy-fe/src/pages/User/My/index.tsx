@@ -47,7 +47,6 @@ const MyPage = () => {
       withdraw={({ history }) => (
         <WithdrawAccountView
           onBack={() => history.push("manageAccount", {})}
-          onConfirm={() => history.push("my", {})}
         />
       )}
       stampExchange={({ history }) => (

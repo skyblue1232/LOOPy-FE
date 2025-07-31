@@ -2,7 +2,6 @@ import AgreementItem from "./AgreementItem";
 import CheckCircle from "./CheckCircle";
 import type { AgreementKey, AgreementState } from "../../../../types/agreement";
 import CommonButton from "../../../../components/button/CommonButton";
-import { usePatchAgreement } from "../../../../hooks/mutation/onboard/usePatchAgreement";
 
 interface AgreementListViewProps {
   agreements: AgreementState;
@@ -21,27 +20,6 @@ const AgreementListView = ({
   isAllRequiredChecked,
   onNext,
 }: AgreementListViewProps) => {
-  const { mutate: saveAgreement } = usePatchAgreement();
-
-  const handleNext = () => {
-    saveAgreement(
-      {
-        termsAgreed: agreements.terms,
-        privacyPolicyAgreed: agreements.privacy,
-        marketingAgreed: agreements.marketing,
-        locationPermission: agreements.location,
-      },
-      {
-        onSuccess: () => {
-          onNext();
-        },
-        onError: (err) => {
-          console.error("약관 동의 저장 실패:", err);
-        },
-      }
-    );
-  };
-
   return (
     <>
       <div className="pb-[7rem]">
@@ -95,7 +73,7 @@ const AgreementListView = ({
       <div className="absolute bottom-0 left-0 w-full py-[3rem] bg-white">
         <CommonButton
           text="다음으로 넘어가기"
-          onClick={handleNext}
+          onClick={onNext}
           disabled={!isAllRequiredChecked}
         />
       </div>

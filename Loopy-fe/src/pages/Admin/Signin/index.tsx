@@ -12,7 +12,7 @@ const AdminSigninPageIndex = () => {
     password: "",
     confirmPassword: "",
     nickname: "",
-    phone: "",
+    phoneNumber: "",
     allowKakaoAlert: true,
     verifyCode: "",
     agreeTerms: false,

@@ -17,14 +17,14 @@ const SignupPage = () => {
     password: "",
     confirmPassword: "",
     nickname: "",
-    phone: "",
+    phoneNumber: "",
     verifyCode: "",
     role: "CUSTOMER",
-    allowKakaoAlert: true,
+    allowKakaoAlert: false,
     agreeTerms: false,
     agreePrivacy: false,
-    agreemarketing: true,
-    agreelocation: true,
+    agreemarketing: false,
+    agreelocation: false,
   });
 
   const goToHome = () => navigate("/");
@@ -36,7 +36,12 @@ const SignupPage = () => {
       )}
 
       {step === "agreement" && (
-        <AgreementPage onNext={() => go("email")} onBack={goToHome} />
+        <AgreementPage
+          formData={formData}
+          setFormData={setFormData}
+          onNext={() => go("email")}
+          onBack={goToHome}
+        />
       )}
       {step === "email" && (
         <StepEmail

@@ -1,11 +1,11 @@
 import CommonInput from "../../../../../components/input/CommonInput";
 
 interface PhoneInputProps {
-  phone: string;
+  phoneNumber: string;
   onChange: (value: string) => void;
 }
 
-const PhoneInput = ({ phone, onChange }: PhoneInputProps) => {
+const PhoneInput = ({ phoneNumber, onChange }: PhoneInputProps) => {
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value.replace(/\D/g, "").slice(0, 11);
     let formatted = raw;
@@ -22,7 +22,7 @@ const PhoneInput = ({ phone, onChange }: PhoneInputProps) => {
   return (
     <CommonInput
       placeholder="전화번호를 입력해주세요"
-      value={phone}
+      value={phoneNumber}
       onChange={handlePhoneChange}
     />
   );
