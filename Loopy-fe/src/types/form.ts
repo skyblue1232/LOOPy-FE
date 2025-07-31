@@ -3,7 +3,7 @@ export interface FormData {
   password: string;
   confirmPassword: string;
   nickname: string;
-  phone: string;
+  phoneNumber: string;
   verifyCode: string;
   allowKakaoAlert: boolean;
   agreeTerms: boolean; 
