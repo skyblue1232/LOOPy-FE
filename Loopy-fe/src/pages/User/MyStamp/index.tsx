@@ -1,43 +1,44 @@
 import CommonHeader from '../../../components/header/CommonHeader';
 import { useNavigate, useParams } from 'react-router-dom';
-import { stampList } from '../Home/mock/mockData';
-import type { StampItem } from '../Home/mock/mockData';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Info from '../../../assets/images/Info.svg?react';
 import CommonBottomPopup from '../../../components/popup/CommonBottomPopup';
 import StampPaper from './components/StampPaper';
 import { GetRemainingDays } from './components/GetRemainingDays';
 import MyStampSkeleton from './Skeleton/MyStampSkeleton';
+import { useStampBookDetail } from '../../../hooks/query/stampBook/useStampBookDetail';
+import { useExtendStampBook } from '../../../hooks/query/stampBook/useExtendStampBook';
 
 const MyStampPage = () => {
-  const { cafeId } = useParams<{ cafeId: string }>();
+  const { stampBookId } = useParams<{ stampBookId: string }>();
   const navigate = useNavigate();
-  const [stampData, setStampData] = useState<StampItem | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupStep, setPopupStep] = useState<1 | 2>(1);
+  const [newExpiresAt, setNewExpiresAt] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!cafeId) return;
-
-    const data = stampList.find((item) => item.cafeId === cafeId) || null;
-    setStampData(data);
-
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [cafeId]);
+  const id = stampBookId ? Number(stampBookId) : undefined;
+  const { data: stampData, isLoading } = useStampBookDetail(id!);
+  const { mutate: extendMutation } = useExtendStampBook();
 
   if (isLoading) return <MyStampSkeleton />;
   if (!stampData) return <div>해당 카페 스탬프 정보를 찾을 수 없습니다.</div>;
 
-  const dueDate = new Date(stampData.dueDate);
+  const dueDate = new Date(stampData.expiresAt);
   const diffDays = GetRemainingDays(dueDate);
 
   const handlePurpleButtonClick = () => {
-    setPopupStep(2);
+    if (!id) return;
+
+    extendMutation(id, {
+      onSuccess: (data) => {
+        setNewExpiresAt(data.newExpiresAt);
+        setPopupStep(2);
+        setIsPopupOpen(true);
+      },
+      onError: () => {
+        alert('스탬프지 연장에 실패했어요. 다시 시도해 주세요.');
+      },
+    });
   };
 
   const handleClosePopup = () => {
@@ -53,7 +54,11 @@ const MyStampPage = () => {
       purpleButtonText: '기한 연장하기',
     },
     2: {
-      titleText: `스탬프지 기한이\n${dueDate.getMonth() + 1}.${dueDate.getDate()}까지 연장되었어요!`,
+      titleText: newExpiresAt
+        ? `스탬프지 기한이\n${new Date(newExpiresAt).getMonth() + 1}.${new Date(
+            newExpiresAt,
+          ).getDate()}까지 연장되었어요!`
+        : '스탬프지 기한이 연장되었어요!',
       contentsText: undefined,
       purpleButtonText: undefined,
     },
@@ -65,15 +70,18 @@ const MyStampPage = () => {
       <div className="relative z-10 flex flex-col min-h-screen">
         <CommonHeader title="내 스탬프지" onBack={() => navigate(-1)} white />
         <div className="flex items-center gap-2 mt-6 text-white font-semibold text-lg">
-          <span className="font-bold text-[1.25rem]">{stampData.cafeName}</span>
+          <span className="font-bold text-[1.25rem]">
+            {stampData.cafe.name}
+          </span>
           <span className="text-[#DFDFDF] text-[0.875rem] font-normal">
-            {stampData.address}
+            {stampData.cafe.address}
           </span>
         </div>
         <div className="mt-1 text-[#E3F389] text-[1rem] font-medium">
           스탬프지 기한 ~
           {dueDate
             .toLocaleDateString('ko-KR', {
+              year: 'numeric',
               month: '2-digit',
               day: '2-digit',
             })
@@ -86,7 +94,9 @@ const MyStampPage = () => {
             <div className="flex items-center gap-2 p-3 rounded bg-[rgba(255,255,255,0.3)] mt-4">
               <Info className="w-4 h-4 text-white" />
               <span className="text-white text-[0.875rem] font-semibold leading-none">
-                2일 후 포인트로 자동 환전되어요!
+                {diffDays > 0
+                  ? `${diffDays}일 후 포인트로 자동 환전되어요!`
+                  : '오늘 포인트로 자동 환전되어요!'}
               </span>
             </div>
             <div className="flex h-[2.875rem] items-center text-center justify-center gap-2 px-3 rounded-[0.375rem] bg-[#E3F389] mt-2">
@@ -104,11 +114,12 @@ const MyStampPage = () => {
           <div className="text-[1rem] flex gap-[0.5rem] items-center mb-4">
             <span className="font-medium">스탬프지</span>
             <span className="font-semibold text-[#6970F3]">
-              {stampData.stampPaper}장째 진행 중
+              {Math.floor(stampData.currentCount / stampData.goalCount) + 1}장째
+              진행 중
             </span>
           </div>
           <div className="my-20">
-            <StampPaper currentStep={stampData.stampCount} />
+            <StampPaper currentStep={stampData.currentCount % 10} />
           </div>
         </div>
       </div>

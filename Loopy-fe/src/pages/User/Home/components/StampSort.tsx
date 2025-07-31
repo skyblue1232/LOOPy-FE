@@ -2,19 +2,19 @@ import { useState } from 'react';
 import Down from '../../../../assets/images/Down.svg?react';
 
 interface StampSortProps {
-  value: string;
-  onChange: (sortType: string) => void;
+  value: 'most' | 'due';
+  onChange: (sortType: 'most' | 'due') => void;
 }
 
 const StampSort = ({ value, onChange }: StampSortProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const options = [
+  const options: { label: string; value: 'most' | 'due' }[] = [
     { label: '적립 많은 순', value: 'most' },
     { label: '기한 짧은 순', value: 'due' },
   ];
 
-  const handleSelect = (val: string) => {
+  const handleSelect = (val: 'most' | 'due') => {
     onChange(val);
     setIsOpen(false);
   };
