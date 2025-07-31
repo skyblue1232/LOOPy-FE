@@ -1,44 +1,32 @@
 import CommonButton from "../../../../components/button/CommonButton";
 import { useSignup } from "../../../../hooks/mutation/signin/useSignup";
-import { mapFormDataToSignupRequest } from "../../../../utils/mapper";
-import type { FormData } from "../../../../types/form";
+import type { SignupRequest } from "../../../../apis/auth/signin/type";
 
 interface AdminSignupButtonProps {
-  formData: FormData;
+  signupData: SignupRequest;
+  isFormValid: boolean;
   isKeyboardOpen: boolean;
-  isValid: boolean;
-  validateCode: () => boolean;
   onNext: () => void;
 }
 
 const AdminSignupButton = ({
-  formData,
+  signupData,
+  isFormValid,
   isKeyboardOpen,
-  isValid,
-  validateCode,
   onNext,
 }: AdminSignupButtonProps) => {
   const { mutate: signup, isPending } = useSignup();
 
   const handleClick = () => {
-    if (!isValid || !validateCode() || isPending) return;
-
-    const signupData = {
-      ...mapFormDataToSignupRequest(formData),
-      role: "OWNER" as const,
-    };
+    if (!isFormValid || isPending) return;
 
     signup(signupData, {
       onSuccess: (res) => {
-        if (res && res.token && res.user) {
-          console.log("회원가입 성공:", res.user);
-          onNext();
-        } else {
-          console.log("회원가입 실패: 응답 이상");
-        }
+        console.log("회원가입 응답:", res);
+        onNext();
       },
       onError: (err) => {
-        console.error("네트워크 오류:", err.message);
+        console.error("네트워크 오류", err.message);
       },
     });
   };
@@ -53,11 +41,11 @@ const AdminSignupButton = ({
         text="회원가입하기"
         onClick={handleClick}
         className={`w-full ${
-          isValid
+          isFormValid
             ? "bg-[#6970F3] text-white"
             : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
         }`}
-        disabled={!isValid || isPending}
+        disabled={!isFormValid || isPending}
       />
     </div>
   );

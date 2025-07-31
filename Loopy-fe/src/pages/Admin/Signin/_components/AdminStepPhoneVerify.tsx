@@ -5,6 +5,8 @@ import { useKeyboardOpen } from "../../../../hooks/useKeyboardOpen";
 import { usePhoneVerification } from "../../../../hooks/usePhoneVerification";
 import type { FormData } from "../../../../types/form";
 import Logo from "../../../../assets/images/BlueIcon.svg?react";
+import { useEffect } from "react";
+import { mapFormDataToSignupRequest } from "../../../../utils/mapper.ts";
 
 interface AdminStepPhoneVerifyProps {
   formData: FormData;
@@ -23,11 +25,17 @@ const AdminStepPhoneVerify = ({
     isRequested,
     verifyError,
     isPhoneValid,
-    isFormValid,
     requestCode,
-    validateCode,
     setVerifyError,
-  } = usePhoneVerification(formData.phone, formData.verifyCode);
+    isVerified,
+    validateCode,
+  } = usePhoneVerification(formData.phoneNumber, formData.verifyCode);
+
+  useEffect(() => {
+    if (formData.verifyCode.length === 6) {
+      validateCode();
+    }
+  }, [formData.verifyCode, validateCode]);
 
   const handlePhoneChange = (phone: string) =>
     setFormData((prev) => ({ ...prev, phone }));
@@ -35,6 +43,11 @@ const AdminStepPhoneVerify = ({
   const handleVerifyCodeChange = (code: string) => {
     setVerifyError(false);
     setFormData((prev) => ({ ...prev, verifyCode: code }));
+  };
+
+  const signupData = {
+    ...mapFormDataToSignupRequest(formData),
+    role: "CUSTOMER" as const,
   };
 
   return (
@@ -50,7 +63,7 @@ const AdminStepPhoneVerify = ({
         <p className="text-[1rem] font-semibold text-[#252525] mb-[0.5rem]">전화번호</p>
         <div className="flex gap-2">
           <div className="flex-1">
-            <AdminPhoneInput phone={formData.phone} onChange={handlePhoneChange} />
+            <AdminPhoneInput phone={formData.phoneNumber} onChange={handlePhoneChange} />
           </div>
           <div className="flex">
             <button
@@ -79,11 +92,10 @@ const AdminStepPhoneVerify = ({
       <div className="absolute left-0 w-full px-[1.5rem] transition-all duration-300 bottom-0">
         <div className="max-w-[393px] mx-auto w-full">
           <AdminSignupButton
-            formData={formData}
-            validateCode={validateCode}
-            onNext={onNext}
+            signupData={signupData}
+            isFormValid={isVerified} 
             isKeyboardOpen={isKeyboardOpen}
-            isValid={isFormValid}
+            onNext={onNext}
           />
         </div>
       </div>
