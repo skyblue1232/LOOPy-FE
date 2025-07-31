@@ -21,6 +21,7 @@ export const usePhoneVerification = (
   const [verifyError, setVerifyError] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [firebaseUser, setFirebaseUser] = useState<any>(null);
+  const [isVerified, setIsVerified] = useState(false);
 
   const isPhoneValid = useMemo(() => phoneRegex.test(phone.trim()), [phone]);
   const isCodeValid = useMemo(
@@ -44,7 +45,7 @@ export const usePhoneVerification = (
       await initializeRecaptcha(); 
 
       const token = await window.recaptchaVerifier!.verify();
-  console.log("🪙 reCAPTCHA 토큰:", token);
+      console.log("reCAPTCHA 토큰:", token);
 
       const result = await signInWithPhoneNumber(
         auth,
@@ -71,9 +72,11 @@ export const usePhoneVerification = (
       const result = await confirmationResult.confirm(verifyCode);
       setVerifyError(false);
       setFirebaseUser(result.user);
+      setIsVerified(true); 
       return true;
     } catch (error) {
       setVerifyError(true);
+      setIsVerified(false); 
       return false;
     }
   }, [confirmationResult, verifyCode]);
@@ -88,5 +91,6 @@ export const usePhoneVerification = (
     setVerifyError,
     setIsRequested,
     firebaseUser,
+    isVerified,
   };
 };
