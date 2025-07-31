@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 interface ProfileCardProps {
   username: string;
   level: string;
-  imageUrl?: string;
+  image?: React.ReactNode;
   receivedStamps: number;
   ongoingChallenges: number;
   totalStamps: number;
@@ -14,7 +14,7 @@ interface ProfileCardProps {
 const ProfileCard = ({
   username,
   level,
-  imageUrl,
+  image,
   receivedStamps,
   ongoingChallenges,
   totalStamps,
@@ -41,12 +41,8 @@ const ProfileCard = ({
       <div className="flex justify-center gap-[19px] mt-6">
         {/* 프로필 이미지 */}
         <div className="w-[10.875rem] h-[9.75rem] overflow-hidden flex-shrink-0">
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt="profile"
-              className="w-full h-full object-cover"
-            />
+          {image ? (
+            image
           ) : (
             <div className="w-full h-full bg-[#ddd] flex items-center justify-center text-black">
               이미지

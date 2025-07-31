@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
 import MyStamp from './components/MyStamp';
-import ProfileCard from './components/ProfileCard';
+import ProfileCardContainer from './components/ProfileCardContainer';
 import TopBar from './components/TopBar';
 import StampSort from './components/StampSort';
 import DetailButton from './components/DetailButton';
 import ChallengeCarousel from './components/ChallengeCarousel';
 import HomePageSkeleton from './Skeleton/HomeSkeleton';
 import { useStampBooks } from '../../../hooks/query/stampBook/useStampBook';
-import { profileCardData } from './mock/mockData';
 
 const HomePage = () => {
   const [sortType, setSortType] = useState<'most' | 'due'>('most');
@@ -46,7 +45,7 @@ const HomePage = () => {
         </div>
         <CommonBottomBar active="home" onChange={(tab) => console.log(tab)} />
         <div className="mt-[1.5rem]">
-          <ProfileCard {...profileCardData} />
+          <ProfileCardContainer />
         </div>
         <div className="bg-white rounded-t-xl mt-8 pt-8 -mx-[1.5rem] px-[1.5rem]">
           <div className="font-bold text-[1.125rem] flex justify-between items-center leading-none mb-6">
