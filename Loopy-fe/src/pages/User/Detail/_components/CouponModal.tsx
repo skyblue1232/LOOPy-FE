@@ -4,6 +4,8 @@ import CouponIcon from "/src/assets/images/RedImage.svg?react";
 interface Props {
     onClose: () => void;
     onConfirm: () => void;
+    couponName?: string;
+    validDays?: number;
 }
 
 export default function CouponReceivedModal({ onClose, onConfirm }: Props) {

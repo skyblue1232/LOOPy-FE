@@ -1,33 +1,64 @@
-import { useLogin } from "../query/login/useLogin";
+import { useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import type { LoginRequest } from "../../apis/login/type";
+import { useLogin } from "../mutation/login/useLogin";
+import { usePatchUserActivate } from "../mutation/active/useActiveStatus";
+import Storage from "../../utils/storage";
+import { useFcmToken } from "./useFcmToken";
+import type { LoginRequest } from "../../apis/auth/login/type";
 
 export const useHandleLogin = () => {
   const navigate = useNavigate();
   const { mutate: loginMutate } = useLogin();
+  const { mutate: activateUser } = usePatchUserActivate();
+  const { requestFcmToken } = useFcmToken();
 
-  const handleLogin = (data: LoginRequest) => {
-    loginMutate(data, {
-      onSuccess: (res) => {
-        if (res.resultType === "SUCCESS") {
-          const { user } = res.success!;
-          console.log("로그인 성공:", user);
-          const isOnboarded = localStorage.getItem(`onboarded_user_${user.id}`) === "true";
+  const fcmRequestedRef = useRef(false);
 
-          if (isOnboarded) {
-            navigate("/home");
-          } else {
-            navigate("/onboard"); 
+  const handleLogin = useCallback(
+    (data: LoginRequest) => {
+      loginMutate(data, {
+        onSuccess: (res) => {
+          const { token, user, message } = res;
+
+          if (message !== "로그인 성공" || !token || !user) {
+            console.warn("로그인 응답 이상:", res);
+            return;
           }
-        } else {
-          console.log("로그인 실패:", res.error);
-        }
-      },
-      onError: (err) => {
-        console.error("로그인 요청 오류:", err);
-      },
-    });
-  };
+
+          console.log("로그인 성공:", user);
+          Storage.setAccessToken(token);
+
+          activateUser(undefined, {
+            onSuccess: () => console.log("계정 활성화 완료"),
+            onError: (err) => console.warn("계정 활성화 실패:", err),
+          });
+
+          const isOnboarded = localStorage.getItem(`onboarded_user_${user.id}`) === "true";
+          const nextRoute = isOnboarded ? "/home" : "/onboard";
+          navigate(nextRoute, { replace: true });
+
+          if (!fcmRequestedRef.current) {
+            fcmRequestedRef.current = true;
+
+            (async () => {
+              try {
+                const fcmToken = await requestFcmToken();
+                if (!fcmToken) {
+                  console.warn("FCM 토큰 발급 실패 또는 거부");
+                }
+              } catch (e) {
+                console.error("FCM 토큰 요청 중 에러:", e);
+              }
+            })();
+          }
+        },
+        onError: (err) => {
+          console.error("로그인 요청 실패:", err.message);
+        },
+      });
+    },
+    [loginMutate, activateUser, requestFcmToken, navigate]
+  );
 
   return handleLogin;
 };

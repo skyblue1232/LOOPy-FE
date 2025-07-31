@@ -1,16 +1,12 @@
-import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './App';
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { initializeRecaptcha } from "./firebase/initRecaptcha";
+import { cleanUpServiceWorkers } from "./firebase/cleanServiceWorker";
 
-if (import.meta.env.DEV && 'serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
-    for (const registration of registrations) {
-      registration.unregister();
-    }
-    console.warn('[dev] Service worker unregistered to prevent Workbox warnings.');
-  });
-}
+initializeRecaptcha();
+cleanUpServiceWorkers();
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <App />
 );

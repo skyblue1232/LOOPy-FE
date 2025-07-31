@@ -1,35 +1,26 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import CommonHeader from '../../../components/header/CommonHeader';
-import { challengeCardList } from '../Challenge/mock/mockData';
 import Calendar from '../../../assets/images/Calendar.svg';
 import Crown from '../../../assets/images/Crown.svg';
 import Info from '../../../assets/images/Info.svg?react';
 import ChallengeDetailSkeleton from './Skeleton/ChallengeDetailSkeleton';
 
+import { useChallengeDetail } from '../../../hooks/query/challenge/useChallengeDetail';
+
 const ChallengeDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const challengeId = Number(id);
-  const [loading, setLoading] = useState(true);
 
-  const challenge = challengeCardList.find(
-    (item) => item.challengeId === challengeId,
-  );
-  if (!challenge) {
-    return <div>챌린지를 찾을 수 없습니다.</div>;
-  }
+  const {
+    challengeDetail: challenge,
+    isLoading,
+    isError,
+  } = useChallengeDetail(challengeId);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
-    return <ChallengeDetailSkeleton />;
-  }
+  if (isLoading) return <ChallengeDetailSkeleton />;
+  if (isError) return <div>챌린지를 불러오는 중 오류가 발생했습니다.</div>;
+  if (!challenge) return <div>챌린지를 찾을 수 없습니다.</div>;
 
   return (
     <div className="min-h-screen flex flex-col mb-8">
@@ -41,23 +32,21 @@ const ChallengeDetailPage = () => {
           {/* 이미지 */}
           <div className="w-[6rem] h-[6rem] rounded-full overflow-hidden">
             <img
-              src={challenge.challengeImage}
-              alt={challenge.challengeName}
+              src={challenge.thumbnailUrl}
+              alt={challenge.title}
               className="w-full h-full object-cover"
             />
           </div>
 
           {/* 텍스트 */}
           <p className="text-xs text-[#6970F3] font-normal mt-8">
-            {challenge.challengeMonth
-              ? `${challenge.challengeMonth}월의 이벤트`
-              : '루피만의 챌린지!'}
+            루피만의 챌린지
           </p>
           <h1 className="text-lg font-bold mt-2 text-center">
-            {challenge.challengeName}
+            {challenge.title}
           </h1>
 
-          {challenge.participating && (
+          {challenge.isParticipated && (
             <p className="bg-[#F0F1FE] rounded text-[#6970F3] text-[0.875rem] font-semibold mt-6 px-[0.75rem] py-[0.25rem]">
               카페 위니에서 참여 중
             </p>
@@ -68,7 +57,7 @@ const ChallengeDetailPage = () => {
 
           {/* 설명 */}
           <p className="text-[1rem] font-medium text-center whitespace-pre-line">
-            {challenge.challengeDescription}
+            {challenge.description}
           </p>
 
           {/* 구분선 */}
@@ -76,7 +65,7 @@ const ChallengeDetailPage = () => {
 
           {/* 상세 설명 */}
           <p className="text-[0.875rem] font-regular leading-relaxed mb-6">
-            {challenge.challengeDetail}
+            {challenge.goalDescription}
           </p>
 
           {/* 정보 카드 */}
@@ -89,7 +78,7 @@ const ChallengeDetailPage = () => {
                 </span>
               </div>
               <span className="text-[1rem] font-medium">
-                {challenge.challengeStartDate} ~ {challenge.challengeDoneDate}
+                {challenge.startDate} ~ {challenge.endDate}
               </span>
             </div>
 
@@ -101,13 +90,13 @@ const ChallengeDetailPage = () => {
                 </span>
               </div>
               <span className="text-[1rem] font-medium">
-                {challenge.challengeReward}
+                +{challenge.rewardPoint}p
               </span>
             </div>
           </div>
 
-          {/* 회색 원들 */}
-          {challenge.participating && (
+          {/* 회색 원들 및 인증 방법 */}
+          {challenge.isParticipated && (
             <div>
               <div className="flex justify-center gap-[1rem] mt-8">
                 <div className="w-[5rem] h-[5rem] rounded-full bg-[#D9D9D9]" />
@@ -132,7 +121,7 @@ const ChallengeDetailPage = () => {
       </div>
 
       {/* 하단 고정 버튼 (참여 안 한 경우만) */}
-      {!challenge.participating && (
+      {!challenge.isParticipated && (
         <div className="fixed bottom-2 left-0 right-0 bg-white px-4 pb-8 flex justify-center">
           <button
             onClick={() => navigate(`/challenge/${challengeId}/stores`)}

@@ -1,9 +1,12 @@
 import { useState } from "react";
-import SampleQR from "../../../../assets/images/qr-sample.svg?react"; 
 import CommonBottomPopup from "../../../../components/popup/CommonBottomPopup";
+import { useUserQRCode } from "../../../../hooks/query/userInfo/qr/useUserQRCode";
 
 const ProfileSection = () => {
   const [showQRPopup, setShowQRPopup] = useState(false);
+  const { data } = useUserQRCode();
+
+  const qrCodeImg = data?.success?.qrCodeImage;
 
   return (
     <>
@@ -23,7 +26,11 @@ const ProfileSection = () => {
               className="flex flex-col justify-center items-center gap-[0.25rem] ml-[0.5rem] cursor-pointer pt-[0.125rem]"
               onClick={() => setShowQRPopup(true)}
             >
-              <SampleQR className="w-[2.5rem] h-[2.5rem]" />
+              {qrCodeImg ? (
+                <img src={qrCodeImg} alt="QR" className="w-[2.5rem] h-[2.5rem]" />
+              ) : (
+                <div className="w-[2.5rem] h-[2.5rem] bg-gray-200 rounded-md" />
+              )}
               <p className="text-[0.688rem] font-semibold text-[#000000] text-center">
                 멤버십 QR
               </p>
@@ -47,10 +54,14 @@ const ProfileSection = () => {
         show={showQRPopup}
         onClose={() => setShowQRPopup(false)}
         titleText="통합 멤버십 QR"
-        contentsText={`통합 멤버십 QR 코드를 통해 쿠폰 사용 · 포인트 사용 · 챌린지 인증이 가능합니다.직원에게 QR을 보여주세요.`}
+        contentsText={`통합 멤버십 QR 코드를 통해 쿠폰 사용 · 포인트 사용 · 챌린지 인증이 가능합니다. 직원에게 QR을 보여주세요.`}
       >
         <div className="flex justify-center my-[1.5rem]">
-          <SampleQR className="w-[8rem] h-[8rem]" />
+          {qrCodeImg ? (
+            <img src={qrCodeImg} alt="QR Code" className="w-[8rem] h-[8rem]" />
+          ) : (
+            <div className="w-[8rem] h-[8rem] bg-gray-200 rounded-md" />
+          )}
         </div>
       </CommonBottomPopup>
     </>

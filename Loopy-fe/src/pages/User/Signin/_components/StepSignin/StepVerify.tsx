@@ -3,53 +3,46 @@ import VerifyCodeInput from "../verify/VeryfyCodeInput";
 import SignupButton from "../verify/SignupButton";
 import { useKeyboardOpen } from "../../../../../hooks/useKeyboardOpen";
 import { usePhoneVerification } from "../../../../../hooks/usePhoneVerification";
-import { useSignup } from "../../../../../hooks/query/signin/useSignup";
 import { mapFormDataToSignupRequest } from "../../../../../utils/mapper";
 import type { FormData } from "../../../../../types/form";
+import { useEffect } from "react";
 
 interface StepPhoneVerifyProps {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
-  onNext: () => void;
 }
 
-const StepPhoneVerify = ({ formData, setFormData, onNext }: StepPhoneVerifyProps) => {
+const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
   const isKeyboardOpen = useKeyboardOpen();
+
   const {
     isRequested,
     verifyError,
     isPhoneValid,
-    isFormValid,
     requestCode,
-    validateCode,
     setVerifyError,
-  } = usePhoneVerification(formData.phone, formData.verifyCode);
-  const { mutate: signup, isPending } = useSignup();
+    isVerified,
+    validateCode,
+  } = usePhoneVerification(formData.phoneNumber, formData.verifyCode);
 
-  const handlePhoneChange = (phone: string) =>
-    setFormData((prev) => ({ ...prev, phone }));
+  useEffect(() => {
+    if (formData.verifyCode.length === 6) {
+      validateCode();
+    }
+  }, [formData.verifyCode, validateCode]);
+
+  const handlePhoneChange = (phoneNumber: string) => {
+    setFormData((prev) => ({ ...prev, phoneNumber }));
+  };
+
   const handleVerifyCodeChange = (code: string) => {
     setVerifyError(false);
     setFormData((prev) => ({ ...prev, verifyCode: code }));
   };
 
-  const handleNext = () => {
-    if (!isFormValid || !validateCode()) return;
-    const signupData = {
-      ...mapFormDataToSignupRequest(formData),
-      role: "CUSTOMER" as const,
-    };
-
-    signup(signupData, {
-      onSuccess: (res) => {
-        if (res.resultType === "SUCCESS") {
-          onNext();
-        } else {
-          console.log(res.error || "회원가입 실패");
-        }
-      },
-      onError: (res) => console.log(res.message || "네트워크 오류 발생"),
-    });
+  const signupData = {
+    ...mapFormDataToSignupRequest(formData),
+    role: "CUSTOMER" as const,
   };
 
   return (
@@ -57,7 +50,7 @@ const StepPhoneVerify = ({ formData, setFormData, onNext }: StepPhoneVerifyProps
       <p className="text-[1rem] font-semibold text-[#252525] mb-[0.5rem]">전화번호</p>
       <div className="flex gap-2">
         <div className="flex-1 w-full">
-          <PhoneInput phone={formData.phone} onChange={handlePhoneChange} />
+          <PhoneInput phoneNumber={formData.phoneNumber} onChange={handlePhoneChange} />
         </div>
         <div className="py-[0.25rem]">
           <button
@@ -83,10 +76,9 @@ const StepPhoneVerify = ({ formData, setFormData, onNext }: StepPhoneVerifyProps
       )}
 
       <SignupButton
-        onClick={handleNext}
+        signupData={signupData}
+        isFormValid={isVerified} 
         isKeyboardOpen={isKeyboardOpen}
-        isValid={isFormValid}
-        isPending={isPending}
       />
     </div>
   );
