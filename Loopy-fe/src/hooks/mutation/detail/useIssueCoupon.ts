@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { issueCoupon } from "../../apis/coupon/api";
-import { couponIssueMock } from "../../mock/couponIssueMock";
+import { issueCoupon } from "../../../apis/coupon/api";
+import { couponIssueMock } from "../../../mock/couponIssueMock";
 
 interface IssueCouponParams {
     cafeId: string;

@@ -1,4 +1,4 @@
-import type { ReviewPage } from "../apis/review/type";
+import type { ReviewPage } from "../apis/review/get/type";
 
 export const cafeReviewMock: ReviewPage = {
     reviews: [

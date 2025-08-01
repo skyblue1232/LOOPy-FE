@@ -9,7 +9,7 @@ import type { BusinessHour, CafeDetailData } from "../../../../types/cafeData";
 import { cafeDetailMock } from "../../../../mock/cafeDetailMock";
 import { cafeReviewMock } from "../../../../mock/cafeReviewMock";
 import { formatReview } from "../../../../utils/formatReview";
-import { getCafeReviews } from "../../../../apis/review/api";
+import { getCafeReviews } from "../../../../apis/review/get/api";
 //import type { ReviewPage } from "../../../../apis/review/type";
 import CafeReviewContent from "./CafeReviewContent";
 import AlarmSubscribeButton from "./AlarmSubscribeButton";
