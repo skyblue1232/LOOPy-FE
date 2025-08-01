@@ -5,6 +5,7 @@ import CommonBottomPopup from "../../../../components/popup/CommonBottomPopup";
 import EditReviewPage from "./_components/EditReviewPage";
 import ReviewListSkeleton from "./Skeleton/MyReviewSkeleton";
 import { useMyReviews } from "../../../../hooks/query/my/userMyReviews";
+import { useDeleteReview } from "../../../../hooks/mutation/my/review/useDeleteReview";
 import { useInView } from "react-intersection-observer";
 import { dummyReviews } from "../../../../mock/dummyReviews";
 
@@ -26,6 +27,8 @@ const MyReviewPage = ({ onBack }: MyReviewPageProps) => {
     isFetchingNextPage,
   } = useMyReviews();
 
+  const { mutate: deleteReviewMutate } = useDeleteReview();
+
   const { ref, inView } = useInView();
 
   const firstPage = data?.pages?.[0]?.data ?? [];
@@ -40,8 +43,18 @@ const MyReviewPage = ({ onBack }: MyReviewPageProps) => {
   };
 
   const handleDelete = (id: number) => {
-    alert("삭제 로직 필요");
-    setShowDeleteSuccess(true);
+    deleteReviewMutate(id, {
+      onSuccess: () => {
+        setShowDeleteSuccess(true);
+      },
+      onError: () => {
+        alert("리뷰 삭제에 실패했습니다.");
+      },
+    });
+  };
+
+  const handleUpdate = () => {
+    setEditingReviewId(null); 
   };
 
   useEffect(() => {
@@ -59,6 +72,7 @@ const MyReviewPage = ({ onBack }: MyReviewPageProps) => {
       <EditReviewPage
         review={selectedReview}
         onBack={() => setEditingReviewId(null)}
+        onSubmit={handleUpdate}
       />
     );
   }
