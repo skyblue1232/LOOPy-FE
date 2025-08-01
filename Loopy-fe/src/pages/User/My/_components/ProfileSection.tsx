@@ -1,12 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommonBottomPopup from "../../../../components/popup/CommonBottomPopup";
 import { useUserQRCode } from "../../../../hooks/query/userInfo/qr/useUserQRCode";
+import {
+  useCurrentPointQuery,
+  usePointTransactionsQuery,
+} from "../../../../hooks/query/my/useMyPoint";
 
 const ProfileSection = () => {
   const [showQRPopup, setShowQRPopup] = useState(false);
-  const { data } = useUserQRCode();
+  const [showPointPopup, setShowPointPopup] = useState(false);
+  const [pointMessage, setPointMessage] = useState("");
 
-  const qrCodeImg = data?.success?.qrCodeImage;
+  const { data: qrData } = useUserQRCode();
+  const { data: pointData } = useCurrentPointQuery();
+
+  const qrCodeImg = qrData?.success?.qrCodeImage;
+  const currentPoint = pointData?.success?.currentPoint ?? 0;
+
+  const {
+    data: transactionData,
+    isSuccess: isTransactionSuccess,
+  } = usePointTransactionsQuery();
+
+  useEffect(() => {
+    if (
+      isTransactionSuccess &&
+      transactionData?.success?.length > 0 &&
+      !showPointPopup
+    ) {
+      setPointMessage(transactionData.success[0]);
+      setShowPointPopup(true);
+    }
+  }, [transactionData, isTransactionSuccess]);
 
   return (
     <>
@@ -46,7 +71,7 @@ const ProfileSection = () => {
         </div>
         <div className="flex-1 flex items-center justify-center flex-row py-[1rem] border-t border-b border-l border-[#DFDFDF] gap-[1rem]">
           <p className="text-[0.875rem] font-semibold">포인트</p>
-          <p className="text-[#6970F3] font-bold text-[1.125rem]">326p</p>
+          <p className="text-[#6970F3] font-bold text-[1.125rem]">{currentPoint}p</p>
         </div>
       </div>
 
@@ -54,7 +79,7 @@ const ProfileSection = () => {
         show={showQRPopup}
         onClose={() => setShowQRPopup(false)}
         titleText="통합 멤버십 QR"
-        contentsText={`통합 멤버십 QR 코드를 통해 쿠폰 사용 · 포인트 사용 · 챌린지 인증이 가능합니다. 직원에게 QR을 보여주세요.`}
+        contentsText="통합 멤버십 QR 코드를 통해 쿠폰 사용 · 포인트 사용 · 챌린지 인증이 가능합니다. 직원에게 QR을 보여주세요."
       >
         <div className="flex justify-center my-[1.5rem]">
           {qrCodeImg ? (
@@ -64,6 +89,12 @@ const ProfileSection = () => {
           )}
         </div>
       </CommonBottomPopup>
+
+      <CommonBottomPopup
+        show={showPointPopup}
+        onClose={() => setShowPointPopup(false)}
+        contentsText={pointMessage}
+      />
     </>
   );
 };
