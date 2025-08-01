@@ -55,8 +55,8 @@ const getMarkerImage = (hasStamp: boolean, isActive: boolean) => {
       : NoStampDefaultMarker
 
   const size = isActive
-    ? new window.kakao.maps.Size(48, 54)
-    : new window.kakao.maps.Size(36, 40);
+    ? new window.kakao.maps.Size(40, 52)
+    : new window.kakao.maps.Size(24, 24);
 
   return new window.kakao.maps.MarkerImage(imagePath, size);
 };

@@ -1,5 +1,5 @@
 import { couponIssueMock } from '../mock/couponIssueMock';
-import { useIssueCoupon } from '../hooks/mutations/useIssueCoupon';
+import { useIssueCoupon } from '../hooks/mutation/detail/useIssueCoupon';
 
 interface Params {
     issueCoupon: ReturnType<typeof useIssueCoupon>['mutateAsync'];

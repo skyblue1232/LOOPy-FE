@@ -1,5 +1,5 @@
-import axiosInstance from '../axios';
-import { cafeReviewMock } from '../../mock/cafeReviewMock';
+import axiosInstance from '../../axios';
+import { cafeReviewMock } from '../../../mock/cafeReviewMock';
 import type { ReviewPage } from './type';
 
 export const getCafeReviews = async (

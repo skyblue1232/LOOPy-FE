@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import { useIssueCoupon } from "../../../../hooks/mutations/useIssueCoupon";
+import { useIssueCoupon } from "../../../../hooks/mutation/detail/useIssueCoupon";
 import BusinessTimeSection from "./BusinessTimeSection";
 import KeywordTags from "../../../../components/etc/KeywordTags";
 import MyStampCard from "./MyStampCard";
@@ -53,7 +53,11 @@ export default function CafeInfoContent({
     const [showCouponModal, setShowCouponModal] = useState(false);
     const [issuedCoupon, setIssuedCoupon] = useState(couponIssueMock); 
     const { mutateAsync: issueCoupon } = useIssueCoupon();
+    const [downloadedCouponIds, setDownloadedCouponIds] = useState<number[]>([]);
 
+    const markAsDownloaded = (couponId: number) => {
+        setDownloadedCouponIds((prev) => [...prev, couponId]);
+    };
     return (
         <>
             <div className="mt-[1.5rem] flex flex-col text-[0.875rem] font-normal text-[#3B3B3B] leading-none">
@@ -120,34 +124,36 @@ export default function CafeInfoContent({
                                 };
 
                                 return (
-                                <CouponCard
-                                    key={coupon.id}
-                                    imageSrc="/src/assets/images/RedImage.svg"
-                                    storeName={cafeName}
-                                    title={coupon.name}
-                                    description={`${formatDateRange(coupon.createdAt, coupon.expiredAt)}`}
-                                    cafeId={cafeId}
-                                    couponTemplateId={coupon.id}
-                                    onDownload={async () => {
-                                        await handleIssueCoupon({
-                                            issueCoupon,
-                                            cafeId,
-                                            couponTemplateId: coupon.id,
-                                            createdAt: coupon.createdAt,
-                                            expiredAt: coupon.expiredAt,
-                                            onSuccess: (data) => {
-                                                setIssuedCoupon(data);
-                                                setShowCouponModal(true);
-                                            },
-                                            onAlreadyIssued: () => {
-                                                alert('이미 발급받은 쿠폰입니다.');
-                                            },
-                                            onError: (e) => {
-                                                console.error('쿠폰 발급 중 오류', e);
-                                            },
-                                        });
-                                    }}
-                                />
+                                    <CouponCard
+                                        key={coupon.id}
+                                        imageSrc="/src/assets/images/RedImage.svg"
+                                        storeName={cafeName}
+                                        title={coupon.name}
+                                        description={`${formatDateRange(coupon.createdAt, coupon.expiredAt)}`}
+                                        cafeId={cafeId}
+                                        couponTemplateId={coupon.id}
+                                        onDownload={async () => {
+                                            const result = await handleIssueCoupon({
+                                                issueCoupon,
+                                                cafeId,
+                                                couponTemplateId: coupon.id,
+                                                createdAt: coupon.createdAt,
+                                                expiredAt: coupon.expiredAt,
+                                                onSuccess: (data) => {
+                                                    setIssuedCoupon(data);
+                                                    setShowCouponModal(true);
+                                                },
+                                                onAlreadyIssued: () => {
+                                                    alert('이미 발급받은 쿠폰입니다.');
+                                                },
+                                                onError: (e) => {
+                                                    console.error('쿠폰 발급 중 오류', e);
+                                                },
+                                            });
+                                            markAsDownloaded(coupon.id);
+                                        }}
+                                        isDownloaded={downloadedCouponIds.includes(coupon.id)}
+                                    />
                                 );
                             })}
                         </div>
