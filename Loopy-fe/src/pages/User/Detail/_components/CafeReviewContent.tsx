@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CafePhotoModal from "./CafePhotoModal";
 
 interface Review {
     id: number;
@@ -21,17 +22,19 @@ export default function CafeReviewContent({ reviews }: CafeReviewContentProps) {
         reviews.map(() => 0)
     );
 
+    const [modalImages, setModalImages] = useState<string[] | null>(null);
+
     const handleNext = (index: number) => {
         setCurrentIndexes((prev) =>
-        prev.map((val, i) =>
-            i === index && val < reviews[i].images.length - 1 ? val + 1 : val
-        )
+            prev.map((val, i) =>
+                i === index && val < reviews[i].images.length - 1 ? val + 1 : val
+            )
         );
     };
 
     const handlePrev = (index: number) => {
         setCurrentIndexes((prev) =>
-        prev.map((val, i) => (i === index && val > 0 ? val - 1 : val))
+            prev.map((val, i) => (i === index && val > 0 ? val - 1 : val))
         );
     };
 
@@ -42,18 +45,23 @@ export default function CafeReviewContent({ reviews }: CafeReviewContentProps) {
                 console.log("리뷰 총 개수:", reviews.length);
                 return (
                     <div key={review.id}>
-                    <ReviewItem
-                        review={review}
-                        currentImageIndex={currentIndexes[i]}
-                        onNext={() => handleNext(i)}
-                        onPrev={() => handlePrev(i)}
-                    />
-                    {i !== reviews.length - 1 && (
-                        <div className="w-full h-[1px] bg-[#F3F3F3] mt-[1.5rem]" />
-                    )}
+                        <ReviewItem
+                            review={review}
+                            currentImageIndex={currentIndexes[i]}
+                            onNext={() => handleNext(i)}
+                            onPrev={() => handlePrev(i)}
+                            onImageClick={() => setModalImages(review.images)}
+                        />
+                        {i !== reviews.length - 1 && (
+                            <div className="w-full h-[1px] bg-[#F3F3F3] mt-[1.5rem]" />
+                        )}
                     </div>
                 );
-                })}
+            })}
+
+            {modalImages && (
+                <CafePhotoModal images={modalImages} onClose={() => setModalImages(null)} />
+            )}
         </>
     );
 }
@@ -63,10 +71,12 @@ interface ReviewItemProps {
     currentImageIndex: number;
     onNext: () => void;
     onPrev: () => void;
+    onImageClick: () => void;
 }
 
 function ReviewItem({
     review,
+    onImageClick,
 }: ReviewItemProps) {
     return (
         <div>
@@ -92,13 +102,15 @@ function ReviewItem({
                 </div>
             </div>
 
-            <div className="relative mt-[0.75rem] w-full h-[10.5rem] overflow-x-auto overflow-y-hidden whitespace-nowrap custom-scrollbar">
+            <div className="relative mt-[0.75rem] w-full h-[10.5rem] overflow-x-auto overflow-y-hidden whitespace-nowrap custom-scrollbar" onClick={onImageClick}>
                 {review.images.map((img, idx) => (
                     <img
                         key={idx}
                         src={img}
                         alt={`review-${idx}`}
-                        className="inline-block w-[10.5rem] h-[10.5rem] object-cover mr-[0.5rem] shrink-0"
+                        className={`inline-block w-[10.5rem] h-[10.5rem] object-cover shrink-0 ${
+                            idx === review.images.length - 1 ? '' : 'mr-[0.5rem]'
+                        }`}
                     />
                 ))}
             </div>
