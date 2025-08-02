@@ -40,7 +40,7 @@ export default function TopPhotoSection({ images, onOpenModal, onBack }: TopPhot
                 >
                     <img src={visibleImages[2]} className="w-full h-full object-cover" />
                     {extraCount > 0 && (
-                    <div className="absolute inset-0 bg-black/30 border-[] flex items-center justify-center text-white text-[1rem] font-normal leading-none">
+                    <div className="absolute inset-0 bg-black/30 border-[] flex items-center justify-center text-white text-[1rem] font-normal leading-none -mt-[1rem]">
                         <ImageIcon className="w-[1.125rem] h-[1.125rem] mr-[0.25rem]"/>
                         +{extraCount}
                     </div>
