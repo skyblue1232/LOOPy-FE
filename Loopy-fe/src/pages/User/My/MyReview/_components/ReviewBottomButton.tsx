@@ -1,10 +1,16 @@
 import CommonButton from "../../../../../components/button/CommonButton";
 
-const ReviewBottomButton = ({ isValid }: { isValid: boolean }) => {
+interface ReviewBottomButtonProps {
+  isValid: boolean;
+  onClick?: () => void;
+}
+
+const ReviewBottomButton = ({ isValid, onClick }: ReviewBottomButtonProps) => {
   return (
     <div className="absolute bottom-[2rem] left-0 w-full px-[1.5rem] transition-all duration-150">
       <CommonButton
         text="수정 완료하기"
+        onClick={onClick}
         className={`w-full ${
           isValid
             ? "bg-[#6970F3]"
