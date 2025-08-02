@@ -9,6 +9,11 @@ export interface StampBook {
   cafe: Cafe;
   currentCount: number;
   goalCount: number;
-  status: string;
+  status: 'active' | 'completed' | 'expired';
   expiredAt: string;
+}
+
+export interface StampBookListResponse {
+  message: string;
+  data: StampBook[];
 }

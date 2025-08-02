@@ -1,22 +1,13 @@
 import ChallengeCard from './ChallengeCard';
-import { useParticipatingChallengeList } from '../../../../hooks/query/challenge/useChallengeList';
+import type { ChallengeListItem } from '../../../../apis/challenge/challengeList/type';
 
-const ParticipatingChallengeList: React.FC = () => {
-  const { participatingChallengeList, isLoading, isError } =
-    useParticipatingChallengeList();
+type Props = {
+  participatingChallengeList: ChallengeListItem[];
+};
 
-  if (isLoading) {
-    return <div className="text-center text-gray-400">로딩 중...</div>;
-  }
-
-  if (isError) {
-    return (
-      <div className="text-center text-red-500">
-        챌린지 목록을 불러오지 못했습니다.
-      </div>
-    );
-  }
-
+const ParticipatingChallengeList: React.FC<Props> = ({
+  participatingChallengeList,
+}) => {
   if (participatingChallengeList.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full box-border overflow-hidden text-center py-72">
