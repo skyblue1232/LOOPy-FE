@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import CommonHeader from '../../../components/header/CommonHeader';
+import Level1 from '../../../assets/images/Level1.svg?react';
+import Level2 from '../../../assets/images/Level2.svg?react';
 
 const levels = [
   {
@@ -7,16 +9,14 @@ const levels = [
     title: '호기심 많은 탐색가',
     range: '스탬프지 0장~3장',
     desc: '다양한 카페를 체험하며 루틴을 탐색하는 단계, 루피 여정을 시작한 사용자',
-    imgSrc:
-      'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=400&q=80',
+    Svg: Level1,
   },
   {
     step: '2단계',
     title: '차곡차곡 쌓는 수집가',
     range: '스탬프지 4장~9장',
     desc: '마음에 드는 카페를 골라가며 나만의 루틴을 쌓는 단계, 스탬프 하나하나 모으는 재미에 빠져보세요',
-    imgSrc:
-      'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=400&q=80',
+    Svg: Level2,
   },
   {
     step: '3단계',
@@ -43,13 +43,15 @@ const LevelDetailPage = () => {
     <div>
       <CommonHeader title="루피 레벨 안내" onBack={() => navigate(-1)} />
       {levels.map((level, idx) => (
-        <div key={idx} className="flex flex-row items-start gap-4 mt-6">
+        <div key={idx} className="flex flex-row items-center gap-4 mt-6 ">
           {/* 이미지 */}
-          <img
-            src={level.imgSrc}
-            alt={`${level.step} 이미지`}
-            className="w-[7.5rem] h-[6.75rem] object-cover shrink-0"
-          />
+          {level.Svg ? (
+            <level.Svg
+              className="w-[7.5rem] h-[6.75rem] shrink-0"
+              aria-label={`${level.step} 아이콘`}
+            />
+          ) : null}
+
           {/* 텍스트 영역 */}
           <div className="flex flex-col justify-start flex-1">
             <div className="flex gap-2 items-center flex-wrap">

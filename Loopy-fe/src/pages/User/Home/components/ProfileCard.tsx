@@ -53,27 +53,23 @@ const ProfileCard = ({
         {/*현황 + 카드 */}
         <div className="flex flex-col justify-between">
           {/* 이번달 현황 */}
-          {totalStamps !== 0 ? (
-            <div>
-              <div className="text-[1rem] font-semibold leading-none mb-3">
-                이번달 현황
-              </div>
-              <div className="flex justify-between text-[0.875rem] text-[#E3F389] pr-4 mb-2">
-                <div className="font-normal leading-none ">받은 스탬프</div>
-                <div className="font-semibold leading-none">
-                  {receivedStamps}개
-                </div>
-              </div>
-              <div className="flex justify-between text-[0.875rem] text-[#E3F389] pr-4">
-                <div className="font-normal leading-none">진행 중인 챌린지</div>
-                <div className="font-semibold leading-none">
-                  {ongoingChallenges}개
-                </div>
+          <div>
+            <div className="text-[1rem] font-semibold leading-none mb-3">
+              이번달 현황
+            </div>
+            <div className="flex justify-between text-[0.875rem] text-[#E3F389] pr-4 mb-2">
+              <div className="font-normal leading-none ">받은 스탬프</div>
+              <div className="font-semibold leading-none">
+                {receivedStamps}개
               </div>
             </div>
-          ) : (
-            <div className="min-h-[4rem]" />
-          )}
+            <div className="flex justify-between text-[0.875rem] text-[#E3F389] pr-4">
+              <div className="font-normal leading-none">진행 중인 챌린지</div>
+              <div className="font-semibold leading-none">
+                {ongoingChallenges}개
+              </div>
+            </div>
+          </div>
 
           {/* 하단 카드 */}
           <div className="flex gap-[0.5rem] mt-5">
