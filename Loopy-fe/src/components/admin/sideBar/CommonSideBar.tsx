@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import LoopyIconGreen from '../../../assets/images/LoopyIconGreen.svg?react';
 import AdminChallenge from '../../../assets/images/AdminChallenge.svg?react';
@@ -47,13 +46,11 @@ const menuItems = [
 ];
 
 const CommonSideBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleMenuClick = (item: { label: string; path: string }) => {
     navigate(item.path);
-    setIsOpen(false);
   };
 
   const currentPath = location.pathname;
@@ -65,28 +62,11 @@ const CommonSideBar = () => {
   const isSettingSelected = currentPath.startsWith(settingPath);
 
   return (
-    <>
-      {/* 햄버거 버튼: 사이드바 열리면 숨김 */}
-      {!isOpen && (
-        <div className="md:hidden fixed top-4 left-4 z-50">
-          <button
-            aria-label="메뉴 열기"
-            onClick={() => setIsOpen(true)}
-            className="px-3 py-2 "
-          >
-            햄버거
-          </button>
-        </div>
-      )}
-
-      {/* 사이드바 */}
+    <div>
       <aside
         className={`
-          absolute -mx-[1.5rem] top-0 left-0 h-full bg-[#6970F3] text-white w-[12.875rem] px-6 py-6 z-40
-          transform transition-transform duration-300 ease-in-out
+          fixed top-0 left-0 h-screen bg-[#6970F3] text-white w-[12.875rem] px-6 py-6 z-40
           flex flex-col justify-between
-          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-          md:translate-x-0
         `}
       >
         {/* 상단: 로고 + 메뉴 */}
@@ -125,7 +105,6 @@ const CommonSideBar = () => {
             <button
               onClick={() => {
                 navigate(settingPath);
-                setIsOpen(false);
               }}
               className={`
                 flex items-center gap-2 text-left font-semibold text-[0.875rem] px-6 py-3 leading-none rounded-lg
@@ -141,14 +120,8 @@ const CommonSideBar = () => {
         </div>
       </aside>
 
-      {/* 오버레이 */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/30 z-30 md:hidden"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-    </>
+      {/* 오버레이 삭제 */}
+    </div>
   );
 };
 
