@@ -68,7 +68,6 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
         purpleButtonOnClick={handleConfirmExchange}
       />
 
-      {/* ✅ 선택된 스탬프북이 있을 경우 상세 페이지 오버레이 */}
       {selectedStampBook && (
         <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
           <StampDetailPage
