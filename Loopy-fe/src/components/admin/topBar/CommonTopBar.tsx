@@ -12,9 +12,9 @@ const CommonTopBar: React.FC<TopBarProps> = ({ userName, profileImageUrl }) => {
   return (
     <header
       aria-label="상단 바"
-      className="flex items-center justify-between pt-8 px-6 bg-white "
+      className="flex items-center justify-between pt-8 bg-white "
       style={{
-        position: 'fixed',
+        position: 'absolute',
         top: 0,
         left: SIDEBAR_WIDTH,
         right: 0,
