@@ -13,6 +13,8 @@ const ChallengeOverview = () => {
       <div className="flex flex-col gap-8">
         <ChallengeCard />
         <ChallengeCard />
+        <ChallengeCard />
+        <ChallengeCard />
       </div>
     </div>
   );

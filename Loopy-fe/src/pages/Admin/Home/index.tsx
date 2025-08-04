@@ -9,7 +9,7 @@ import ChallengeOverview from './components/ChallengeOverview';
 
 const AdminHomePage = () => {
   return (
-    <div className="w-full min-h-screen relative font-suit bg-white text-[#252525]">
+    <div className="w-full min-h-screen font-suit bg-white text-[#252525]">
       {/* 사이드바 */}
       <CommonSideBar />
 

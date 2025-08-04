@@ -11,7 +11,7 @@ const CommonTopBar = ({ userName, profileImageUrl }: TopBarProps) => {
   return (
     <header
       aria-label="상단 바"
-      className="flex items-center justify-between pt-8 bg-white "
+      className="flex items-center justify-between pt-8 px-6 bg-white "
       style={{
         position: 'absolute',
         top: 0,

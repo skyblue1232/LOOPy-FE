@@ -13,6 +13,8 @@ const CouponOverview = () => {
       <div className="flex flex-col gap-8">
         <CouponCard />
         <CouponCard />
+        <CouponCard />
+        <CouponCard />
       </div>
     </div>
   );
