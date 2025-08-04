@@ -25,12 +25,13 @@ export interface MenuItem {
   description: string;
   imgUrl: string;
   isSoldOut: boolean;
+  isRepresentative: boolean;
 }
 
 export interface Coupon {
   id: number;
   name: string;
-  discountType: 'fixed' | 'percentage';
+  discountType: 'amount' | 'percentage';
   discountValue: number;
   applicableMenu: MenuItem | null;
   createdAt: string;

@@ -30,7 +30,8 @@ interface Props {
         name: string;
         description: string;
         price: string;
-        imageSrc: string;
+        imageUrl: string;
+        isRepresentative?: boolean;
     }[];
     coupons: Coupon[];
     cafeId: string;
@@ -49,7 +50,6 @@ export default function CafeInfoContent({
 }: Props) {
     const navigate = useNavigate();
     const { cafeId = '1' } = useParams(); 
-    const topMenus = menus.slice(0,2);
     const [showCouponModal, setShowCouponModal] = useState(false);
     const [issuedCoupon, setIssuedCoupon] = useState(couponIssueMock); 
     const { mutateAsync: issueCoupon } = useIssueCoupon();
@@ -58,6 +58,9 @@ export default function CafeInfoContent({
     const markAsDownloaded = (couponId: number) => {
         setDownloadedCouponIds((prev) => [...prev, couponId]);
     };
+
+    const representativeMenus = menus.filter((m) => m.isRepresentative);
+
     return (
         <>
             <div className="mt-[1.5rem] flex flex-col text-[0.875rem] font-normal text-[#3B3B3B] leading-none">
@@ -161,7 +164,7 @@ export default function CafeInfoContent({
                     )}
 
                 {/* 대표 메뉴 */}
-                {topMenus.length > 0 && (
+                {representativeMenus.length > 0 && (
                     <>
                         <div className="mt-[2rem] flex items-center justify-between">
                             <span className="text-[1rem] font-semibold text-[#000000]">대표 메뉴</span>
@@ -175,8 +178,15 @@ export default function CafeInfoContent({
                         </div>
 
                         <div className="mt-[1rem] flex flex-col gap-[1.5rem]">
-                            {topMenus.map((menu, idx) => (
-                                <MenuCard key={idx} {...menu} />
+                            {representativeMenus.map((menu, idx) => (
+                                <MenuCard 
+                                    key={idx}
+                                    name={menu.name}
+                                    description={menu.description}
+                                    price={menu.price}
+                                    imageSrc={menu.imageUrl}
+                                    isRepresentative={menu.isRepresentative}
+                                />
                             ))}
                         </div>
                     </>

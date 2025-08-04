@@ -1,8 +1,11 @@
+import RepiMenuIcon from '/src/assets/images/RepiMenu.svg?react';
+
 interface MenuCardProps {
     imageSrc: string;
     name: string;
     description: string;
     price: string;
+    isRepresentative?: boolean;
 }
 
 export default function MenuCard({
@@ -10,6 +13,7 @@ export default function MenuCard({
     name,
     description,
     price,
+    isRepresentative = false,
 }: MenuCardProps) {
     return (
         <div className="flex gap-[1rem]">
@@ -20,7 +24,10 @@ export default function MenuCard({
             />
             <div className="flex flex-col justify-between flex-1">
                 <div>
-                    <div className="text-[1rem] font-semibold text-black">{name}</div>
+                    <div className="text-[1rem] font-semibold text-black flex items-center gap-[0.25rem]">
+                        {isRepresentative && <RepiMenuIcon className="w-[1rem] h-[1rem]" />}
+                        {name}
+                    </div>
                     <div className="mt-[0.75rem] text-[0.875rem] font-normal text-[#3B3B3B] leading-none">
                         {description}
                     </div>
