@@ -1,3 +1,7 @@
+export interface ExpiringStampBookRequest {
+  id: number;
+}
+
 export interface ExpiringStampBookResponse {
   id: number;
   cafe: {
