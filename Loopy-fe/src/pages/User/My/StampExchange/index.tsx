@@ -1,21 +1,22 @@
 import { useState } from "react";
 import CommonHeader from "../../../../components/header/CommonHeader";
-import { useMyStampBooks } from "../../../../hooks/query/useMyStampbook";
-import StampBookItem from "./_components/StampBookItem";
 import CommonBottomPopup from "../../../../components/popup/CommonBottomPopup";
+import StampBookItem from "./_components/StampBookItem";
 import StampBookItemSkeleton from "./Skeleton/StampBookItemSkeleton";
 import StampDetailPage from "./_components/StampDetailPage";
-import type { StampBook } from "../../../../apis/myStamp/type";
+import { useExpiringStampBooks } from "../../../../hooks/query/stampBook/useExpiringStampBooks";
+import type { ExpiringStampBookResponse } from "../../../../apis/myStamp/type";
 
 interface StampExchangeProps {
   onBack: () => void;
 }
 
 const StampExchangePage = ({ onBack }: StampExchangeProps) => {
-  const { data, isLoading } = useMyStampBooks();
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedCafeName, setSelectedCafeName] = useState<string>("");
-  const [selectedStampBook, setSelectedStampBook] = useState<StampBook | null>(null);
+  const [selectedStampBook, setSelectedStampBook] = useState<ExpiringStampBookResponse | null>(null);
+
+  const { data, isLoading } = useExpiringStampBooks();
 
   const handleExchangeClick = (id: number, cafeName: string) => {
     setSelectedId(id);
@@ -23,11 +24,14 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
   };
 
   const handleConfirmExchange = () => {
-    console.log("환전 API 호출:", selectedId);
+    if (selectedId != null) {
+      console.log("환전 API 호출:", selectedId);
+      // mutate
+    }
     setSelectedId(null);
   };
 
-  const handleSelectStampBook = (book: StampBook) => {
+  const handleSelectStampBook = (book: ExpiringStampBookResponse) => {
     setSelectedStampBook(book);
   };
 
@@ -36,16 +40,12 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
       <CommonHeader title="스탬프 환전" onBack={onBack} />
 
       <div className="bg-[#F6F6F6] text-[#7F7F7F] text-[0.875rem] font-normal whitespace-pre-line -mx-[1.5rem] px-[1.5rem] py-[1.25rem]">
-        1달 내 재방문이 없으면 스탬프 하나 당 2 포인트로 자동 환전되어요.  
+        1달 내 재방문이 없으면 스탬프 하나 당 2 포인트로 자동 환전되어요.{" "}
         자동 환전 후 스탬프는 소멸되어요!
       </div>
 
       {isLoading ? (
-        <div>
-          {Array.from({ length: 10 }).map((_, i) => (
-            <StampBookItemSkeleton key={i} />
-          ))}
-        </div>
+        Array.from({ length: 10 }).map((_, i) => <StampBookItemSkeleton key={i} />)
       ) : (
         <div className="text-[#252525]">
           {data?.map((item) => (
@@ -53,7 +53,7 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
               key={item.id}
               stampBook={item}
               onSelect={() => handleSelectStampBook(item)}
-              onExchangeClick={() => handleExchangeClick(item.id, item.cafeName)}
+              onExchangeClick={() => handleExchangeClick(item.id, item.cafe.name)}
             />
           ))}
         </div>
