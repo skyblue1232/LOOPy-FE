@@ -61,6 +61,8 @@ export default function CafeInfoContent({
 
     const representativeMenus = menus.filter((m) => m.isRepresentative);
 
+    console.log("✅ menus 들어온 값:", menus);
+    console.log("✅ representativeMenus 필터링 결과:", representativeMenus);
     return (
         <>
             <div className="mt-[1.5rem] flex flex-col text-[0.875rem] font-normal text-[#3B3B3B] leading-none">
@@ -184,7 +186,7 @@ export default function CafeInfoContent({
                                     name={menu.name}
                                     description={menu.description}
                                     price={menu.price}
-                                    imageSrc={menu.imageUrl}
+                                    imageUrl={menu.imageUrl}
                                     isRepresentative={menu.isRepresentative}
                                 />
                             ))}

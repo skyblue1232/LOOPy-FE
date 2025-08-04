@@ -42,7 +42,8 @@ export default function MenuListPage() {
                             name={menu.name}
                             price={menu.price.toString()}
                             description={menu.description}
-                            imageSrc={menu.imgUrl}
+                            imageUrl={menu.imgUrl}
+                            isRepresentative={menu.isRepresentative}
                             />
                         ))}
                 </div>

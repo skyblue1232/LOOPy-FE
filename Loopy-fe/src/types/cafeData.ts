@@ -7,7 +7,8 @@ export interface Menu {
   name: string;
   description: string;
   price: string;
-  imageSrc: string;
+  imageUrl: string;
+  isRepresentative: boolean;
 }
 
 export interface Review {
