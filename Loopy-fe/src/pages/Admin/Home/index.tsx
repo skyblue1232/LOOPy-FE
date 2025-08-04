@@ -1,12 +1,46 @@
 import CommonSideBar from '../../../components/admin/sideBar/CommonSideBar';
+import CommonTopBar from '../../../components/admin/topBar/CommonTopBar';
+import AnalysisCard from './components/AnalysisCard';
+import ChallengeCard from './components/ChallengeCard';
+import HomeQRButton from './components/HomeQRButton';
+import HomeStampButton from './components/HomeStampButton';
+import StampOverview from './components/StampOverview';
+import CouponCard from './components/CouponCard';
 
 const AdminHomePage = () => {
   return (
-    <div className="w-full min-h-screen relative flex flex-col justify-center items-center bg-white text-[#252525] font-suit">
-      <div className="absolute top-[1.25rem] left-0"></div>
+    <div className="w-full min-h-screen relative font-suit bg-white text-[#252525]">
+      {/* 사이드바 */}
       <CommonSideBar />
-      <h1 className="text-[1.5rem] font-bold mb-4">사장님 홈</h1>
-      <p className="text-[1rem] text-[#7F7F7F]">매장과 고객 관리</p>
+
+      {/* 오른쪽 영역: TopBar + 본문 */}
+      <div className="flex-1 flex flex-col ml-[12.875rem]">
+        <CommonTopBar userName="카페 위니" profileImageUrl="" />
+        <main className="flex-1 pt-22 space-y-4 overflow-x-auto">
+          {/* AnalysisCard + 버튼 2개 */}
+          <div className="flex gap-4 items-stretch flex-nowrap">
+            <div className="w-[28rem] flex-shrink-0">
+              <AnalysisCard />
+            </div>
+            <div className="flex gap-2 flex-1 min-w-0">
+              <div className="flex-1 min-w-0">
+                <HomeStampButton />
+              </div>
+              <div className="flex-1 min-w-0">
+                <HomeQRButton />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4">
+            <StampOverview />
+          </div>
+          <div className="flex gap-4">
+            <ChallengeCard />
+            <CouponCard />
+          </div>
+          <h1 className="text-2xl font-semibold">대시보드</h1>
+        </main>
+      </div>
     </div>
   );
 };
