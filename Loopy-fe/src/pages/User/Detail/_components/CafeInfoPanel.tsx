@@ -27,7 +27,8 @@ interface CafeInfoPanelProps extends CafeDetailData {
         name: string;
         description: string;
         price: string;
-        imageSrc: string;
+        imageUrl: string;
+        isRepresentative: boolean;
     }[];
     isLoading: boolean;
     hours: BusinessHour[];
@@ -217,13 +218,20 @@ export default function CafeInfoPanel({
                             keywords={keywords}
                             menus={
                                 menus.length > 0
-                                ? menus
-                                : cafeDetailMock.menu.map((m) => ({
-                                    name: m.name,
-                                    description: m.description,
-                                    price: m.price.toString(),
-                                    imageSrc: m.imgUrl,
-                                }))
+                                    ? menus.map((m) => ({
+                                        name: m.name,
+                                        description: m.description,
+                                        price: m.price,
+                                        imageUrl: m.imageUrl ?? '', // 실제 필드 이름 확인 필요
+                                        isRepresentative: m.isRepresentative ?? false,
+                                    }))
+                                    : cafeDetailMock.menu.map((m) => ({
+                                        name: m.name,
+                                        description: m.description,
+                                        price: m.price.toString(),
+                                        imageUrl: m.imgUrl,
+                                        isRepresentative: m.isRepresentative,
+                                    }))
                             }
                             coupons={coupons}
                             cafeId={cafeId!}

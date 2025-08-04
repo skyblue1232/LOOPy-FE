@@ -102,15 +102,13 @@ function ReviewItem({
                 </div>
             </div>
 
-            <div className="relative mt-[0.75rem] w-full h-[10.5rem] overflow-x-auto overflow-y-hidden whitespace-nowrap custom-scrollbar" onClick={onImageClick}>
+            <div className="relative mt-[0.75rem] w-[calc(100%+1.5rem)] h-[10.5rem] pr-[1.5rem] -mr-[1.5rem] overflow-x-auto overflow-y-hidden whitespace-nowrap custom-scrollbar" onClick={onImageClick}>
                 {review.images.map((img, idx) => (
                     <img
                         key={idx}
                         src={img}
                         alt={`review-${idx}`}
-                        className={`inline-block w-[10.5rem] h-[10.5rem] object-cover shrink-0 ${
-                            idx === review.images.length - 1 ? '' : 'mr-[0.5rem]'
-                        }`}
+                        className="inline-block w-[10.5rem] h-[10.5rem] object-cover shrink-0 mr-[0.5rem] last:mr-0"
                     />
                 ))}
             </div>
