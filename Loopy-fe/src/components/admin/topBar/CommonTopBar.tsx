@@ -1,4 +1,3 @@
-import React from 'react';
 import AdminBell from '../../../assets/images/AdminBell.svg?react';
 
 const SIDEBAR_WIDTH = '12.875rem';
@@ -8,11 +7,11 @@ interface TopBarProps {
   profileImageUrl?: string;
 }
 
-const CommonTopBar: React.FC<TopBarProps> = ({ userName, profileImageUrl }) => {
+const CommonTopBar = ({ userName, profileImageUrl }: TopBarProps) => {
   return (
     <header
       aria-label="상단 바"
-      className="flex items-center justify-between pt-8 bg-white "
+      className="flex items-center justify-between pt-8 px-6 bg-white "
       style={{
         position: 'absolute',
         top: 0,

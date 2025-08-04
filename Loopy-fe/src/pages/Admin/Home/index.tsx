@@ -1,22 +1,22 @@
 import CommonSideBar from '../../../components/admin/sideBar/CommonSideBar';
 import CommonTopBar from '../../../components/admin/topBar/CommonTopBar';
 import AnalysisCard from './components/AnalysisCard';
-import ChallengeCard from './components/ChallengeCard';
 import HomeQRButton from './components/HomeQRButton';
 import HomeStampButton from './components/HomeStampButton';
 import StampOverview from './components/StampOverview';
-import CouponCard from './components/CouponCard';
+import CouponOverview from './components/CouponOverview';
+import ChallengeOverview from './components/ChallengeOverview';
 
 const AdminHomePage = () => {
   return (
-    <div className="w-full min-h-screen relative font-suit bg-white text-[#252525]">
+    <div className="w-full min-h-screen font-suit bg-white text-[#252525]">
       {/* 사이드바 */}
       <CommonSideBar />
 
       {/* 오른쪽 영역: TopBar + 본문 */}
       <div className="flex-1 flex flex-col ml-[12.875rem]">
         <CommonTopBar userName="카페 위니" profileImageUrl="" />
-        <main className="flex-1 pt-22 space-y-4 overflow-x-auto">
+        <main className="flex-1 pt-22 space-y-4 overflow-x-auto mb-8">
           {/* AnalysisCard + 버튼 2개 */}
           <div className="flex gap-4 items-stretch flex-nowrap">
             <div className="w-[28rem] flex-shrink-0">
@@ -35,10 +35,9 @@ const AdminHomePage = () => {
             <StampOverview />
           </div>
           <div className="flex gap-4">
-            <ChallengeCard />
-            <CouponCard />
+            <ChallengeOverview />
+            <CouponOverview />
           </div>
-          <h1 className="text-2xl font-semibold">대시보드</h1>
         </main>
       </div>
     </div>
