@@ -27,12 +27,8 @@ export default function QRScanner({ onDetect, onError }: QRScannerProps) {
           setStreamActive(true);
           requestAnimationFrame(tick);
         }
-      } catch (e: any) {
-        const msg =
-          e.name === 'NotAllowedError'
-            ? '카메라 권한이 거부되었습니다.'
-            : '카메라를 사용할 수 없습니다.';
-        onError?.(msg);
+      } catch (e) {
+        console.error('카메라 접근 실패:', e);
       }
     };
 
@@ -114,9 +110,6 @@ export default function QRScanner({ onDetect, onError }: QRScannerProps) {
             pointerEvents: 'none',
           }}
         />
-      </div>
-      <div className="text-sm text-gray-500">
-        QR 코드를 정중앙에 맞추면 자동으로 인식됩니다.
       </div>
     </div>
   );
