@@ -27,7 +27,7 @@ const AdminCouponCreatePage = ({ onBack }: Props) => {
     (hasLimit === false || (startDate !== null && endDate !== null));
 
   return (
-    <div className="flex flex-col w-full relative">
+    <div className="flex flex-col w-full">
       <CommonTopBar title="쿠폰 발행" onBack={onBack} />
 
       <div className='max-w-[34rem]'>

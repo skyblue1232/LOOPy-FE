@@ -14,7 +14,7 @@ const CommonAdminButton = ({ label, disabled = false, className = '', ...props }
       disabled={disabled}
       className={clsx(
         `
-        fixed bottom-0 left-[1.5rem] right-0
+        absolute bottom-0 left-[1.5rem] right-0
         mx-auto
         max-w-[34rem] ml-[12.875rem] w-full
         py-[0.875rem] text-[1rem] rounded-[8px]
