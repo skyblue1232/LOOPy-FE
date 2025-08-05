@@ -2,7 +2,7 @@ import NextIcon from "../../../../assets/images/Next.svg?react";
 import type { MyPageSteps } from "../../../../types/mySteps";
 
 interface Props {
-  onNavigate: (step: keyof MyPageSteps, context: (prev: any) => any) => void;
+  onNavigate: (step: keyof MyPageSteps) => void;
 }
 
 const ActivityList = ({ onNavigate }: Props) => {
@@ -19,7 +19,7 @@ const ActivityList = ({ onNavigate }: Props) => {
         {menus.map(({ label, step }) => (
           <button
             key={label}
-            onClick={() => onNavigate(step, () => ({}))}
+            onClick={() => onNavigate(step)}
             className={`flex items-center justify-between text-left ${
               label === "내가 작성한 리뷰" ? "my-[1rem]" : ""
             }`}

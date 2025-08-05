@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import SuccessIcon from "../../../../assets/images/SuccessIcon.svg?react";
-import Logo from "../../../../assets/images/BlueIcon.svg?react";
 import CommonButton from "../../../../components/button/CommonButton";
 
 const AdminSignupSuccess = () => {
@@ -12,11 +11,8 @@ const AdminSignupSuccess = () => {
 
   return (
     <div className="relative min-h-screen w-full bg-white font-suit flex flex-col items-center justify-center">
-      <div className="absolute top-[1.25rem] left-0">
-        <Logo className="w-[2rem] h-[2rem]" />
-      </div>
 
-      <div className="w-full max-w-[393px] flex flex-col items-center text-center mt-[3rem]">
+      <div className="w-full max-w-[34rem] flex flex-col items-center text-center mt-[3rem]">
         <SuccessIcon className="w-[3.5rem] h-[3.5rem] mb-[2rem]" />
 
         <h1 className="text-[1.5rem] font-bold text-[#252525] mb-[1rem]">
@@ -27,7 +23,7 @@ const AdminSignupSuccess = () => {
         </p>
 
         <div
-          className={`absolute left-1/2 translate-x-[-50%] w-full max-w-[393px] flex flex-col items-center transition-all duration-300 bottom-[2rem]`}
+          className={`absolute left-1/2 translate-x-[-50%] w-full max-w-[34rem] flex flex-col items-center transition-all duration-300 bottom-[2rem]`}
         >
           <CommonButton
             text="시작하기"

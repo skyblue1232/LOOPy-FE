@@ -13,5 +13,21 @@ export const fetchMyReviews = async ({
   const res = await axiosInstance.get("/api/v1/users/me/reviews", {
     params: { page, limit },
   });
-  return res.data;
+
+  const { data, pagination, message } = res.data;
+
+  if (!data || data.length === 0) {
+    return {
+      message: "리뷰가 없습니다.",
+      data: [],
+      pagination: {
+        page,
+        limit,
+        total: 0,
+      },
+    };
+  }
+
+  return { message, data, pagination };
 };
+
