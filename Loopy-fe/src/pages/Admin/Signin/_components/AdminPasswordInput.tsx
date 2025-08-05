@@ -1,7 +1,7 @@
 import { useState } from "react";
-import KeyInput from "../../../../components/input/KeyInput";
 import Eye from "../../../../assets/images/Eye.svg?react";
 import EyeOff from "../../../../assets/images/EyeOff.svg?react";
+import CommonInput from "../../../../components/input/CommonInput";
 
 interface Props {
   value: string;
@@ -15,7 +15,7 @@ const AdminPasswordInput = ({ value, placeholder, onChange, hasError }: Props) =
 
   return (
     <div className="relative w-full">
-      <KeyInput
+      <CommonInput
         placeholder={placeholder}
         type={show ? "text" : "password"}
         value={value}
