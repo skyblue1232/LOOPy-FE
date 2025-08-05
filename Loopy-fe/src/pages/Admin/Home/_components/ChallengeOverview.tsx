@@ -7,7 +7,7 @@ const ChallengeOverview = () => {
       <div className="flex gap-2 items-center mb-6">
         <ChallengePurple />
         <div className="text-[1rem] text-black font-semibold leading-none">
-          오늘 스탬프 적립 수
+          진행 중인 챌린지
         </div>
       </div>
       <div className="flex flex-col gap-8">
