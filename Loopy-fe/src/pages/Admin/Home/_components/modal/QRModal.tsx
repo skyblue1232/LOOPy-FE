@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import QRScanner from '../QRScanner';
 
-type KeypadModalProps = {
+type QRModalProps = {
   onClose: () => void;
   onSubmit: (phone: string) => void;
 };
 
-export default function KeypadModal({ onClose, onSubmit }: KeypadModalProps) {
+export default function QRModal({ onClose, onSubmit }: QRModalProps) {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState<string | null>(null);
   const submitTimeoutRef = useRef<number | null>(null);
