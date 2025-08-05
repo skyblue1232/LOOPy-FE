@@ -23,7 +23,7 @@ const AdminLoginPage = () => {
 
   return (
     <div className="min-h-screen w-full bg-white flex flex-col items-center justify-center relative font-suit">
-      <div className="w-full max-w-[345px] top-[1.25rem] flex flex-col items-center justify-center">
+      <div className="w-full sm:max-w-[345px] top-[1.25rem] flex flex-col items-center justify-center">
         <div className="mb-[3rem] flex flex-col items-center gap-[0.875rem]">
           <Logo className="w-[4.625rem] h-[4.625rem]" />
           <LogoText />
