@@ -31,6 +31,7 @@ import AdminHomePage from './pages/Admin/Home/index.tsx';
 import AdminChallengePage from './pages/Admin/Challenge/index.tsx';
 import AdminCouponPage from './pages/Admin/Coupon/index.tsx';
 import AdminStampPage from './pages/Admin/Stamp/index.tsx';
+import AdminSettingFunnelLayout from './layouts/AdminSettingFunnelLayout.tsx';
 // import { AuthCheck } from './utils/authCheck';
 
 const publicRoutes = createBrowserRouter([
@@ -173,6 +174,7 @@ const publicRoutes = createBrowserRouter([
       { path: 'challenge', element: <AdminChallengePage /> },
       { path: 'coupon', element: <AdminCouponPage /> },
       { path: 'stamp', element: <AdminStampPage /> },
+      { path: 'setting', element: <AdminSettingFunnelLayout /> },
     ],
   },
 ]);

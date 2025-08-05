@@ -107,11 +107,11 @@ const CommonSideBar = () => {
                 navigate(settingPath);
               }}
               className={`
-                flex items-center gap-2 text-left font-semibold text-[0.875rem] px-6 py-3 leading-none rounded-lg
+                flex items-center gap-2 text-left font-semibold text-[0.875rem] pl-[1.5rem] pr-[5.313rem] py-3 leading-none rounded-lg
                 ${isSettingSelected ? 'bg-[#F0F1FE] text-[#6970F3]' : 'text-white'}
               `}
             >
-              <div className="w-4 h-4">
+              <div className={`w-4 h-4 ${isSettingSelected ? 'text-[#6970F3]' : 'text-white'}`}>
                 <AdminSetting />
               </div>
               설정
