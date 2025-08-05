@@ -11,7 +11,7 @@ export type Customer = {
 type KeypadModalProps = {
   onClose: () => void;
   lookupCustomer: (phone: string) => Promise<Customer | null>;
-  onApplyStamp: (phone: string, customer: Customer) => void; // 적립 처리 콜백
+  onApplyStamp: (phone: string, customer: Customer) => void;
 };
 
 export default function KeypadModal({
@@ -168,7 +168,7 @@ export default function KeypadModal({
 
           {/* 우측: 고객 정보 / 결과 */}
           <div
-            className={`w-[23.188rem] p-6 flex flex-col transition-colors duration-300 ${
+            className={`w-[23.188rem] p-6 flex flex-col ${
               status === 'success' ? 'bg-[#EEF0FF]' : 'bg-[#F3F3F3]'
             }`}
           >
@@ -176,7 +176,6 @@ export default function KeypadModal({
               고객 정보
             </div>
 
-            {/* 💡 이 부분에 스크롤 적용 */}
             <div className="flex-1 overflow-y-auto scrollbar-hidden">
               <div className="min-h-full flex flex-col items-center justify-center text-center">
                 {status === 'idle' && (
@@ -213,7 +212,7 @@ export default function KeypadModal({
 
                 {status === 'success' && customer && (
                   <>
-                    <div className="flex justify-between gap-[3.188rem]">
+                    <div className="flex w-full justify-between">
                       <div className="flex gap-4 justify-center items-center">
                         <div className="text-[1.5rem] font-bold leading-none">
                           {customer.name}
