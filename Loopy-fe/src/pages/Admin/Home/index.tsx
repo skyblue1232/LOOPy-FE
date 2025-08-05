@@ -1,11 +1,11 @@
 import CommonSideBar from '../../../components/admin/sideBar/CommonSideBar';
 import CommonTopBar from '../../../components/admin/topBar/CommonTopBar';
-import AnalysisCard from './components/AnalysisCard';
-import HomeQRButton from './components/HomeQRButton';
-import HomeStampButton from './components/HomeStampButton';
-import StampOverview from './components/StampOverview';
-import CouponOverview from './components/CouponOverview';
-import ChallengeOverview from './components/ChallengeOverview';
+import AnalysisCard from './_components/AnalysisCard';
+import HomeQRButton from './_components/HomeQRButton';
+import HomeStampButton from './_components/HomeStampButton';
+import StampOverview from './_components/StampOverview';
+import CouponOverview from './_components/CouponOverview';
+import ChallengeOverview from './_components/ChallengeOverview';
 
 const AdminHomePage = () => {
   return (
