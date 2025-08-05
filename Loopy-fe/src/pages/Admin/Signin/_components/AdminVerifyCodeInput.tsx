@@ -1,4 +1,4 @@
-import KeyInput from "../../../../components/input/KeyInput";
+import CommonInput from "../../../../components/input/CommonInput";
 
 interface VerifyCodeInputProps {
   value: string;
@@ -24,7 +24,7 @@ const VerifyCodeInput = ({
           인증번호 재요청
         </button>
       </div>
-      <KeyInput
+      <CommonInput
         placeholder="인증번호를 입력해주세요"
         value={value}
         onChange={(e) => onChange(e.target.value)}

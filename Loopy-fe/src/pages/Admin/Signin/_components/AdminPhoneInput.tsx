@@ -1,4 +1,4 @@
-import KeyInput from "../../../../components/input/KeyInput";
+import CommonInput from "../../../../components/input/CommonInput";
 
 interface PhoneInputProps {
   phone: string;
@@ -20,7 +20,7 @@ const PhoneInput = ({ phone, onChange }: PhoneInputProps) => {
   };
 
   return (
-    <KeyInput
+    <CommonInput
       placeholder="전화번호를 입력해주세요"
       value={phone}
       onChange={handlePhoneChange}
