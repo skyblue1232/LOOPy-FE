@@ -163,6 +163,11 @@ const publicRoutes = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       { index: true, element: <AdminLoginPage /> },
+      // {
+      //   path: 'login/success',
+      //   element: <AdminLoginSuccess />,
+      //   handle: { isPublic: true },
+      // },
       { path: 'signin', element: <AdminSigninPage /> },
       { path: 'home', element: <AdminHomePage /> },
       { path: 'challenge', element: <AdminChallengePage /> },
