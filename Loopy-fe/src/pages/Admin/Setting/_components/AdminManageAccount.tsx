@@ -5,6 +5,7 @@ import CommonTopBar from "../../../../components/admin/topBar/CommonTopBar";
 import { useMyInfo } from "../../../../hooks/query/userInfo/useMyInfo";
 import { useLogout } from "../../../../hooks/mutation/logout/useLogout";
 import AdminDefaultAccountView from "./AdminDefaultAccountView";
+import AdminWithdrawView from "./AdminWithdrawView"; 
 import CommonTwoButtonModal from "../../../../components/admin/modal/CommonTwoButtonModal";
 import CommonCompleteModal from "../../../../components/admin/modal/CommonCompleteModal";
 
@@ -14,15 +15,16 @@ interface Props {
 
 const AdminManageAccount = ({ onBack }: Props) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [showLogoutComplete, setShowLogoutComplete] = useState(false); 
+  const [showLogoutComplete, setShowLogoutComplete] = useState(false);
+  const [isWithdrawMode, setIsWithdrawMode] = useState(false); 
   const navigate = useNavigate();
 
   const { data: myInfo } = useMyInfo();
 
   const { mutate: logout } = useLogout(
     () => {
-      setShowLogoutModal(false); 
-      setShowLogoutComplete(true); 
+      setShowLogoutModal(false);
+      setShowLogoutComplete(true);
     },
     (error) => {
       console.error("로그아웃 실패:", error);
@@ -42,15 +44,29 @@ const AdminManageAccount = ({ onBack }: Props) => {
       <CommonSideBar />
 
       <div className="flex-1 flex flex-col ml-[12.875rem]">
-        <CommonTopBar title="계정 관리" profileImageUrl="" onBack={onBack} />
+        <CommonTopBar
+          title={isWithdrawMode ? "회원탈퇴" : "계정 관리"} 
+          profileImageUrl=""
+          onBack={() => {
+            if (isWithdrawMode) {
+              setIsWithdrawMode(false); 
+            } else {
+              onBack();
+            }
+          }}
+        />
 
         <main className="flex-1">
-          <AdminDefaultAccountView
-            email={email}
-            allowKakaoAlert={allowKakaoAlert}
-            onClickLogout={() => setShowLogoutModal(true)}
-            onClickWithdraw={() => console.log("회원 탈퇴 버튼 눌림")}
-          />
+          {isWithdrawMode ? (
+            <AdminWithdrawView />
+          ) : (
+            <AdminDefaultAccountView
+              email={email}
+              allowKakaoAlert={allowKakaoAlert}
+              onClickLogout={() => setShowLogoutModal(true)}
+              onClickWithdraw={() => setIsWithdrawMode(true)} 
+            />
+          )}
         </main>
       </div>
 
@@ -69,7 +85,7 @@ const AdminManageAccount = ({ onBack }: Props) => {
           message="로그아웃되었습니다"
           onClose={() => {
             setShowLogoutComplete(false);
-            navigate("/"); 
+            navigate("/");
           }}
         />
       )}
