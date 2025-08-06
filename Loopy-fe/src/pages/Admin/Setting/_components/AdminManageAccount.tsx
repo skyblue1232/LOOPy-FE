@@ -6,6 +6,7 @@ import { useMyInfo } from "../../../../hooks/query/userInfo/useMyInfo";
 import { useLogout } from "../../../../hooks/mutation/logout/useLogout";
 import AdminDefaultAccountView from "./AdminDefaultAccountView";
 import CommonTwoButtonModal from "../../../../components/admin/modal/CommonTwoButtonModal";
+import CommonCompleteModal from "../../../../components/admin/modal/CommonCompleteModal";
 
 interface Props {
   onBack: () => void;
@@ -13,12 +14,15 @@ interface Props {
 
 const AdminManageAccount = ({ onBack }: Props) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showLogoutComplete, setShowLogoutComplete] = useState(false); 
   const navigate = useNavigate();
 
   const { data: myInfo } = useMyInfo();
+
   const { mutate: logout } = useLogout(
     () => {
-      navigate("/");
+      setShowLogoutModal(false); 
+      setShowLogoutComplete(true); 
     },
     (error) => {
       console.error("로그아웃 실패:", error);
@@ -28,7 +32,6 @@ const AdminManageAccount = ({ onBack }: Props) => {
 
   const handleLogout = () => {
     logout();
-    setShowLogoutModal(false);
   };
 
   const allowKakaoAlert = myInfo?.allowKakaoAlert ?? false;
@@ -58,6 +61,16 @@ const AdminManageAccount = ({ onBack }: Props) => {
           message="다시 로그인하면 루피 서비스를 이용하실 수 있어요"
           purpleButton="로그아웃하기"
           purpleButtonOnClick={handleLogout}
+        />
+      )}
+
+      {showLogoutComplete && (
+        <CommonCompleteModal
+          message="로그아웃되었습니다"
+          onClose={() => {
+            setShowLogoutComplete(false);
+            navigate("/"); 
+          }}
         />
       )}
     </div>

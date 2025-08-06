@@ -11,6 +11,7 @@ const CommonTwoButtonModal = ({
   message,
   title,
   purpleButton,
+  purpleButtonOnClick,
 }: CommonTwoButtonModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-6 pt-6 pb-8">
@@ -39,7 +40,10 @@ const CommonTwoButtonModal = ({
             >
               취소하기
             </button>
-            <button className="flex-1 bg-[#6970F3] text-white text-[1rem] font-semibold py-4 rounded-[0.5rem] leading-none">
+            <button 
+              className="flex-1 bg-[#6970F3] text-white text-[1rem] font-semibold py-4 rounded-[0.5rem] leading-none"
+              onClick={purpleButtonOnClick}
+              >
               {purpleButton}
             </button>
           </div>
