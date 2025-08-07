@@ -13,7 +13,7 @@ const AdminHomePage = () => {
       {/* 사이드바 */}
       <CommonSideBar />
 
-      {/* 오른쪽 영역: TopBar + 본문 */}
+      {/* TopBar + 본문 */}
       <div className="flex-1 flex flex-col ml-[12.875rem]">
         <CommonTopBar userName="카페 위니" profileImageUrl="" />
         <main className="flex-1 pt-22 space-y-4 overflow-x-auto mb-8">
