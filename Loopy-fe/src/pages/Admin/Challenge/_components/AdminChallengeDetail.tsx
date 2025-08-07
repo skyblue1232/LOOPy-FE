@@ -3,6 +3,7 @@ import CommonSideBar from '../../../../components/admin/sideBar/CommonSideBar';
 import CommonTopBar from '../../../../components/admin/topBar/CommonTopBar';
 import { CHALLENGE_CONFIG } from '../_constants/ChallengeConfig';
 import type { ChallengeType } from '../_constants/ChallengeConfig';
+import ChallengeInfoCard from './ChallengeInfoCard';
 
 const AdminChallengeDetail = () => {
   const navigate = useNavigate();
@@ -12,7 +13,16 @@ const AdminChallengeDetail = () => {
     return <div>존재하지 않는 챌린지입니다.</div>;
   }
 
-  const { title, image: Image, description, period } = CHALLENGE_CONFIG[type];
+  const {
+    title,
+    image: Image,
+    description,
+    detailText,
+    period,
+    points,
+    participants,
+    complete,
+  } = CHALLENGE_CONFIG[type];
 
   return (
     <div className="w-full min-h-screen flex font-suit text-[#252525]">
@@ -33,12 +43,20 @@ const AdminChallengeDetail = () => {
               <p className="text-[1.25rem] text-[#252525] font-bold mb-4 leading-none">
                 {title}
               </p>
-              <p className="h-[5rem] w-[24rem] text-[1rem] text-center items-center whitespace-break-spaces mt-4 py-4 border-y border-[#DFDFDF]">
+              <p className="h-[5rem] w-[24rem] text-[1rem] font-semibold text-center items-center whitespace-break-spaces mt-4 py-4 border-y border-[#DFDFDF]">
                 {description}
               </p>
             </div>
           </div>
-          <p className="text-sm text-[#7F7F7F]">진행 기간: {period}</p>
+          <p className="text-[0.875rem] text-black font-normal whitespace-break-spaces">
+            {detailText}
+          </p>
+          <ChallengeInfoCard
+            period={period}
+            points={points}
+            participants={participants}
+            complete={complete}
+          />
         </div>
       </div>
     </div>
