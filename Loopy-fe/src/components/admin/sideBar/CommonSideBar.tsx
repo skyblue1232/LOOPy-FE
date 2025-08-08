@@ -10,6 +10,7 @@ import AdminStampPurple from '../../../assets/images/AdminStampPurple.svg?react'
 import AdminHomePurple from '../../../assets/images/AdminHomePurple.svg?react';
 import AdminSetting from '../../../assets/images/AdminSetting.svg?react';
 import AdminMessage from '../../../assets/images/AdminMessage.svg?react';
+import AdminMessagePurple from '../../../assets/images/AdminMessagePurple.svg?react';
 import LoopyLogo from '../../../assets/images/LoopyLogo.svg?react';
 
 const menuItems = [
@@ -41,7 +42,7 @@ const menuItems = [
     label: '알림 보내기',
     path: '/admin/notification',
     icon: <AdminMessage />,
-    iconSelected: <AdminMessage />, // 보라색 버전으로 바꾸기
+    iconSelected: <AdminMessagePurple />, // 보라색 버전으로 바꾸기
   },
 ];
 
@@ -111,7 +112,9 @@ const CommonSideBar = () => {
                 ${isSettingSelected ? 'bg-[#F0F1FE] text-[#6970F3]' : 'text-white'}
               `}
             >
-              <div className={`w-4 h-4 ${isSettingSelected ? 'text-[#6970F3]' : 'text-white'}`}>
+              <div
+                className={`w-4 h-4 ${isSettingSelected ? 'text-[#6970F3]' : 'text-white'}`}
+              >
                 <AdminSetting />
               </div>
               설정

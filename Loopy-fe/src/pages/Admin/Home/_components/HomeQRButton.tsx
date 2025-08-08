@@ -4,6 +4,7 @@ import HomeButton from '../_components/HomeButton';
 import QRModal from '../_components/modal/QRModal';
 import type { Customer } from '../types/CustomerData';
 import CommonTwoButtonModal from '../../../../components/admin/modal/CommonTwoButtonModal';
+import CommonCompleteModal from '../../../../components/admin/modal/CommonCompleteModal';
 
 type ConfirmInfo = {
   title: string;
@@ -12,6 +13,8 @@ type ConfirmInfo = {
 
 const HomeQRButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pointCustomer, setPointCustomer] = useState<Customer | null>(null);
+  const [completeMessage, setCompleteMessage] = useState<string | null>(null);
 
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
@@ -73,6 +76,10 @@ const HomeQRButton = () => {
           onClose={handleClose}
           onSubmit={lookupCustomer}
           onConfirmAction={handleConfirmAction}
+          onPointUseClick={(customer) => {
+            setIsModalOpen(false);
+            setPointCustomer(customer);
+          }}
         />
       )}
       {confirmInfo && (
@@ -93,8 +100,42 @@ const HomeQRButton = () => {
           }
           purpleButtonOnClick={() => {
             console.log(`${confirmInfo.title} - ${confirmInfo.type} 완료`);
+            setCompleteMessage(
+              confirmInfo.type === '사용'
+                ? `${confirmInfo.title}을 사용 처리했어요!`
+                : `${confirmInfo.title} 인증이 완료되었어요!`,
+            );
             handleCloseConfirm();
           }}
+        />
+      )}
+      {pointCustomer && (
+        <CommonTwoButtonModal
+          onClose={() => setPointCustomer(null)}
+          title={
+            <>
+              <span className="text-black">{pointCustomer.name} 고객님의 </span>
+              <span className="text-[#6970F3] font-semibold">
+                {pointCustomer.points} 포인트
+              </span>
+              <span className="text-black">를 사용할까요?</span>
+            </>
+          }
+          message="포인트를 사용한 후에는 취소가 어려워요"
+          purpleButton="포인트 사용하기"
+          purpleButtonOnClick={() => {
+            console.log(`${pointCustomer.name} 포인트 사용하기`);
+            setCompleteMessage(
+              `${pointCustomer.name}님의 포인트 사용이 완료되었어요!`,
+            );
+            setPointCustomer(null);
+          }}
+        />
+      )}
+      {completeMessage && (
+        <CommonCompleteModal
+          onClose={() => setCompleteMessage(null)}
+          message={completeMessage}
         />
       )}
     </>

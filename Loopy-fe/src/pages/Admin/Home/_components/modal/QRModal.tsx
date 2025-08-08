@@ -7,12 +7,14 @@ type QRModalProps = {
   onClose: () => void;
   onSubmit: (phone: string) => Promise<Customer | null>;
   onConfirmAction: (title: string, type: '사용' | '인증') => void;
+  onPointUseClick: (customer: Customer) => void;
 };
 
 export default function QRModal({
   onClose,
   onSubmit,
   onConfirmAction,
+  onPointUseClick,
 }: QRModalProps) {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -155,6 +157,12 @@ export default function QRModal({
                       <button
                         className="w-[6rem] h-[2.125rem] text-[0.875rem] font-semibold rounded-md bg-[#6970F3] text-white"
                         aria-label="포인트 사용"
+                        onClick={() => {
+                          if (customer) {
+                            onClose();
+                            onPointUseClick(customer);
+                          }
+                        }}
                       >
                         포인트 사용
                       </button>
