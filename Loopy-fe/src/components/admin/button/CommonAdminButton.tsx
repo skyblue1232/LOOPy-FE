@@ -22,8 +22,17 @@ const CommonAdminButton = ({
   ...props
 }: Props) => {
   return (
-    <div className="absolute bottom-[2rem] left-[1.5rem] right-0 ml-[12.875rem] max-w-[34rem] w-full z-30 px-0">
-      <div className="flex flex-col items-start px-0">
+    <div
+      className={clsx(
+        `
+        fixed bottom-0 left-[1.5rem] right-0 ml-[12.875rem] max-w-[34rem] w-full z-30
+        bg-white py-6
+        flex flex-col items-center
+        shadow-[0_0_32px_0_rgba(60,62,74,0.02)]
+        `
+      )}
+    >
+      <div className="w-full flex flex-col items-center">
         {showCheckText && (
           <div
             className="flex items-center gap-[0.5rem] mb-[1.25rem] cursor-pointer"
@@ -35,7 +44,6 @@ const CommonAdminButton = ({
             </span>
           </div>
         )}
-
         <button
           type="button"
           disabled={disabled}
@@ -43,11 +51,14 @@ const CommonAdminButton = ({
             `
             w-full
             py-[0.875rem] text-[1rem] rounded-[8px]
-            text-center transition-colors duration-200
+            text-center transition-colors duration-200 
+            border-none outline-none
+            focus:border-none focus:outline-none
+            active:border-none active:outline-none
             `,
             disabled
               ? 'bg-[#DFDFDF] text-[#7F7F7F]'
-              : 'bg-[#6970F3] text-white hover:opacity-90',
+              : 'bg-[#6970F3] text-white',
             className
           )}
           {...props}
