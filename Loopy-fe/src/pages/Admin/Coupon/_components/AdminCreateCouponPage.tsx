@@ -53,7 +53,7 @@ const AdminCouponCreatePage = ({ onBack }: Props) => {
         />
         <CommonAdminButton
           disabled={!isValid}
-          className="w-full mb-[2rem]"
+          className="flex justify-center items-center"
           label="쿠폰 발행하기"
         />
       </div>
