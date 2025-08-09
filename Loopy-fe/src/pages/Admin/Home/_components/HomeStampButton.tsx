@@ -14,7 +14,7 @@ const HomeStampButton = () => {
   const fetchCustomerInfo = async (phone: string): Promise<Customer> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ name: '이민지', points: 240, stampBook: 3, stamps: 28 }); // 목데이터
+        resolve({ name: '이민지', points: 240, stampBook: 3, stamps: 28 });
       }, 400);
     });
   };

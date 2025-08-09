@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CommonSideBar from "../../../../components/admin/sideBar/CommonSideBar";
 import CommonTopBar from "../../../../components/admin/topBar/CommonTopBar";
-import { useMyInfo } from "../../../../hooks/query/userInfo/useMyInfo";
+// import { useMyInfo } from "../../../../hooks/query/userInfo/useMyInfo";
 import { useLogout } from "../../../../hooks/mutation/logout/useLogout";
 import AdminDefaultAccountView from "./AdminDefaultAccountView";
 import AdminWithdrawView from "./AdminWithdrawView"; 
@@ -19,7 +19,7 @@ const AdminManageAccount = ({ onBack }: Props) => {
   const [isWithdrawMode, setIsWithdrawMode] = useState(false); 
   const navigate = useNavigate();
 
-  const { data: myInfo } = useMyInfo();
+  // const { data: myInfo } = useMyInfo();
 
   const { mutate: logout } = useLogout(
     () => {
@@ -36,8 +36,8 @@ const AdminManageAccount = ({ onBack }: Props) => {
     logout();
   };
 
-  const allowKakaoAlert = myInfo?.allowKakaoAlert ?? false;
-  const email = allowKakaoAlert ? myInfo?.email ?? "" : "";
+  // const allowKakaoAlert = myInfo?.allowKakaoAlert ?? false;
+  // const email = allowKakaoAlert ? myInfo?.email ?? "" : "";
 
   return (
     <div className="w-full min-h-screen flex font-suit text-[#252525]">
@@ -61,8 +61,8 @@ const AdminManageAccount = ({ onBack }: Props) => {
             <AdminWithdrawView />
           ) : (
             <AdminDefaultAccountView
-              email={email}
-              allowKakaoAlert={allowKakaoAlert}
+              // email={email}
+              // allowKakaoAlert={allowKakaoAlert}
               onClickLogout={() => setShowLogoutModal(true)}
               onClickWithdraw={() => setIsWithdrawMode(true)} 
             />
