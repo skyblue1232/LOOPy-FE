@@ -2,7 +2,7 @@ type CommonTwoButtonModalProps = {
   onClose: () => void;
   purpleButton?: string;
   purpleButtonOnClick?: () => void;
-  title: string;
+  title: React.ReactNode;
   message: string;
 };
 
@@ -34,16 +34,16 @@ const CommonTwoButtonModal = ({
             {message}
           </div>
           <div className="flex gap-2 w-full mt-10">
-            <button 
+            <button
               className="flex-1 bg-[#DFDFDF] text-[#7F7F7F] text-[1rem] font-semibold py-4 rounded-[0.5rem] leading-none"
               onClick={onClose}
             >
               취소하기
             </button>
-            <button 
+            <button
               className="flex-1 bg-[#6970F3] text-white text-[1rem] font-semibold py-4 rounded-[0.5rem] leading-none"
               onClick={purpleButtonOnClick}
-              >
+            >
               {purpleButton}
             </button>
           </div>
