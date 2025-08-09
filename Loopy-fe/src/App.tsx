@@ -35,6 +35,7 @@ import AdminSettingFunnelLayout from './layouts/AdminSettingFunnelLayout.tsx';
 import AdminChallengeList from './pages/Admin/Challenge/_components/AdminChallengeList.tsx';
 import AdminChallengeDetail from './pages/Admin/Challenge/_components/AdminChallengeDetail.tsx';
 import AdminNotificationPage from './pages/Admin/Notification/index.tsx';
+import AdminRegisterPage from './pages/Admin/Register/index.tsx';
 // import { AuthCheck } from './utils/authCheck';
 
 const publicRoutes = createBrowserRouter([
@@ -183,6 +184,10 @@ const publicRoutes = createBrowserRouter([
       { 
         path: 'home', 
         element: <AdminHomePage /> 
+      },
+      { 
+        path: 'register', 
+        element: <AdminRegisterPage /> 
       },
       { 
         path: 'challenge', 
