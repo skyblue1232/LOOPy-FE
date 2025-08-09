@@ -197,7 +197,7 @@ const publicRoutes = createBrowserRouter([
         element: <AdminChallengeList /> 
       },
       { 
-        path: 'coupon', 
+        path: 'coupon/:cafeId', 
         element: <AdminCouponPage /> 
       },
       { 
