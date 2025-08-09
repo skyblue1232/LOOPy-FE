@@ -165,20 +165,48 @@ const publicRoutes = createBrowserRouter([
     path: '/admin',
     element: <AdminLayout />,
     children: [
-      { index: true, element: <AdminLoginPage /> },
+      { 
+        index: true, 
+        // loader: AuthCheck.authPageCheck,
+        element: <AdminLoginPage /> 
+      },
       // {
       //   path: 'login/success',
       //   element: <AdminLoginSuccess />,
       //   handle: { isPublic: true },
       // },
-      { path: 'signin', element: <AdminSigninPage /> },
-      { path: 'home', element: <AdminHomePage /> },
-      { path: 'challenge', element: <AdminChallengePage /> },
-      { path: 'challenge/:type', element: <AdminChallengeDetail /> },
-      { path: 'challengelist', element: <AdminChallengeList /> },
-      { path: 'coupon', element: <AdminCouponPage /> },
-      { path: 'stamp', element: <AdminStampPage /> },
-      { path: 'setting', element: <AdminSettingFunnelLayout /> },
+      { 
+        path: 'signin', 
+        element: <AdminSigninPage /> 
+      },
+      { 
+        path: 'home', 
+        element: <AdminHomePage /> 
+      },
+      { 
+        path: 'challenge', 
+        element: <AdminChallengePage /> 
+      },
+      { 
+        path: 'challenge/:type', 
+        element: <AdminChallengeDetail /> 
+      },
+      { 
+        path: 'challengelist', 
+        element: <AdminChallengeList /> 
+      },
+      { 
+        path: 'coupon', 
+        element: <AdminCouponPage /> 
+      },
+      { 
+        path: 'stamp', 
+        element: <AdminStampPage /> 
+      },
+      { 
+        path: 'setting', 
+        element: <AdminSettingFunnelLayout /> 
+      },
     ],
   },
 ]);

@@ -4,7 +4,6 @@ import CommonTopBar from '../../../../components/admin/topBar/CommonTopBar';
 import BasicInfoTab from './tabList/BasicInfoTab';
 import OperationInfoTab from './tabList/OperationInfoTab';
 import MenuRegisterTab from './tabList/MenuRegisterTab';
-import StaffRegisterTab from './tabList/StaffRegisterTab';
 import clsx from 'clsx';
 
 interface Props {
@@ -15,7 +14,6 @@ const tabList = [
   { id: 'basic', label: '기본 정보' },
   { id: 'operation', label: '운영 정보' },
   { id: 'menu', label: '메뉴 등록' },
-  { id: 'staff', label: '스탭 등록' },
 ];
 
 const AdminEditProfile = ({ onBack }: Props) => {
@@ -28,7 +26,7 @@ const AdminEditProfile = ({ onBack }: Props) => {
       <div className="flex-1 flex flex-col ml-[12.875rem]">
         <CommonTopBar title="매장 정보 수정" profileImageUrl="" onBack={onBack} />
 
-        <div className="grid grid-cols-4 bg-[#F3F3F3] rounded-[8px] overflow-hidden max-w-[34rem]">
+        <div className="grid grid-cols-3 bg-[#F3F3F3] rounded-[8px] overflow-hidden max-w-[34rem]">
           {tabList.map((tab, index) => {
             const isFirst = index === 0;
             const isLast = index === tabList.length - 1;
@@ -56,7 +54,6 @@ const AdminEditProfile = ({ onBack }: Props) => {
           {selectedTab === 'basic' && <BasicInfoTab />}
           {selectedTab === 'operation' && <OperationInfoTab />}
           {selectedTab === 'menu' && <MenuRegisterTab />}
-          {selectedTab === 'staff' && <StaffRegisterTab />}
         </div>
       </div>
     </div>
