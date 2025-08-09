@@ -205,6 +205,10 @@ const publicRoutes = createBrowserRouter([
         element: <AdminStampPage /> 
       },
       { 
+        path: 'notification', 
+        element: <AdminNotificationPage /> 
+      },
+      { 
         path: 'setting', 
         element: <AdminSettingFunnelLayout /> 
       },
