@@ -1,15 +1,15 @@
-import KakaoIcon from "../../../../assets/images/KakaoLogo.svg?react";
+// import KakaoIcon from "../../../../assets/images/KakaoLogo.svg?react";
 
 interface Props {
-  email?: string;
-  allowKakaoAlert?: boolean;
+  // email?: string;
+  // allowKakaoAlert?: boolean;
   onClickLogout: () => void;
   onClickWithdraw: () => void;
 }
 
 const AdminDefaultAccountView = ({
-  email = "",
-  allowKakaoAlert = false,
+  // email = "",
+  // allowKakaoAlert = false,
   onClickLogout,
   onClickWithdraw,
 }: Props) => {
@@ -31,7 +31,7 @@ const AdminDefaultAccountView = ({
 
   return (
     <div className="flex flex-col sm:max-w-[345px]">
-      {allowKakaoAlert ? (
+      {/* {allowKakaoAlert ? (
         <div>
           <p className="text-[0.875rem] text-[#7F7F7F] mb-[0.5rem]">
             소셜 계정이 연동되었습니다.
@@ -64,9 +64,9 @@ const AdminDefaultAccountView = ({
         </div>
       )}
 
-      <div className="mt-[1.5rem] w-full h-[0.8px] border border-[#DFDFDF]" />
+      <div className="mt-[1.5rem] w-full h-[0.8px] border border-[#DFDFDF]" /> */}
 
-      <div className="mt-[2rem]">
+      <div>
         <button
           onClick={onClickLogout}
           className="w-full font-medium text-left text-[1rem] mb-[1.25rem]"

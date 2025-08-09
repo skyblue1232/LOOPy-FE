@@ -6,3 +6,12 @@ export type AgreementState = {
   location: boolean;
   marketing: boolean;
 };
+
+export type Audience = "user" | "admin";
+
+export interface AgreementSection {
+  heading: string;
+  body: string; 
+}
+
+export type AgreementDoc = Partial<Record<AgreementKey, AgreementSection[]>>;

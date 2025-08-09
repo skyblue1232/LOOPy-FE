@@ -32,7 +32,7 @@ const CommonAdminButton = ({
         `
       )}
     >
-      <div className="w-full flex flex-col items-center">
+      <div className="w-full flex flex-col items-start">
         {showCheckText && (
           <div
             className="flex items-center gap-[0.5rem] mb-[1.25rem] cursor-pointer"

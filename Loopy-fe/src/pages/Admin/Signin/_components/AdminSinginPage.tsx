@@ -5,11 +5,11 @@ import CommonButton from "../../../../components/button/CommonButton";
 import AdminPasswordInput from "../_components/AdminPasswordInput";
 import PasswordValidationHint from "../../../User/Signin/_components/StepSignin/PasswordHint";
 import type { FormData } from "../../../../types/form";
-import AgreementDetailView from "../../../User/Signin/_components/AgreementDetailView";
 import AgreementItem from "../../../User/Signin/_components/AgreementItem";
 import type { AgreementKey } from "../../../../types/agreement";
 import CommonHeader from "../../../../components/header/CommonHeader";
 import CommonInput from "../../../../components/input/CommonInput";
+import AdminAgreementDetailView from "./AdminAgreementDetailView";
 
 interface AdminSigninPageProps {
   formData: FormData;
@@ -22,15 +22,16 @@ const AdminSigninPage = ({ formData, setFormData, onNext, onBack }: AdminSigninP
   const isKeyboardOpen = useKeyboardOpen();
   const [agreementDetailKey, setAgreementDetailKey] = useState<AgreementKey | null>(null);
 
-  const { email, password, confirmPassword, agreeTerms, agreePrivacy } = formData;
+  const { email, password, confirmPassword, agreeTerms, agreePrivacy, agreelocation } = formData;
   const { lengthValid, comboValid, passwordMatch } = usePasswordValidation(password, confirmPassword);
 
   const isValid =
-    email &&
-    password &&
-    confirmPassword &&
-    agreeTerms &&
-    agreePrivacy &&
+    !!email &&
+    !!password &&
+    !!confirmPassword &&
+    !!agreeTerms &&
+    !!agreePrivacy &&
+    !!agreelocation &&
     lengthValid &&
     comboValid &&
     passwordMatch;
@@ -47,7 +48,7 @@ const AdminSigninPage = ({ formData, setFormData, onNext, onBack }: AdminSigninP
           title="회원가입"
           onBack={() => setAgreementDetailKey(null)}
         />
-        <AgreementDetailView agreementKey={agreementDetailKey} />
+        <AdminAgreementDetailView agreementKey={agreementDetailKey} />
       </div>
     );
   }
@@ -104,12 +105,20 @@ const AdminSigninPage = ({ formData, setFormData, onNext, onBack }: AdminSigninP
                 />
               </div>
 
-              <div className="-mt-[0.5rem]">
+              <div className="-my-[0.5rem]">
                 <AgreementItem
                   label="개인정보 수집 및 이용 동의"
                   checked={!!formData.agreePrivacy}
                   onClick={() => setFormData((prev) => ({ ...prev, agreePrivacy: !prev.agreePrivacy }))}
                   onArrowClick={() => setAgreementDetailKey("privacy")}
+                />
+              </div>
+              <div className="-mt-[0.5rem]">
+                <AgreementItem
+                  label="위치기반 서비스 이용약관 동의"
+                  checked={!!formData.agreePrivacy}
+                  onClick={() => setFormData((prev) => ({ ...prev, agreePrivacy: !prev.agreePrivacy }))}
+                  onArrowClick={() => setAgreementDetailKey("location")}
                 />
               </div>
             </div>
