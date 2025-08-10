@@ -47,3 +47,65 @@ export const reverseGeocode = async (lat: number, lng: number): Promise<KakaoPla
     region_3depth_name: region.region_3depth_name,
   };
 };
+
+// 도로명/지번 주소 검색 (도로명 우선 사용)
+export const searchAddress = async (query: string): Promise<KakaoPlace[]> => {
+  const { data } = await kakaoInstance.get("/search/address.json", {
+    params: { query },
+  });
+
+  return (data.documents ?? [])
+    .filter((doc: any) => doc.road_address || doc.address)
+    .map((doc: any) => {
+      const road = doc.road_address; 
+      const jibun = doc.address;  
+
+      const x = String(road?.x ?? jibun?.x ?? "");
+      const y = String(road?.y ?? jibun?.y ?? "");
+
+      return {
+        id: `${x},${y},${road?.address_name ?? jibun?.address_name ?? ""}`,
+        place_name: "",
+        address_name: jibun?.address_name ?? "",        // 지번
+        road_address_name: road?.address_name ?? "",    // 도로명
+        x,
+        y,
+        region_1depth_name: jibun?.region_1depth_name ?? road?.region_1depth_name ?? "",
+        region_2depth_name: jibun?.region_2depth_name ?? road?.region_2depth_name ?? "",
+        region_3depth_name: jibun?.region_3depth_name ?? road?.region_3depth_name ?? "",
+      } as KakaoPlace;
+    });
+};
+
+// 좌표 -> 도로명/지번 주소 (도로명 우선 반환 사용)
+export const reverseGeocodeAddress = async (
+  lat: number,
+  lng: number
+): Promise<KakaoPlace | null> => {
+  const { data } = await kakaoInstance.get("/geo/coord2address.json", {
+    params: { x: lng, y: lat },
+  });
+
+  const doc = data.documents?.[0];
+  if (!doc) return null;
+
+  const road = doc.road_address;
+  const jibun = doc.address;
+
+  const x = String(lng);
+  const y = String(lat);
+
+  return {
+    id: road?.address_name || jibun?.address_name || `${x},${y}`,
+    place_name: "",
+    address_name: jibun?.address_name ?? "",
+    road_address_name: road?.address_name ?? "",
+    x,
+    y,
+    region_1depth_name: jibun?.region_1depth_name ?? road?.region_1depth_name ?? "",
+    region_2depth_name: jibun?.region_2depth_name ?? road?.region_2depth_name ?? "",
+    region_3depth_name: jibun?.region_3depth_name ?? road?.region_3depth_name ?? "",
+  } as KakaoPlace;
+};
+
+
