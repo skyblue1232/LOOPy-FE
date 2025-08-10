@@ -49,10 +49,14 @@ export default function AdminRegisterPage() {
     };
 
     const handleBack = () => {
+        if (step === 0) {
+            navigate("/admin");
+            return;
+        }
         if (step === 1) {
-        navigate(-1);
+            navigate(-1);
         } else if (step > 0) {
-        goToStep(step - 1);
+            goToStep(step - 1);
         }
     };
 
