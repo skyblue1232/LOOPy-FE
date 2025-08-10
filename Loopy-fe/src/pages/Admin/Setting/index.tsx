@@ -1,10 +1,10 @@
 import { Suspense, lazy } from "react";
-import { useAdminSettingFunnel } from "../../../contexts/AdminSettingProvider";
+import { useAdminSettingFunnel, SettingProvider } from "../../../contexts/AdminSettingProvider";
 import LoadingSpinner from "../../../components/loading/LoadingSpinner";
 
 const AdminMainSettingPage = lazy(() => import("./_components/AdminMainSettingPage"));
-const AdminEditProfile = lazy(() => import("./_components/AdminEditProfile.tsx"));
-const AdminManageAccount = lazy(() => import("./_components/AdminManageAccount.tsx"));
+const AdminEditProfile   = lazy(() => import("./_components/AdminEditProfile"));  
+const AdminManageAccount = lazy(() => import("./_components/AdminManageAccount")); 
 
 const AdminSettingPage = () => {
   const funnel = useAdminSettingFunnel();
@@ -12,14 +12,20 @@ const AdminSettingPage = () => {
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <funnel.Render
-        setting={({ history }) => (
-          <AdminMainSettingPage onNavigate={history.push} />
+        setting={({ history, step, context }) => (
+          <SettingProvider value={{ step, context, replace: history.replace, push: history.push }}>
+            <AdminMainSettingPage onNavigate={history.push} />
+          </SettingProvider>
         )}
-        editProfile={({ history }) => (
-          <AdminEditProfile onBack={() => history.push("setting", {})} />
+        editProfile={({ history, step, context }) => (
+          <SettingProvider value={{ step, context, replace: history.replace, push: history.push }}>
+            <AdminEditProfile onBack={() => history.push("setting", {})} />
+          </SettingProvider>
         )}
-        manageAccount={({ history }) => (
-          <AdminManageAccount onBack={() => history.push("setting", {})} />
+        manageAccount={({ history, step, context }) => (
+          <SettingProvider value={{ step, context, replace: history.replace, push: history.push }}>
+            <AdminManageAccount onBack={() => history.push("setting", {})} />
+          </SettingProvider>
         )}
       />
     </Suspense>
