@@ -70,20 +70,31 @@ const HomePage = () => {
               <div className="text-[0.875rem] text-gray-500 mt-3">
                 1달 내 재방문이 없으면 포인트로 자동 환전되어요
               </div>
+
               <div className="mt-6 pb-[100px] flex flex-col items-center">
-                {stampBooks.map((stamp) => (
-                  <MyStamp
-                    key={stamp.id}
-                    stampBook={stamp}
-                    imageUrl={undefined}
-                  />
-                ))}
+                {stampBooks.length === 0 ? (
+                  <div className="flex flex-col text-center mt-16 gap-3">
+                    <div className="text-[#6970F3] text-[1.125rem] font-bold leading-none">
+                      아직 적립한 스탬프가 없어요!
+                    </div>
+                    <div className="text-[#7F7F7F] text-[0.875rem] leading-none">
+                      루피와 함께 첫 스탬프를 모아보세요
+                    </div>
+                  </div>
+                ) : (
+                  stampBooks.map((stamp) => (
+                    <MyStamp
+                      key={stamp.id}
+                      stampBook={stamp}
+                      imageUrl={undefined}
+                    />
+                  ))
+                )}
               </div>
             </div>
           )}
         </div>
 
-        {/* 바텀바는 white 뒤에 겹치도록 고정 */}
         <div className="fixed bottom-0 left-0 right-0">
           <CommonBottomBar active="home" onChange={(tab) => console.log(tab)} />
         </div>
