@@ -1,22 +1,36 @@
 import { useNavigate } from "react-router-dom";
 import type { MyPageSteps } from "../../../../types/mySteps";
+import type { SVGProps, ComponentType } from "react";
+import CouponIcon from "../../../../assets/images/Coupon.svg?react";
+import AcornStampIcon from "../../../../assets/images/AcronStamp.svg?react";  
+import TumblerChallengeIcon from "../../../../assets/images/TumblerChallenge.svg?react";
 
 interface Props {
   onNavigate: (step: keyof MyPageSteps, context: (prev: any) => any) => void;
   onRoute?: (path: string) => void;
 }
 
+type SvgIcon = ComponentType<SVGProps<SVGSVGElement>>;
+
+type Menu = {
+  label: string;
+  step?: keyof MyPageSteps;
+  path?: string;
+  Icon: SvgIcon;
+};
+
 const QuickAccessMenu = ({ onNavigate, onRoute }: Props) => {
   const navigate = useNavigate();
-  const menus: { label: string; step?: keyof MyPageSteps; path?: string }[] = [
-    { label: "스탬프 환전", step: "stampExchange" },
-    { label: "챌린지", path: "/challenge" },
-    { label: "쿠폰함", step: "couponBox" },
+
+  const menus: Menu[] = [
+    { label: "스탬프 환전", step: "stampExchange", Icon: AcornStampIcon },
+    { label: "챌린지", path: "/challenge", Icon: TumblerChallengeIcon },
+    { label: "쿠폰함", step: "couponBox", Icon: CouponIcon },
   ];
 
   return (
     <div className="mt-4 flex gap-[0.5rem]">
-      {menus.map(({ label, step, path }) => (
+      {menus.map(({ label, step, path, Icon }) => (
         <div
           key={label}
           className="flex-1 bg-[#F3F3F3] rounded-[8px] px-[0.5rem] py-[0.75rem] min-w-0"
@@ -24,16 +38,16 @@ const QuickAccessMenu = ({ onNavigate, onRoute }: Props) => {
           <button
             onClick={() => {
               if (path === "/challenge") {
-                navigate("/challenge"); 
+                navigate("/challenge");
               } else if (path) {
-                onRoute?.(path); 
+                onRoute?.(path);
               } else if (step) {
                 onNavigate(step, () => ({}));
               }
             }}
             className="w-full flex flex-col items-center justify-center"
           >
-            <div className="w-[3rem] h-[3rem] bg-red-500 rounded-full" />
+            <Icon className="w-[3rem] h-[3rem]" />
             <span className="text-[0.875rem] font-semibold text-[#252525] mt-[0.5rem] text-center break-keep">
               {label}
             </span>
