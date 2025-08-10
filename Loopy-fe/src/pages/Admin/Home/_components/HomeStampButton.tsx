@@ -11,7 +11,7 @@ const HomeStampButton = () => {
   const [showCompleteModal, setShowCompleteModal] = useState(false);
 
   //TODO 실제 API로 대체하기
-  const fetchCustomerInfo = async (phone: string): Promise<Customer> => {
+  const fetchCustomerInfo = async (): Promise<Customer> => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({ name: '이민지', points: 240, stampBook: 3, stamps: 28 });

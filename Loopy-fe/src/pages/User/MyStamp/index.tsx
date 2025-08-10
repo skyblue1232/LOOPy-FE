@@ -70,23 +70,22 @@ const MyStampPage = () => {
       <div className="relative z-10 flex flex-col min-h-screen">
         <CommonHeader title="내 스탬프지" onBack={() => navigate(-1)} white />
         <div className="flex items-center gap-2 mt-6 text-white font-semibold text-lg">
-          <span className="font-bold text-[1.25rem]">
+          <span className="font-bold text-[1.25rem] leading-none">
             {stampData.cafe.name}
           </span>
-          <span className="text-[#DFDFDF] text-[0.875rem] font-normal">
-            {stampData.cafe.address}
+          <span className="text-[#DFDFDF] text-[0.875rem] font-normal leading-none">
+            ~
+            {dueDate
+              .toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              })
+              .replace(/\.$/, '')}
           </span>
         </div>
-        <div className="mt-1 text-[#E3F389] text-[1rem] font-medium">
-          스탬프지 기한 ~
-          {dueDate
-            .toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-            })
-            .replace(/\.$/, '')}
-          까지
+        <div className="mt-4 text-[#E3F389] text-[1rem] font-medium leading-none">
+          5,000원 이상 구매 시 스탬프 1개 적립
         </div>
 
         {diffDays <= 7 && (
