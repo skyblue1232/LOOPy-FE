@@ -7,6 +7,12 @@ export type BasicInfoState = {
   sns: string;
   description: string;
   photos: File[];
+  region1DepthName?: string; 
+  region2DepthName?: string;
+  region3DepthName?: string;
+  latitude?: number;  
+  longitude?: number
+  serverPhotoUrls?: string[]; 
 };
 
 export type AdminSettingContext = {
