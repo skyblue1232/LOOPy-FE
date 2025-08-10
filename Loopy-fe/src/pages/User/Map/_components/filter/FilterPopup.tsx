@@ -1,28 +1,62 @@
 import CommonButton from "../../../../../components/button/CommonButton";
 import TagButton from "../../../../../components/button/TagButton";
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { filterGroups } from "../../../../../constants/filterGroup";
 import ResetIcon from "/src/assets/images/Reset.svg?react";
 
 interface FilterPopupProps {
   onClose: () => void;
   selectedGroup?: string;
+  initialSelected?: Record<string, string[]>;          
+  onSave?: (next: Record<string, string[]>) => void;
 }
 
-export default function FilterPopup({ onClose, selectedGroup }: FilterPopupProps) {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+export default function FilterPopup({ onClose, selectedGroup, initialSelected = {}, onSave, }: FilterPopupProps) {
+  const [localSelected, setLocalSelected] = useState<Record<string, string[]>>(initialSelected);
 
-  const toggleTag = (tag: string) => {
-    setSelectedTags(prev =>
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
-    );
+  useEffect(() => {
+    const normalized: Record<string, string[]> = {};
+    filterGroups.forEach(g => {
+      normalized[g.title] = [...(initialSelected[g.title] ?? [])];
+    });
+    setLocalSelected(normalized);
+  }, []); 
+
+  const groupsToShow = useMemo(
+    () => (selectedGroup ? filterGroups.filter(g => g.title === selectedGroup) : filterGroups),
+    [selectedGroup]
+  );
+
+  const toggleTag = (groupTitle: string, tag: string) => {
+    setLocalSelected(prev => {
+      const prevArr = prev[groupTitle] ?? [];
+      const nextArr = prevArr.includes(tag)
+        ? prevArr.filter(t => t !== tag)
+        : [...prevArr, tag];
+      return { ...prev, [groupTitle]: nextArr };
+    });
   };
 
-  const handleReset = () => setSelectedTags([]);
+  const handleReset = () => {
+    if (selectedGroup) {
+      setLocalSelected(prev => ({ ...prev, [selectedGroup]: [] }));
+    } else {
+      // 전체 초기화
+      const cleared: Record<string, string[]> = {};
+      filterGroups.forEach(g => (cleared[g.title] = []));
+      setLocalSelected(cleared);
+    }
+  };
 
-  const groupsToShow = selectedGroup
-    ? filterGroups.filter(group => group.title === selectedGroup)
-    : filterGroups;
+  const handleSave = () => {
+    // 단일 그룹 팝업이면 해당 그룹만 갱신, 아니면 전체 갱신
+    if (selectedGroup) {
+      onSave?.({ ...initialSelected, [selectedGroup]: localSelected[selectedGroup] ?? [] });
+    } else {
+      onSave?.(localSelected);
+    }
+    onClose();
+  };
 
   return (
     <div className="w-full bg-white rounded-t-[1rem] px-[1.5rem] pt-[2.5rem] pb-[10rem] relative">
@@ -30,7 +64,7 @@ export default function FilterPopup({ onClose, selectedGroup }: FilterPopupProps
       {/* 헤더 */}
       <div className="flex justify-between items-center mb-[1rem]">
         <h2 className="text-[1.25rem] font-bold">
-          {selectedGroup ? selectedGroup : "세부 필터"}
+          {selectedGroup ?? "세부 필터"}
         </h2>
         <button
           onClick={handleReset}
@@ -53,8 +87,8 @@ export default function FilterPopup({ onClose, selectedGroup }: FilterPopupProps
                 <TagButton
                   key={tag}
                   label={tag}
-                  selected={selectedTags.includes(tag)}
-                  onClick={() => toggleTag(tag)}
+                  selected={(localSelected[group.title] ?? []).includes(tag)}
+                  onClick={() => toggleTag(group.title, tag)}
                 />
               ))}
             </div>
@@ -68,10 +102,7 @@ export default function FilterPopup({ onClose, selectedGroup }: FilterPopupProps
           text="저장하기"
           autoStyle
           className="text-[1rem] h-[3.125rem] bg-[#6970F3] text-white font-semibold flex items-center justify-center"
-          onClick={() => {
-            // TODO: 저장 로직
-            onClose();
-          }}
+          onClick={handleSave}
         />
         <CommonButton
           text="닫기"
