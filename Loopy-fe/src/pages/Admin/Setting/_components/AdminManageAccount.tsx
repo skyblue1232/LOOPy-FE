@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CommonSideBar from "../../../../components/admin/sideBar/CommonSideBar";
 import CommonTopBar from "../../../../components/admin/topBar/CommonTopBar";
-// import { useMyInfo } from "../../../../hooks/query/userInfo/useMyInfo";
 import { useLogout } from "../../../../hooks/mutation/logout/useLogout";
 import AdminDefaultAccountView from "./AdminDefaultAccountView";
 import AdminWithdrawView from "./AdminWithdrawView"; 
@@ -18,8 +17,6 @@ const AdminManageAccount = ({ onBack }: Props) => {
   const [showLogoutComplete, setShowLogoutComplete] = useState(false);
   const [isWithdrawMode, setIsWithdrawMode] = useState(false); 
   const navigate = useNavigate();
-
-  // const { data: myInfo } = useMyInfo();
 
   const { mutate: logout } = useLogout(
     () => {

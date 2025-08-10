@@ -6,22 +6,14 @@ import SNSInput from "./SNSInput";
 import PhoneInput from "./PhoneInput";
 import CommonAdminButton from "../../../../../../components/admin/button/CommonAdminButton";
 import AddressSearchField from "./AddressSearchField";
-
-type Form = {
-  storeName: string;
-  ownerName: string;
-  address: string;
-  detailAddress: string;
-  phone: string;
-  sns: string;
-  description: string;
-  photos: File[];
-};
+import type { BasicInfoForm } from "../../../../../../types/basicInfo";
+import { useUploadOwnerCafePhotos } from "../../../../../../hooks/mutation/admin/photo/useOwnerPhoto";
+import { useDeleteOwnerCafePhotoById } from "../../../../../../hooks/mutation/admin/photo/useDeleteOwnerPhoto";
 
 interface Props {
-  form: Form;
-  setField: <K extends keyof Form>(key: K) => (v: Form[K]) => void;
-  commit: () => Promise<void> | void;
+  form: BasicInfoForm;
+  setField: <K extends keyof BasicInfoForm>(key: K) => (v: BasicInfoForm[K]) => void;
+  commit: () => Promise<void | number> | void;
   isValid: boolean;
   isSubmitting: boolean;
   maxPhotos: number;
@@ -32,15 +24,47 @@ const BasicInfoFormView = ({
   form, setField, commit, isValid,
   isSubmitting, maxPhotos, minPhotos
 }: Props) => {
-  const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const { mutateAsync: uploadPhotos, isPending: isUploading } = useUploadOwnerCafePhotos();
+  const { mutateAsync: deleteById,   isPending: isDeleting  } = useDeleteOwnerCafePhotoById();
+
+  const handlePhotoChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    const merged = [...form.photos, ...Array.from(e.target.files)].slice(0, maxPhotos);
-    setField("photos")(merged);
+
+    const currentUrls = form.serverPhotoUrls ?? [];
+    const remain = Math.max(0, maxPhotos - currentUrls.length);
+    if (remain <= 0) { e.target.value = ""; return; }
+
+    const picked = Array.from(e.target.files).slice(0, remain);
+
+    const valid = picked.filter(f => f.type.startsWith("image/") && f.size <= 10 * 1024 * 1024);
+    if (valid.length === 0) { e.target.value = ""; return; }
+
+    const res = await uploadPhotos(valid);     
+    const mergedUrls = [...currentUrls, ...res.urls].slice(0, maxPhotos);
+
+    setField("serverPhotoUrls")(mergedUrls);
+    setField("photos")([]);                  
     e.target.value = "";
   };
 
+  const handleDeleteServerPhoto = async (idx: number) => {
+    const ids  = form.serverPhotoIds ?? [];  
+    const urls = form.serverPhotoUrls ?? [];
+    const targetId = ids[idx];
+
+    if (typeof targetId !== "number") {
+      console.warn("photoId가 없어 서버 삭제를 수행할 수 없습니다. GET 상세에서 id 동기화가 필요합니다.");
+      return;
+    }
+
+    await deleteById(targetId);
+
+    setField("serverPhotoIds")(ids.filter((_, i) => i !== idx));
+    setField("serverPhotoUrls")(urls.filter((_, i) => i !== idx));
+  };
+
   const handlePhotoDelete = (idx: number) => {
-    setField("photos")(form.photos.filter((_, i) => i !== idx));
+    setField("photos")((form.photos ?? []).filter((_, i) => i !== idx));
   };
 
   const setExtra = setField as unknown as (
@@ -51,6 +75,8 @@ const BasicInfoFormView = ({
       | "latitude"
       | "longitude"
   ) => (v: any) => void;
+
+  const submitDisabled = !isValid || isSubmitting || isUploading || isDeleting;
 
   return (
     <div className="flex flex-col gap-8">
@@ -81,7 +107,6 @@ const BasicInfoFormView = ({
         setDetailAddress={setField("detailAddress")}
         onPick={(p) => {
           setField("address")(p.address);
-          // ✅ region/좌표는 any 캐스팅으로 반영
           setExtra("region1DepthName")(p.region1DepthName);
           setExtra("region2DepthName")(p.region2DepthName);
           setExtra("region3DepthName")(p.region3DepthName);
@@ -96,11 +121,13 @@ const BasicInfoFormView = ({
       </div>
 
       <PhotoUploader
-        photos={form.photos}
+        photos={[]} 
+        serverPhotos={form.serverPhotoUrls ?? []}
         maxPhotos={maxPhotos}
         minPhotos={minPhotos}
-        onChange={handlePhotoChange}
+        onChange={handlePhotoChange}             
         onDelete={handlePhotoDelete}
+        onDeleteServerPhoto={handleDeleteServerPhoto} 
       />
 
       <DescriptionArea
@@ -114,8 +141,14 @@ const BasicInfoFormView = ({
       />
 
       <CommonAdminButton
-        label="수정 완료하기"
-        disabled={!isValid || isSubmitting}
+        label={
+          isUploading
+            ? "이미지 업로드 중..."
+            : isDeleting
+              ? "이미지 삭제 중..."
+              : "수정 완료하기"
+        }
+        disabled={submitDisabled}
         onClick={() => void commit()}
       />
     </div>
