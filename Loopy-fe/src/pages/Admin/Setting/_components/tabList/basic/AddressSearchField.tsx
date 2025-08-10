@@ -54,7 +54,7 @@ const AddressSearchField = ({
       </div>
 
       <CommonInput
-        placeholder="상세 주소를 입력해주세요"
+        placeholder="상세 주소를 입력해주세요 (예시: 3층 카페 루피)"
         value={detailAddress}
         onChange={(e) => setDetailAddress(e.target.value)}
       />
