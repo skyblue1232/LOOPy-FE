@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import type { MyPageSteps } from "../../../../types/mySteps";
 import type { SVGProps, ComponentType } from "react";
-import CouponIcon from "../../../../assets/images/Coupon.svg?react";
-import AcornStampIcon from "../../../../assets/images/AcronStamp.svg?react";  
-import TumblerChallengeIcon from "../../../../assets/images/TumblerChallenge.svg?react";
+import MyCoupon from "../../../../assets/images/MyCoupon.svg?react";
+import MyStamp from "../../../../assets/images/MyStamp.svg?react";  
+import MyChallenge from "../../../../assets/images/MyChallenge.svg?react";
 
 interface Props {
   onNavigate: (step: keyof MyPageSteps, context: (prev: any) => any) => void;
@@ -23,9 +23,9 @@ const QuickAccessMenu = ({ onNavigate, onRoute }: Props) => {
   const navigate = useNavigate();
 
   const menus: Menu[] = [
-    { label: "스탬프 환전", step: "stampExchange", Icon: AcornStampIcon },
-    { label: "챌린지", path: "/challenge", Icon: TumblerChallengeIcon },
-    { label: "쿠폰함", step: "couponBox", Icon: CouponIcon },
+    { label: "스탬프 환전", step: "stampExchange", Icon: MyStamp },
+    { label: "챌린지", path: "/challenge", Icon: MyChallenge },
+    { label: "쿠폰함", step: "couponBox", Icon: MyCoupon },
   ];
 
   return (
@@ -47,7 +47,7 @@ const QuickAccessMenu = ({ onNavigate, onRoute }: Props) => {
             }}
             className="w-full flex flex-col items-center justify-center"
           >
-            <Icon className="w-[3rem] h-[3rem]" />
+            <Icon className="w-[2.5rem] h-[2.5rem]" />
             <span className="text-[0.875rem] font-semibold text-[#252525] mt-[0.5rem] text-center break-keep">
               {label}
             </span>

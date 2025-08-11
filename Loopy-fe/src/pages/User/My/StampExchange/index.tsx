@@ -68,7 +68,7 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
       />
 
       {selectedStampBook && (
-        <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-white">
           <ActiveStampDetailPage
             stampBook={selectedStampBook}
             onBack={() => setSelectedStampBook(null)}

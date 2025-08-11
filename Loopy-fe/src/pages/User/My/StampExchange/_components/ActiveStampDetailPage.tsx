@@ -25,7 +25,7 @@ const ActiveStampDetailPage = ({ stampBook, onBack }: Props) => {
         </span>
       </div>
 
-      <div className="mt-1 text-[#E3F389] text-[1rem] font-medium">
+      <div className="mt-1 text-[#E3F389] text-[1rem] font-semibold">
         {rewardDetail}
       </div>
 
