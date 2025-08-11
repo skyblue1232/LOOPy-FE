@@ -2,6 +2,7 @@ export interface Cafe {
   id: number;
   name: string;
   address: string;
+  image?: string;
 }
 
 export interface StampBook {
@@ -10,10 +11,25 @@ export interface StampBook {
   currentCount: number;
   goalCount: number;
   status: 'active' | 'completed' | 'expired';
-  expiredAt: string;
+  expiresAt: string;
+
+  remainCount: number;
+  progressRatio: number;
+  progressPercent: number;
+  isExpired: boolean;
+  isExpiringSoon: boolean;
+  daysUntilExpiration: number;
+}
+
+export interface StampBookListData {
+  totalCount: number;
+  sortBy: 'mostStamped' | 'shortestDeadline';
+  items: StampBook[];
 }
 
 export interface StampBookListResponse {
+  status: string;
+  code: number;
   message: string;
-  data: StampBook[];
+  data: StampBookListData;
 }

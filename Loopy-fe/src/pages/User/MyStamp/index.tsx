@@ -36,7 +36,7 @@ const MyStampPage = () => {
         setIsPopupOpen(true);
       },
       onError: () => {
-        alert('스탬프지 연장에 실패했어요. 다시 시도해 주세요.');
+        console.error('스탬프지 연장 실패');
       },
     });
   };
