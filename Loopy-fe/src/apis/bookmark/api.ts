@@ -4,7 +4,9 @@ import { bookmarkListMock } from './mock';
 
 export const fetchBookmarkedCafes = async (): Promise<Bookmark[]> => {
   try {
-    const res = await axiosInstance.get<BookmarkListResponse>('/bookmarks'); // 실제 엔드포인트가 다르면 수정
+    const res = await axiosInstance.get<BookmarkListResponse>(
+      '/api/v1/users/me/bookmarks',
+    );
 
     if (res.data.resultType === 'SUCCESS' && res.data.success?.bookmarks) {
       return res.data.success.bookmarks;

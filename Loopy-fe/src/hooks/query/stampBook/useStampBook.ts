@@ -13,7 +13,7 @@ export const useStampBooks = ({
   return useQuery<StampBook[], Error>({
     queryKey: ['stampBooks', sortBy],
     queryFn: () => fetchStampBooks(sortBy),
-    staleTime: 1000 * 60 * 5, // 5분 캐싱
+    staleTime: 1000 * 60 * 5,
     retry: 1,
   });
 };
