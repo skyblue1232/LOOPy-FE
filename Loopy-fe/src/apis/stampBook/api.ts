@@ -13,10 +13,8 @@ export const fetchStampBooks = async (
       },
     );
 
-    console.log('API 응답 전체:', res.data);
-
-    if (!res.data || !res.data.data || !Array.isArray(res.data.data.items)) {
-      console.warn('응답이 예상 구조가 아님. mock 반환', res.data);
+    if (!Array.isArray(res.data.data.items)) {
+      console.warn('응답이 배열이 아님. mock 반환', res.data);
       return stampBookListMock;
     }
 

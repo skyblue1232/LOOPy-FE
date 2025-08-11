@@ -12,9 +12,9 @@ interface MyStampProps {
 const MyStamp: React.FC<MyStampProps> = ({ stampBook, imageUrl }) => {
   const navigate = useNavigate();
 
-  const { cafe, currentCount, goalCount, expiredAt } = stampBook;
+  const { cafe, currentCount, goalCount, expiresAt } = stampBook;
 
-  const dueDate = new Date(expiredAt);
+  const dueDate = new Date(expiresAt);
   const progressPercent = (currentCount / goalCount) * 100;
   const daysLeft = GetRemainingDays(dueDate);
 
