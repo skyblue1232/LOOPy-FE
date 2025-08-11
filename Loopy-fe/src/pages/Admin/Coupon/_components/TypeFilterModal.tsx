@@ -42,6 +42,7 @@ const TypeFilterModal = ({ open, value, onToggle, onReset, onClose, onSave }: Pr
       purpleButton="저장하기"
       purpleButtonOnClick={onSave}
       onClose={onClose}
+      titleAlign="start"
     >
       <div className="flex items-center justify-between mt-4 mb-10">
         <div className="flex items-center gap-3">

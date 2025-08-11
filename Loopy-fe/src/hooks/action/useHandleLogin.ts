@@ -13,9 +13,13 @@ export const useHandleLogin = () => {
   const { requestFcmToken } = useFcmToken();
 
   const fcmRequestedRef = useRef(false);
+  const inFlightRef = useRef(false);
 
   const handleLogin = useCallback(
     (data: LoginRequest) => {
+      if (inFlightRef.current) return;
+      inFlightRef.current = true;
+
       loginMutate(data, {
         onSuccess: (res) => {
           const { token, user, message } = res;
@@ -39,21 +43,21 @@ export const useHandleLogin = () => {
 
           if (!fcmRequestedRef.current) {
             fcmRequestedRef.current = true;
-
             (async () => {
               try {
                 const fcmToken = await requestFcmToken();
-                if (!fcmToken) {
-                  console.warn("FCM 토큰 발급 실패 또는 거부");
-                }
+                if (!fcmToken) console.warn("FCM 토큰 발급 실패 또는 거부");
               } catch (e) {
                 console.error("FCM 토큰 요청 중 에러:", e);
               }
             })();
           }
         },
-        onError: (err) => {
-          console.error("로그인 요청 실패:", err.message);
+        onError: (err: any) => {
+          console.error("로그인 요청 실패:", err?.message ?? err);
+        },
+        onSettled: () => {
+          inFlightRef.current = false;
         },
       });
     },
