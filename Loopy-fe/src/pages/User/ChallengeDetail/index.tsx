@@ -124,7 +124,7 @@ const ChallengeDetailPage = () => {
 
       {/* 하단 고정 버튼 (참여 안 한 경우만) */}
       {!challenge.isParticipated && (
-        <div className="fixed bottom-2 left-0 right-0 bg-white px-4 pb-8 flex justify-center">
+        <div className="fixed bottom-2 left-0 right-0  px-4 pb-8 flex justify-center">
           <button
             onClick={() => navigate(`/challenge/${challengeId}/stores`)}
             className="w-full max-w-md bg-[#6970F3] text-white py-3 rounded-xl font-semibold"
