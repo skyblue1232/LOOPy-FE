@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import CommonHeader from '../../../components/header/CommonHeader';
 import Level1 from '../../../assets/images/Level1.svg?react';
 import Level2 from '../../../assets/images/Level2.svg?react';
+import Level3 from '../../../assets/images/Level3.svg?react';
+import Level4 from '../../../assets/images/Level4.svg?react';
 
 const levels = [
   {
@@ -20,19 +22,17 @@ const levels = [
   },
   {
     step: '3단계',
-    title: '든든한 베스트프렌드',
+    title: '동네 카페 전문가',
     range: '스탬프지 10장~19장',
     desc: '루피를 꾸준히 이용하며 관계가 끈끈해지고 있는 단계, 로컬 카페와 루피의 소중한 단골이 되었어요',
-    imgSrc:
-      'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=400&q=80',
+    Svg: Level3,
   },
   {
     step: '4단계',
     title: '커피왕 루피',
     range: '스탬프지 20장 이상',
     desc: '카페 단골, 루피 단골! 우리 동네 커피 박사',
-    imgSrc:
-      'https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=400&q=80',
+    Svg: Level4,
   },
 ];
 
