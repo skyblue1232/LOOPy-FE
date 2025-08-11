@@ -38,7 +38,7 @@ const MessageItem = ({ sender, avatar, content, date, isNew }: MessageItemProps)
           <img
             src={avatar}
             alt="avatar"
-            className="w-6 h-6 rounded-full object-cover"
+            className="w-6 h-6 rounded-full object-cover shrink-0"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.style.display = "none";
@@ -46,7 +46,7 @@ const MessageItem = ({ sender, avatar, content, date, isNew }: MessageItemProps)
             }}
           />
         ) : null}
-        <div className={avatar ? "hidden w-6 h-6 rounded-full bg-[#434343]" : "w-6 h-6 rounded-full bg-[#434343]"} />
+        <div className={avatar ? "hidden w-6 h-6 rounded-full bg-[#434343] shrink-0" : "w-6 h-6 rounded-full bg-[#434343] shrink-0"} />
 
         <div className="flex flex-col w-full">
           <p className="text-[1rem] font-semibold text-[#252525] mb-1">{sender}</p>
