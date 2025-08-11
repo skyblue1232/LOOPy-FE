@@ -11,8 +11,7 @@ import CafeInfoPanelSkeleton from "./Skeleton/CafeInfoPanelSkeleton";
 
 import { cafeDetailMock } from "../../../mock/cafeDetailMock";
 import { getCafeDetail } from "../../../apis/cafeDetail/api";
-import type { CafeDetailSuccess } from "../../../apis/cafeDetail/type";
-import { parseBusinessHours } from "../../../utils/parseBusinessHours";
+import type { CafeDetailSuccess, CafeDetailResponse } from "../../../apis/cafeDetail/type";
 
 const DetailPage = () => {
   const { cafeId = '1' } = useParams(); // 임의 지정
@@ -20,20 +19,16 @@ const DetailPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<"info" | "review">("info");
 
-  const handleBack = () => {
-    navigate(-1); 
-  };
+  const handleBack = () => navigate(-1);
 
   const { data, isLoading } = useQuery<CafeDetailSuccess>({
-    queryKey: ['cafeDetail', cafeId],
+    queryKey: ["cafeDetail", cafeId],
     queryFn: async () => {
-      if (!cafeId) throw new Error('no cafeId');
-      try {
-        return await getCafeDetail(cafeId);
-      } catch (e) {
-        console.warn('getCafeDetail failed, fallback to mock:', e);
-        return cafeDetailMock;
-      }
+      if (!cafeId) throw new Error("no cafeId");
+
+      const raw = (await getCafeDetail(cafeId)) as CafeDetailSuccess | CafeDetailResponse;
+
+      return "success" in raw ? raw.success : raw;
     },
     enabled: !!cafeId,
   });
@@ -66,20 +61,23 @@ const DetailPage = () => {
               name={cafe.name}
               address={cafe.address}
               tags={[]}
-              keywords={cafe.keywords}
+              keywords={cafe.keywords ?? []}
               selectedTab={selectedTab}
               onTabChange={setSelectedTab}
-              hours={parseBusinessHours(cafe.businessHours)}
-              phone={cafe.phone}
-              instagram={cafe.websiteUrl}
-              description={cafe.description}
+              businessHourType={cafe.businessHourType}
+              businessHours={cafe.businessHours}
+              breakTime={cafe.breakTime ?? null}
+              phone={cafe.phone ?? ""}
+              instagram={cafe.websiteUrl ?? ""} // 기존 prop 이름 유지
+              description={cafe.description ?? ""}
               isLoading={isLoading}
-              storeFilters={data.cafe.storeFilters}
-              takeOutFilters={data.cafe.takeOutFilters}
-              menuFilters={data.cafe.menuFilters}
-              coupons={data.coupons}
+              storeFilters={cafe.storeFilters ?? {}}
+              takeOutFilters={cafe.takeOutFilters ?? {}}
+              menuFilters={cafe.menuFilters ?? {}}
+              coupons={data?.coupons ?? cafeDetailMock.coupons ?? []}
               cafeId={String(cafe.id)}
               cafeName={cafe.name}
+              menu={data.menu ?? []} 
             />
           )}
         </div>
