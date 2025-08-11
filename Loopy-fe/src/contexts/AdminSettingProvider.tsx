@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useRef, useCallback } from "react";
 import { useFunnel } from "@use-funnel/browser";
 import type { UseFunnelOptions } from "@use-funnel/browser";
-import type { AdminSettingSteps, AdminSettingContext } from "../types/adminSteps";
+import type { AdminSettingSteps, AdminSettingContext, MenuItem } from "../types/adminSteps";
 
 const initialContext: AdminSettingContext = {
   basicInfo: {
@@ -14,6 +14,7 @@ const initialContext: AdminSettingContext = {
     description: "",
     photos: [],
   },
+  menus: [], 
 };
 
 const isAdminSettingContext = (data: unknown): data is AdminSettingContext => {
@@ -50,7 +51,8 @@ type BridgeValue = {
   context: AdminSettingContext;
   replace: (step: keyof AdminSettingSteps, ctx: AdminSettingContext) => void;
   push: (step: keyof AdminSettingSteps, ctx: Partial<AdminSettingContext>) => void;
-  update: (patch: Partial<AdminSettingContext["basicInfo"]>) => void;
+  update: (patch: Partial<AdminSettingContext["basicInfo"]>) => void; 
+  setMenus: (updater: (prev: MenuItem[]) => MenuItem[]) => void; 
 };
 
 const SettingContext = createContext<BridgeValue | null>(null);
@@ -59,7 +61,7 @@ export const SettingProvider = ({
   value,
   children,
 }: {
-  value: Omit<BridgeValue, "update"> & { context: AdminSettingContext };
+  value: Omit<BridgeValue, "update" | "setMenus"> & { context: AdminSettingContext };
   children: React.ReactNode;
 }) => {
   const { step, context, replace, push } = value;
@@ -72,15 +74,26 @@ export const SettingProvider = ({
     const next: AdminSettingContext = {
       ...curr,
       basicInfo: { ...curr.basicInfo, ...patch },
+      menus: Array.isArray(curr.menus) ? curr.menus : [],
     };
 
-    const same =
-      next.basicInfo === curr.basicInfo ||
-      Object.keys(patch).every((k) => (next.basicInfo as any)[k] === (curr.basicInfo as any)[k]);
+    const same = Object.keys(patch).every(
+      (k) => (next.basicInfo as any)[k] === (curr.basicInfo as any)[k]
+    );
 
     if (!same) {
       replace(step, next);
     }
+  }, [replace, step]);
+
+  const setMenus = useCallback((updater: (prev: MenuItem[]) => MenuItem[]) => {
+    const curr = latestContextRef.current;
+    const prevMenus = Array.isArray(curr.menus) ? curr.menus : [];
+    const nextMenus = updater(prevMenus);
+
+    if (nextMenus === prevMenus) return;
+
+    replace(step, { ...curr, menus: nextMenus });
   }, [replace, step]);
 
   const ctxValue = useMemo<BridgeValue>(() => ({
@@ -89,7 +102,8 @@ export const SettingProvider = ({
     replace,
     push,
     update,
-  }), [step, context, replace, push, update]);
+    setMenus,
+  }), [step, context, replace, push, update, setMenus]);
 
   return <SettingContext.Provider value={ctxValue}>{children}</SettingContext.Provider>;
 };

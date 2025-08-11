@@ -23,7 +23,6 @@ const BookMarkPage = () => {
         id: b.id,
         name: b.name,
         address: b.address,
-        // API에 없어서 고정값. 실제 거리 계산 로직 대체.
         distanceText: '',
         images: DEFAULT_IMAGES,
         keywords: b.keywords ?? [],

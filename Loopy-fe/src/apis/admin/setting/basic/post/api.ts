@@ -1,11 +1,15 @@
-import axiosInstance from "../../../../axios";
+import axiosInstance from '../../../../axios';
 import type {
   PostOwnerCafeBasicInfoRequest,
   PostOwnerCafeBasicInfoResponse,
-} from "../type";
+} from '../type';
 
-export async function postOwnerCafeBasicInfo(
+export const postOwnerCafeBasicInfo = async (
   payload: PostOwnerCafeBasicInfoRequest
-): Promise<PostOwnerCafeBasicInfoResponse> {
-  await axiosInstance.post("/api/v1/owner/cafes/basic-info", payload);
-}
+): Promise<PostOwnerCafeBasicInfoResponse> => {
+  const { data } = await axiosInstance.post<PostOwnerCafeBasicInfoResponse>(
+    '/api/v1/owner/cafes/basic-info',
+    payload
+  );
+  return data; 
+};

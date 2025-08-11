@@ -1,31 +1,68 @@
-import { useRef, useState } from "react";
-import { requestFcmToken } from "./usePatchToken";
+import { useCallback, useRef, useState } from "react";
+import { requestFcmToken as requestFromBrowser } from "./usePatchToken";
 import { usePatchFcmToken } from "../mutation/fcm/usePatchFcmToken";
+
+type RequestOptions = { force?: boolean };
 
 export const useFcmToken = () => {
   const [fcmToken, setFcmToken] = useState<string | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const isRequestedRef = useRef(false);
+  const inFlightRef = useRef<Promise<string | null> | null>(null);
 
-  const { mutate: patchFcmTokenMutate } = usePatchFcmToken();
+  const { mutateAsync: patchFcmTokenAsync, isPending: isPatching } = usePatchFcmToken();
 
-  const wrappedRequest = async (): Promise<string | null> => {
-    if (isRequestedRef.current) return null;
-    isRequestedRef.current = true;
+  const reset = useCallback(() => {
+    isRequestedRef.current = false;
+    inFlightRef.current = null;
+    setFcmToken(null);
+    setError(null);
+  }, []);
 
-    try {
-      const token = await requestFcmToken();
-      if (token) {
-        setFcmToken(token);
-        patchFcmTokenMutate({ fcmToken: token });
-        return token;
-      }
-      return null;
-    } catch (err: any) {
-      setError(err);
-      return null;
-    }
-  };
+  const requestFcmToken = useCallback(
+    async (opts: RequestOptions = {}): Promise<string | null> => {
+      const { force = false } = opts;
 
-  return { fcmToken, requestFcmToken: wrappedRequest, error };
+      if (!force && fcmToken) return fcmToken;
+
+      if (inFlightRef.current) return inFlightRef.current;
+
+      if (!force && isRequestedRef.current) return fcmToken;
+
+      const promise = (async () => {
+        try {
+          const token = await requestFromBrowser();
+          if (!token) {
+            isRequestedRef.current = true; 
+            return null;
+          }
+
+          setFcmToken(token);
+          isRequestedRef.current = true;
+
+          try {
+            await patchFcmTokenAsync({ fcmToken: token });
+          } catch (e) {
+            setError(e as Error);
+          }
+
+          return token;
+        } catch (e) {
+          setError(e as Error);
+          isRequestedRef.current = true;
+          return null;
+        } finally {
+          inFlightRef.current = null;
+        }
+      })();
+
+      inFlightRef.current = promise;
+      return promise;
+    },
+    [fcmToken, patchFcmTokenAsync]
+  );
+
+  const isRequesting = !!inFlightRef.current;
+
+  return { fcmToken, requestFcmToken, reset, isRequesting, isPatching, error };
 };

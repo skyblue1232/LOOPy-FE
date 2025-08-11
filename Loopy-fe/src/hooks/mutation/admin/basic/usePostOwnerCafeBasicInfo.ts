@@ -5,13 +5,27 @@ import type {
   PostOwnerCafeBasicInfoResponse,
 } from "../../../../apis/admin/setting/basic/type";
 
+const BASIC_INFO_KEY = ["owner", "cafe", "basic"];
+
 export function usePostOwnerCafeBasicInfo() {
   const qc = useQueryClient();
 
-  return useMutation<PostOwnerCafeBasicInfoResponse, unknown, PostOwnerCafeBasicInfoRequest>({
+  return useMutation<
+    PostOwnerCafeBasicInfoResponse,
+    unknown,
+    PostOwnerCafeBasicInfoRequest
+  >({
     mutationFn: postOwnerCafeBasicInfo,
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["owner", "cafe", "basic"] });
+    onSuccess: (data) => {
+      const cafeId = data?.cafe?.id;
+      if (cafeId) {
+        localStorage.setItem("activeCafeId", String(cafeId));
+      }
+
+      qc.invalidateQueries({ queryKey: BASIC_INFO_KEY });
+    },
+    onError: (err) => {
+      console.error("카페 기본 정보 등록 실패:", err);
     },
   });
 }

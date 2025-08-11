@@ -33,7 +33,7 @@ export const useHandleAdminLogin = () => {
             onError: (err) => console.warn("계정 활성화 실패:", err),
           });
 
-          navigate("/admin/home", { replace: true });
+          navigate("/admin/register", { replace: true });
 
           if (!fcmRequestedRef.current) {
             fcmRequestedRef.current = true;

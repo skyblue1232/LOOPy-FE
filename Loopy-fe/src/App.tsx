@@ -36,6 +36,8 @@ import AdminChallengeList from './pages/Admin/Challenge/_components/AdminChallen
 import AdminChallengeDetail from './pages/Admin/Challenge/_components/AdminChallengeDetail.tsx';
 import AdminNotificationPage from './pages/Admin/Notification/index.tsx';
 import AdminRegisterPage from './pages/Admin/Register/index.tsx';
+import MapSearchProviders from './layouts/MapSearchProviderLayout.tsx';
+import VerifyPage from './pages/auth/VerifyPage.tsx';
 // import { AuthCheck } from './utils/authCheck';
 
 const publicRoutes = createBrowserRouter([
@@ -62,6 +64,11 @@ const publicRoutes = createBrowserRouter([
         handle: { isPublic: true },
       },
       {
+        path: 'verify',
+        // loader: AuthCheck.authPageCheck,
+        element: <VerifyPage />,
+      },
+      {
         path: 'onboard',
         // loader: AuthCheck.authPageCheck,
         element: <OnboardingLayout />,
@@ -76,14 +83,27 @@ const publicRoutes = createBrowserRouter([
         children: [
           {
             index: true,
-            // loader: AuthCheck.authPageCheck,
-            element: <MapPage />,
+            element: (
+              <MapSearchProviders>
+                <MapPage />
+              </MapSearchProviders>
+            ),
           },
+          { path: 'location', element: <LocationPage /> },
+        ],
+      },
+      {
+        path: 'search',
+        children: [
           {
-            path: 'location',
-            // loader: AuthCheck.authPageCheck,
-            element: <LocationPage />,
+            index: true,
+            element: (
+              <MapSearchProviders>
+                <SearchPage />
+              </MapSearchProviders>
+            ),
           },
+          { path: 'location', element: <LocationPage /> },
         ],
       },
       {
@@ -110,21 +130,6 @@ const publicRoutes = createBrowserRouter([
         path: 'mypage',
         // loader: AuthCheck.authPageCheck,
         element: <MyPageFunnelLayout />,
-      },
-      {
-        path: 'search',
-        children: [
-          {
-            index: true,
-            // loader: AuthCheck.authPageCheck,
-            element: <SearchPage />,
-          },
-          {
-            path: 'location',
-            // loader: AuthCheck.authPageCheck,
-            element: <LocationPage />,
-          },
-        ],
       },
       {
         path: 'alarm',
