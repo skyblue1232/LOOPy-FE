@@ -1,16 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useQuery, /*useInfiniteQuery*/ } from "@tanstack/react-query";
-//import type { InfiniteData } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-//import { useInView } from "react-intersection-observer";
 import CafeTagButton from "./CafeTagButton";
 import CafeInfoContent from "./CafeInfoContent";
-import type { BusinessHour, CafeDetailData } from "../../../../types/cafeData";
-import { cafeDetailMock } from "../../../../mock/cafeDetailMock";
 import { cafeReviewMock } from "../../../../mock/cafeReviewMock";
 import { formatReview } from "../../../../utils/formatReview";
 import { getCafeReviews } from "../../../../apis/review/get/api";
-//import type { ReviewPage } from "../../../../apis/review/type";
 import CafeReviewContent from "./CafeReviewContent";
 import AlarmSubscribeButton from "./AlarmSubscribeButton";
 import BookmarkButton from "../../../../components/button/BookmarkButton";
@@ -18,109 +13,79 @@ import ArrowDownIcon from "/src/assets/images/ArrowDown_Grey2.svg?react";
 import ArrowUpIcon from "/src/assets/images/ArrowUp_Grey2.svg?react";
 import CafeInfoContentSkeleton from "../Skeleton/CafeInfoContentSkeleton";
 import CafeReviewContentSkeleton from "../Skeleton/CafeReviewSkeleton";
-import type { Coupon } from "../../../../apis/cafeDetail/type";
+import type { 
+    BusinessHourType,
+    SameAllDaysHours,
+    WeekdayWeekendHours,
+    EachDayHour,
+    MenuItem,
+    Coupon,
+} from "../../../../apis/cafeDetail/type";
 
-interface CafeInfoPanelProps extends CafeDetailData {
+interface CafeInfoPanelProps {
+    name: string;
+    address: string;
+    tags: string[];
+    keywords: string[] | null;
+
     selectedTab: "info" | "review";
     onTabChange: (tab: "info" | "review") => void;
-    menus?: {
-        name: string;
-        description: string;
-        price: string;
-        imageUrl: string;
-        isRepresentative: boolean;
-    }[];
+
+    businessHourType: BusinessHourType;
+    businessHours: SameAllDaysHours | WeekdayWeekendHours | EachDayHour[];
+    breakTime?: string | null;
+
     isLoading: boolean;
-    hours: BusinessHour[];
-    storeFilters?: Record<string, boolean>;
-    takeOutFilters?: Record<string, boolean>;
-    menuFilters?: Record<string, boolean>;
+    phone: string | null;
+    instagram: string | null;
+    description: string | null;
+
+    menu: MenuItem[];                
+    storeFilters?: Record<string, boolean> | null;
+    takeOutFilters?: Record<string, boolean> | null;
+    menuFilters?: Record<string, boolean> | null;
     coupons: Coupon[];
+
     cafeId: string;
     cafeName: string;
 }
 
-const days = ["일", "월", "화", "수", "목", "금", "토"];
-
 export default function CafeInfoPanel({
-    name,
-    address,
-    tags,
-    keywords,
-    selectedTab,
-    onTabChange,
-    phone,
-    instagram,
-    description,
+    name, address, tags, keywords,
+    selectedTab, onTabChange,
+    phone, instagram, description,
     isLoading,
-    hours,
-    menus = [],
-    storeFilters,
-    takeOutFilters,
-    menuFilters,
-    coupons,
+    businessHourType, businessHours, breakTime,
+    menu, storeFilters, takeOutFilters, menuFilters, coupons,
 }: CafeInfoPanelProps) {
     const [showAllTags, setShowAllTags] = useState(false);
-    const today = days[new Date().getDay()];
-    const sortedHours = [
-        ...hours.slice(hours.findIndex((h) => h.day === today)),
-        ...hours.slice(0, hours.findIndex((h) => h.day === today)),
-    ];
     const Icon = showAllTags ? ArrowUpIcon : ArrowDownIcon;
     const [isTabLoading, setIsTabLoading] = useState(false);
     const prevTabRef = useRef<"info" | "review">(selectedTab);
     const { cafeId } = useParams();
     const token = localStorage.getItem("accessToken");
-    const {
-        data: reviewData,
-        isLoading: isReviewLoading,
-    } = useQuery({
+    const { data: reviewData, isLoading: isReviewLoading } = useQuery({
         queryKey: ["cafeReviews", cafeId],
-        queryFn: () => getCafeReviews(cafeId!, undefined, token!),
+        queryFn: async () => {
+            try {
+                return await getCafeReviews(cafeId!, undefined, token!);
+            } catch (e) {
+                console.error("리뷰 조회 실패. 목데이터로 대체합니다.", e);
+                return cafeReviewMock;
+            }
+        },
         enabled: selectedTab === "review" && !!cafeId && !!token,
     });
 
     const getActiveFilterTags = (): string[] => {
         const filters = [storeFilters, takeOutFilters, menuFilters];
-        return filters.flatMap((filter) =>
+        return filters
+        .flatMap((filter) =>
             Object.entries(filter || {})
             .filter(([, value]) => value)
             .map(([key]) => key)
         );
     };
-
-    /*const {
-        data: reviewData,
-        fetchNextPage,
-        hasNextPage,
-        isFetchingNextPage,
-        isLoading: isReviewLoading,
-    } = useInfiniteQuery<ReviewPage, unknown, InfiniteData<ReviewPage>, [string, string | undefined]>({
-        queryKey: ["cafeReviews", cafeId],
-        queryFn: async ({ pageParam }: { pageParam: unknown }) => {
-            return await getCafeReviews(cafeId!, (pageParam ?? 0) as number, token!);
-        },
-        initialPageParam: 0,
-        getNextPageParam: (lastPage) =>
-            lastPage.hasNextPage ? lastPage.nextCursor : undefined,
-        enabled: selectedTab === "review" && !!cafeId && !!token,
-    });
-
-    const { ref, inView } = useInView();
-
-    useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
-    }
-    }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-    const getActiveFilterTags = (): string[] => {
-        const filters = [storeFilters, takeOutFilters, menuFilters];
-        return filters.flatMap((filter) =>
-            Object.entries(filter || {})
-            .filter(([, value]) => value)
-            .map(([key]) => key)
-        );
-    };*/
 
     const allTags = [...tags, ...getActiveFilterTags()];
 
@@ -143,7 +108,7 @@ export default function CafeInfoPanel({
                     </div>
 
                     <BookmarkButton/>
-                    </div>
+                </div>
 
                 <div className="mt-[0.25rem] text-[#7F7F7F] text-[1rem] font-normal">
                     {address}
@@ -211,29 +176,17 @@ export default function CafeInfoPanel({
                     <CafeInfoContentSkeleton />
                     ) : (
                         <CafeInfoContent
-                            hours={sortedHours}
+                            businessHourType={businessHourType}
+                            businessHours={businessHours}
+                            breakTime={breakTime}             
                             phone={phone}
-                            instagram={instagram}
+                            websiteUrl={instagram}   
                             description={description}
-                            keywords={keywords}
-                            menus={
-                                menus.length > 0
-                                    ? menus.map((m) => ({
-                                        name: m.name,
-                                        description: m.description,
-                                        price: m.price,
-                                        imageUrl: m.imageUrl ?? '', // 실제 필드 이름 확인 필요
-                                        isRepresentative: m.isRepresentative ?? false,
-                                    }))
-                                    : cafeDetailMock.menu.map((m) => ({
-                                        name: m.name,
-                                        description: m.description,
-                                        price: m.price.toString(),
-                                        imageUrl: m.imgUrl,
-                                        isRepresentative: m.isRepresentative,
-                                    }))
-                            }
+                            keywords={keywords ?? []}
+                            menu={menu ?? []}
                             coupons={coupons}
+                            challenge={[]}                   
+                            stampBook={null}                   
                             cafeId={cafeId!}
                             cafeName={name}
                         />
@@ -247,8 +200,7 @@ export default function CafeInfoPanel({
                     ) : (
                         <div className="mt-[1.5rem] flex flex-col gap-[2rem]">
                             <CafeReviewContent
-                                reviews={
-                                    (reviewData?.reviews || cafeReviewMock.reviews).map(formatReview)} 
+                                reviews={(reviewData?.reviews || cafeReviewMock.reviews).map(formatReview)} 
                             />
                         </div>
                     )
