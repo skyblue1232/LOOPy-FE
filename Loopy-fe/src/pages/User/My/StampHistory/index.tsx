@@ -2,18 +2,13 @@ import { useState } from "react";
 import CommonHeader from "../../../../components/header/CommonHeader";
 import StampHistoryItem from "./_components/StampHistoryItem";
 import StampHistoryItemSkeleton from "./Skeleton/StampHistoryItemSkeleton";
-import StampDetailPage from "../StampExchange/_components/StampDetailPage";
-import { useConvertedStampbooks } from "../../../../hooks/query/my/useConvertedStampBook";
-import type { ConvertedStampBook } from "../../../../apis/my/convertedStamp/type";
-
-const getRandomImageUrl = () => {
-  const randomId = Math.floor(Math.random() * 1000);
-  return `https://source.unsplash.com/collection/928423/${randomId}`;
-};
+import CompletedStampDetailPage from "./_components/CompletedStampDetailPage";
+import { useConvertedStamp } from "../../../../hooks/query/my/useConvertedStamp";
+import type { ConvertedStampBookItem } from "../../../../apis/my/converted/type";
 
 const StampHistoryPage = ({ onBack }: { onBack: () => void }) => {
-  const { data, isLoading } = useConvertedStampbooks();
-  const [selectedHistory, setSelectedHistory] = useState<ConvertedStampBook | null>(null);
+  const { data, isLoading } = useConvertedStamp();
+  const [selectedHistory, setSelectedHistory] = useState<ConvertedStampBookItem | null>(null);
 
   const noData = !isLoading && (!data || data.length === 0);
 
@@ -37,7 +32,7 @@ const StampHistoryPage = ({ onBack }: { onBack: () => void }) => {
               key={item.stampBookId}
               history={{
                 ...item,
-                imageUrl: getRandomImageUrl(),
+                imageUrl: item.cafeImageUrl,
               }}
               onClick={() => setSelectedHistory(item)}
             />
@@ -48,17 +43,8 @@ const StampHistoryPage = ({ onBack }: { onBack: () => void }) => {
       {selectedHistory && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center">
           <div className="bg-white w-full sm:max-w-[393px] h-full overflow-y-auto custom-scrollbar">
-            <StampDetailPage
-              stampBook={{
-                id: selectedHistory.stampBookId,
-                cafeName: selectedHistory.cafeName,
-                cafeAddress: selectedHistory.address,
-                imageUrl: getRandomImageUrl(),
-                totalStampCount: 10,
-                currentStampCount: 10,
-                isCompleted: true,
-                expiredAt: "",
-              }}
+            <CompletedStampDetailPage
+              history={selectedHistory}
               onBack={() => setSelectedHistory(null)}
             />
           </div>
