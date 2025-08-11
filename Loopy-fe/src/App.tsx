@@ -37,6 +37,7 @@ import AdminChallengeDetail from './pages/Admin/Challenge/_components/AdminChall
 import AdminNotificationPage from './pages/Admin/Notification/index.tsx';
 import AdminRegisterPage from './pages/Admin/Register/index.tsx';
 import MapSearchProviders from './layouts/MapSearchProviderLayout.tsx';
+import VerifyPage from './pages/auth/VerifyPage.tsx';
 // import { AuthCheck } from './utils/authCheck';
 
 const publicRoutes = createBrowserRouter([
@@ -61,6 +62,11 @@ const publicRoutes = createBrowserRouter([
         path: 'login/success',
         element: <LoginSuccess />,
         handle: { isPublic: true },
+      },
+      {
+        path: 'verify',
+        // loader: AuthCheck.authPageCheck,
+        element: <VerifyPage />,
       },
       {
         path: 'onboard',
