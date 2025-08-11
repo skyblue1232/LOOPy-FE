@@ -1,58 +1,45 @@
-import type { StampBook } from "../../../../../apis/myStamp/type";
+import type { ExpiringStampBookResponse } from "../../../../../apis/myStamp/type";
+import { usePostExpiringStampBook } from "../../../../../hooks/mutation/my/myStamp/useExpiredStamp";
 
 interface Props {
-  stampBook: StampBook;
+  stampBook: ExpiringStampBookResponse;
   onExchangeClick: (stampBookId: number) => void;
-  onSelect: (stampBook: StampBook) => void;
+  onSelect: (stampBook: ExpiringStampBookResponse) => void;
 }
 
 const StampBookItem = ({ stampBook, onExchangeClick, onSelect }: Props) => {
-  const { id, currentStampCount, totalStampCount, cafeName, cafeAddress, imageUrl } = stampBook;
-  const progress = (currentStampCount / totalStampCount) * 100;
+  const { id, cafe } = stampBook;
+  const { name: cafeName, address: cafeAddress } = cafe;
+
+  const { mutate: postStampBook } = usePostExpiringStampBook();
 
   const handleSelect = () => {
     onSelect(stampBook);
   };
 
-  return (
-    <div className="flex items-start justify-center mt-[1.5rem] cursor-pointer" onClick={handleSelect}>
-      <div className="flex gap-4 w-full items-start">
-        <img
-          src={imageUrl}
-          alt={cafeName}
-          className="w-[5rem] h-[5rem] rounded-[8px] object-cover"
-        />
+  const handleExchangeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    postStampBook(id);
+    onExchangeClick(id);
+  };
 
+  return (
+    <div
+      className="flex items-start justify-center mt-[1.5rem] cursor-pointer"
+      onClick={handleSelect}
+    >
+      <div className="flex gap-4 w-full items-start">
         <div className="flex flex-col flex-1">
           <div className="flex items-center justify-between">
             <p className="text-[1.125rem] font-bold">{cafeName}</p>
             <button
-              onClick={(e) => {
-                e.stopPropagation(); 
-                onExchangeClick(id);
-              }}
+              onClick={handleExchangeClick}
               className="text-[#7F7F7F] text-[0.875rem] font-semibold bg-[#F3F3F3] px-[0.625rem] py-[0.25rem] rounded-[6px]"
             >
               환전
             </button>
           </div>
           <p className="text-[0.875rem] text-[#7F7F7F] font-normal">{cafeAddress}</p>
-
-          <div className="mt-[0.5rem]">
-            <div className="flex items-center gap-2">
-              <span className="text-[#6970F3] text-[0.875rem] font-semibold">스탬프</span>
-              <div className="flex-1 h-[10px] bg-[#F3F3F3] rounded-full relative">
-                <div
-                  className="absolute top-0 left-0 h-full bg-[#6970F3] rounded-full"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-              <div className="flex items-end gap-[2px]">
-                <span className="text-[#6970F3] text-[0.875rem] font-bold">{currentStampCount}</span>
-                <span className="text-[0.75rem] font-medium pb-0.25">/{totalStampCount}</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

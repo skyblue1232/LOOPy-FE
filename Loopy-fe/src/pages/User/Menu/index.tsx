@@ -25,7 +25,7 @@ export default function MenuListPage() {
 
     return (
         <div className="relative bg-white h-screen overflow-hidden">
-            <div className="absolute inset-0 pt-[1.5rem] px-[1rem] pb-[2rem] overflow-y-auto custom-scrollbar">
+            <div className="absolute inset-0 pt-[1.5rem] pb-[2rem] overflow-y-auto custom-scrollbar">
                 <CommonHeader
                 title={data?.cafe?.name ? `${data.cafe.name} 메뉴` : "카페 메뉴"}
                 onBack={() => navigate(-1)}
@@ -42,7 +42,8 @@ export default function MenuListPage() {
                             name={menu.name}
                             price={menu.price.toString()}
                             description={menu.description}
-                            imageSrc={menu.imgUrl}
+                            imageUrl={menu.imgUrl}
+                            isRepresentative={menu.isRepresentative}
                             />
                         ))}
                 </div>

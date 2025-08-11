@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useMyStampQuery } from "../../../hooks/mutation/detail/useMyStampQuery";
 import TopPhotoSection from "./_components/TopPhotoSection";
 import CafeInfoPanel from "./_components/CafeInfoPanel";
 import CafePhotoModal from "./_components/CafePhotoModal";
@@ -39,6 +40,8 @@ const DetailPage = () => {
 
   const cafe = data?.cafe;
   const photos = data?.photos || [];
+  const { data: myStampData } = useMyStampQuery(cafeId);
+  const hasStamp = !!myStampData?.stampBookId && myStampData.currentCount > 0;
 
   return (
     <div className="relative -mx-[1.5rem] h-screen overflow-y-scroll custom-scrollbar bg-white flex justify-center z-[100]">
@@ -82,7 +85,7 @@ const DetailPage = () => {
         </div>
 
         <div className="fixed bottom-[1.5rem] left-1/2 -translate-x-1/2 w-full max-w-[393px] flex justify-end px-[1.5rem] z-30">
-          {selectedTab === "review" && (
+          {selectedTab === "review" && hasStamp && (
             <ReviewButton />
           )}
         </div>

@@ -3,9 +3,11 @@ import AdminSigninPage from "./_components/AdminSinginPage";
 import AdminStepPhoneVerify from "./_components/AdminStepPhoneVerify";
 import AdminSignupSuccess from "./_components/AdminSignupSuccess.tsx";
 import type { FormData } from "../../../types/form";
+import { useNavigate } from "react-router-dom";
 
 const AdminSigninPageIndex = () => {
   const [step, setStep] = useState<"account" | "phone" | "success">("account");
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -32,6 +34,7 @@ const AdminSigninPageIndex = () => {
           formData={formData}
           setFormData={setFormData}
           onNext={handleNextStep}
+          onBack={() => navigate("/admin")}
         />
       )}
 
@@ -40,6 +43,7 @@ const AdminSigninPageIndex = () => {
           formData={formData}
           setFormData={setFormData}
           onNext={handleSignupSuccess}
+          onBack={() => setStep("account")}
         />
       )}
 

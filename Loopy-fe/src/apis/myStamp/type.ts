@@ -1,12 +1,10 @@
-export interface StampBook {
+export interface ExpiringStampBookResponse {
   id: number;
-  cafeName: string;
-  cafeAddress: string;
-  imageUrl: string;
-  totalStampCount: number;
-  currentStampCount: number;
-  isCompleted: boolean;
-  expiredAt: string; 
+  cafe: {
+    id: number;
+    name: string;
+    address: string;
+  };
+  expiresAt: string;
+  status: "ACTIVE" | "INACTIVE";
 }
-
-

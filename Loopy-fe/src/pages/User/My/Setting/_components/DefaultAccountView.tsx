@@ -15,16 +15,13 @@ const DefaultAccountView = ({
 }: Props) => {
   const handleKakaoConnect = () => {
     const clientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
-    const role = "CUSTOMER";
-
-    const redirectRawUri = `${import.meta.env.VITE_KAKAO_REDIRECT_URI}?role=${role}`;
-    const redirectUri = encodeURIComponent(redirectRawUri);
+    const redirectBase = import.meta.env.VITE_KAKAO_REDIRECT_URI; 
 
     const kakaoAuthUrl =
       `https://kauth.kakao.com/oauth/authorize` +
-      `?response_type=code` +
-      `&client_id=${clientId}` +
-      `&redirect_uri=${redirectUri}`;
+      `?client_id=${clientId}` +
+      `&redirect_uri=${encodeURIComponent(redirectBase)}` +
+      `&response_type=code`;
 
     window.location.href = kakaoAuthUrl;
   };

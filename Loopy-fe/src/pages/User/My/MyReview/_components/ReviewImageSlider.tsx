@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import ArrowRight from "../../../../../assets/images/ArrowRight.svg?react";
 
 interface Props {
   images: string[];
@@ -7,14 +6,6 @@ interface Props {
 
 const ReviewImageSlider = ({ images }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const handleNext = (e: React.MouseEvent) => {
-    e.stopPropagation(); 
-    const container = containerRef.current;
-    if (container) {
-      container.scrollBy({ left: 200, behavior: "smooth" });
-    }
-  };
 
   return (
     <div className="relative -mr-[1.5rem]">
@@ -34,15 +25,6 @@ const ReviewImageSlider = ({ images }: Props) => {
           />
         ))}
       </div>
-
-      {images.length > 1 && (
-        <button
-          onClick={handleNext}
-          className="absolute right-[0.5rem] top-1/2 -translate-y-1/2 bg-white rounded-full z-10 p-[0.5rem]"
-        >
-          <ArrowRight className="w-[1.25rem] h-[1.25rem] text-[#252525]"/>
-        </button>
-      )}
     </div>
   );
 };

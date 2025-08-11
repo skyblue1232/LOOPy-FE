@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CommonHeader from "../../../../components/header/CommonHeader";
 import AgreementListView from "./AgreementListView";
-import AgreementDetailView from "./AgreementDetailView";
+import UserAgreementDetailView from "./UserAgreementDetailView";
 import type { AgreementKey } from "../../../../types/agreement";
 import type { FormData } from "../../../../types/form";
 
@@ -105,7 +105,7 @@ const AgreementPage = ({ formData, setFormData, onNext, onBack }: AgreementPageP
             title={getTitle(selectedAgreementKey)}
             onBack={handleBackToList}
           />
-          <AgreementDetailView agreementKey={selectedAgreementKey} />
+          <UserAgreementDetailView agreementKey={selectedAgreementKey} />
         </>
       )}
     </div>

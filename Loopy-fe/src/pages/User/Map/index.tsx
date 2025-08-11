@@ -1,4 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelectedLocationStore } from '../../../store/locationStore';
+import { useMapViewStore } from '../../../store/mapviewStore';
 import MapViewToggleButton from '../../../components/button/MapViewToggleButton';
 import StampLegend from '../../../components/modal/StampLegend';
 import CafeDetailCard from '../../../components/card/MapCafeDetailCard';
@@ -11,6 +14,7 @@ import StampActiveMarker from '/src/assets/images/StampActiveMarker.svg';
 import StampDefaultMarker from '/src/assets/images/StampDefaultMarker.svg';
 import NoStampActiveMarker from '/src/assets/images/NoStampActiveMarker.svg';
 import NoStampDefaultMarker from '/src/assets/images/NoStampDefaultMarker.svg';
+import { useFilterStore } from '../../../store/filterStore';
 
 declare global {
   interface Window {
@@ -62,16 +66,30 @@ const getMarkerImage = (hasStamp: boolean, isActive: boolean) => {
 };
 
 const MapPage = () => {
+  const nav = useNavigate();
   const mapRef = useRef<HTMLDivElement>(null);
   const activeMarkerRef = useRef<any>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
+
+  const setDetailVar = () => {
+    const root = document.documentElement;
+    const h = detailRef.current?.getBoundingClientRect().height ?? 0;
+    root.style.setProperty('--detail-h', selectedCafe ? `${h}px` : '0px');
+  };
+
+  const { selected, shouldApplyOnMap, markAppliedOnMap } = useSelectedLocationStore();
+  const { view, setView } = useMapViewStore();
+
   const [selectedCafe, setSelectedCafe] = useState<Cafe | null>(null);
   const [isMapView, setIsMapView] = useState(true);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue] = useState('');
   const [selectedGroup, setSelectedGroup] = useState<string | undefined>(
     undefined,
   );
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const { selectedByGroup, setSelectedByGroup } = useFilterStore();
 
   const handleOpenFilterPopup = (group?: string) => {
     setSelectedGroup(group);
@@ -88,6 +106,34 @@ const MapPage = () => {
     }, 150);
   };
 
+  useLayoutEffect(() => {
+    setDetailVar();
+  }, [selectedCafe]);
+
+  useEffect(() => {
+    const node = detailRef.current;
+    if (!node) {
+      document.documentElement.style.setProperty('--detail-h', '0px');
+      return;
+    }
+    const onResize = () => setDetailVar();
+    window.addEventListener('resize', onResize);
+
+    const ro = new ResizeObserver(() => setDetailVar());
+    ro.observe(node);
+
+    const onEnd = () => setDetailVar();
+    node.addEventListener('transitionded', onEnd);
+
+    requestAnimationFrame(setDetailVar);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      ro.disconnect();
+      node.removeEventListener('transitionend', onEnd);
+    };
+  }, [selectedCafe]);
+
   useEffect(() => {
     const kakaoKey = import.meta.env.VITE_KAKAO_JS_KEY;
     const script = document.createElement('script');
@@ -100,9 +146,18 @@ const MapPage = () => {
         const container = mapRef.current;
         if (!container) return;
 
+        const initialCenter = view?.center ?? { lat: 37.5553, lng: 126.9368 };
+        const initialZoom   = view?.zoom ?? 3;
+
         const map = new window.kakao.maps.Map(container, {
-          center: new window.kakao.maps.LatLng(37.5553, 126.9368),
-          level: 3,
+          center: new window.kakao.maps.LatLng(initialCenter.lat, initialCenter.lng),
+          level: initialZoom,
+        });
+
+        window.kakao.maps.event.addListener(map, 'idle', () => {
+          const c = map.getCenter();
+          const level = map.getLevel();
+          setView({ center: { lat: c.getLat(), lng: c.getLng() }, zoom: level });
         });
 
         map.addListener('click', () => {
@@ -128,8 +183,6 @@ const MapPage = () => {
           });
 
           marker.addListener('click', () => {
-            //window.kakao.maps.event.cancelBubble();
-
             setTimeout(() => {
               if (activeMarkerRef.current) {
                 const prevCafe = dummyCafes.find(
@@ -145,10 +198,14 @@ const MapPage = () => {
               marker.setImage(getMarkerImage(cafe.hasStamp, true));
               activeMarkerRef.current = marker;
               activeMarkerRef.current.__cafeId = cafe.id;
+              map.panTo(position); 
               setSelectedCafe(cafe);
             }, 0);
           });
         });
+
+        // 인스턴스 보관
+        (mapRef.current as any).__map = map;
       });
     };
 
@@ -156,6 +213,17 @@ const MapPage = () => {
       document.head.removeChild(script);
     };
   }, []);
+
+  // 리스트에서 위치 설정 후 돌아온 경우 1회만 리센터
+  useEffect(() => {
+    const map: any = (mapRef.current as any)?.__map;
+    if (!map || !selected) return;
+    if (shouldApplyOnMap) {
+      const { lat, lng } = selected;
+      map.setCenter(new window.kakao.maps.LatLng(lat, lng));
+      markAppliedOnMap(); // 한 번만 적용
+    }
+  }, [selected?.updatedAt, shouldApplyOnMap, markAppliedOnMap]);
 
   return (
     <>
@@ -177,8 +245,13 @@ const MapPage = () => {
         <div className="w-full px-[1.5rem] mt-[1.5rem]">
           <SearchBar
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={() => {}}
             placeholder="취향에 맞는 카페를 찾아보세요!"
+          />
+          <button
+            onClick={() => nav('/search')}
+            className="absolute inset-0"
+            aria-label="검색 페이지로 이동"
           />
           <div className="mt-[0.5rem]">
             <FilterBar onOpenFilterPopup={handleOpenFilterPopup} />
@@ -187,19 +260,30 @@ const MapPage = () => {
       </div>
 
       <div
-        className={`fixed left-1/2 -translate-x-1/2 w-full max-w-[393px] px-[1.5rem] flex justify-between items-center h-[3.5rem] pointer-events-auto z-[60] transition-all ${
-          selectedCafe ? 'bottom-[22.75rem]' : 'bottom-[6.25rem]'
-        }`}
+        className={`
+          fixed
+          left-[1.5rem] right-[1.5rem]
+          sm:left-[calc((100vw-24.5625rem)/2+1.5rem)]
+          sm:right-[calc((100vw-24.5625rem)/2+1.5rem)]
+          z-[60] flex items-center
+          transition-[bottom] duration-150 ease-in-out
+          bottom-[calc(var(--detail-h,_0px)+6.25rem)]
+        `}
       >
-        <StampLegend />
-        <MapViewToggleButton
-          isMapView={isMapView}
-          onClick={() => setIsMapView((prev) => !prev)}
-        />
+        <div className="w-full">
+          <StampLegend />
+        </div>
+        <div className="ml-[0.75rem]">
+          <MapViewToggleButton
+            isMapView={isMapView}
+            onClick={() => setIsMapView(p => !p)}
+          />
+        </div>
       </div>
 
       {selectedCafe && (
         <div
+        ref={detailRef}
           className={`absolute bottom-[4.5625rem] left-0 right-0 flex justify-center transition-transform duration-300 ease-in-out pointer-events-auto z-[999] ${selectedCafe ? 'translate-y-0' : 'translate-y-full'}`}
           onClick={(e) => e.stopPropagation()}
         >
@@ -214,23 +298,37 @@ const MapPage = () => {
       )}
 
       {isPopupVisible && (
-        <div className="fixed inset-0 z-100 flex justify-center">
+        <div className="fixed inset-0 z-[200] flex justify-center" onClick={handleCloseFilterPopup}>
           <div
-            className="w-full max-w-[393px] h-full bg-black/50"
+            className="
+              absolute top-0 bottom-0
+              left-0 right-0
+              sm:left-[calc((100vw-24.5625rem)/2)]
+              sm:right-[calc((100vw-24.5625rem)/2)]
+              bg-black/50
+              z-[205]
+            "
             onClick={handleCloseFilterPopup}
           />
 
           <div
             className={`
-              absolute bottom-0 w-full max-w-[393px]
+              absolute bottom-0
+              left-[1.5rem] right-[1.5rem]
+              sm:left-[calc((100vw-24.5625rem)/2)]
+              sm:right-[calc((100vw-24.5625rem)/2)]
               transition-transform duration-150 ease-in-out
               ${isFilterPopupOpen ? 'translate-y-0' : 'translate-y-full'}
+              z-[210]
             `}
             onClick={(e) => e.stopPropagation()}
           >
             <FilterPopup
+              key={selectedGroup ?? 'all'}             
               onClose={handleCloseFilterPopup}
-              selectedGroup={selectedGroup}
+              selectedGroup={selectedGroup}            
+              initialSelected={selectedByGroup}        
+              onSave={setSelectedByGroup} 
             />
           </div>
         </div>
