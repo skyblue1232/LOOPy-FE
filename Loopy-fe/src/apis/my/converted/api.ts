@@ -7,7 +7,7 @@ import type {
 import { getConvertedStampbooksMock } from "./mock";
 
 export async function getConvertedStampbooks(): Promise<ConvertedStampBookItem[]> {
-  const url = "/api/v1/users/me/stampbooks/converte"; 
+  const url = "/api/v1/users/me/stampbooks/converted"; 
 
   try {
     const res = await axiosInstance.get<GetConvertedStampbooksResponse>(url);
