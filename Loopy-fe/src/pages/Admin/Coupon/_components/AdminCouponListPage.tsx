@@ -5,6 +5,7 @@ import CouponList from './CouponList';
 import AddCouponButton from './AddCouponButton';
 import TypeFilterModal, { type CouponTypeKey } from './TypeFilterModal';
 import { useOwnerCoupons } from '../../../../hooks/query/admin/coupon/useOwnerCoupon';
+import { useTerminateOwnerCoupon } from '../../../../hooks/query/admin/coupon/useTerminateCoupon';
 import type { OwnerCouponListItem } from '../../../../apis/admin/coupon/type';
 
 interface Props {
@@ -20,13 +21,21 @@ const TYPE_LABEL: Record<CouponTypeKey, string> = {
   FREE_DRINK: '무료 음료',
 };
 
+const toYmdSafe = (iso?: string) => (iso ? iso.split('T')[0] : '');
+
 const mapToUICoupon = (item: OwnerCouponListItem) => {
   const hasPeriod = !!(item.startDate && item.endDate);
+  const uiStatus: '진행중' | '종료됨' =
+    item.status === 'ENDED' ? '종료됨' : '진행중';
+
   return {
+    id: item.id,
     name: item.name,
-    status: item.status,
+    status: uiStatus,
     usage: item.usedCount,
-    period: hasPeriod ? `${item.startDate} ~ ${item.endDate}` : '제한 없음',
+    period: hasPeriod
+      ? `${toYmdSafe(item.startDate)} ~ ${toYmdSafe(item.endDate)}`
+      : '제한 없음',
     type: TYPE_LABEL[item.discountType as CouponTypeKey],
   };
 };
@@ -37,6 +46,7 @@ const AdminCouponListPage = ({ cafeId, onAdd }: Props) => {
   const [tempSelected, setTempSelected] = useState<SelectedTypes>([]);
 
   const { data, isLoading, isError } = useOwnerCoupons(cafeId);
+  const { mutate: terminate, isPending } = useTerminateOwnerCoupon();
 
   const apiList = useMemo<OwnerCouponListItem[]>(
     () => data?.data ?? [],
@@ -78,6 +88,11 @@ const AdminCouponListPage = ({ cafeId, onAdd }: Props) => {
     setOpen(false);
   };
 
+  const handleEndIssue = (couponId: number) => {
+    if (isPending) return;
+    terminate({ cafeId, couponId });
+  };
+
   return (
     <>
       <CommonTopBar title="쿠폰 관리" profileImageUrl="" />
@@ -87,7 +102,9 @@ const AdminCouponListPage = ({ cafeId, onAdd }: Props) => {
         <AddCouponButton onClick={onAdd} />
       </div>
 
-      {!isLoading && !isError && <CouponList coupons={uiList} />}
+      {!isLoading && !isError && (
+        <CouponList coupons={uiList} onEndIssue={handleEndIssue} />
+      )}
 
       <TypeFilterModal
         open={open}
