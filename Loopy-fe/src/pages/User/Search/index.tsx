@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCafeListQuery } from '../../../hooks/query/cafe/useCafeList';
+import { serializeForListBody, serializeFromTitlesToParams } from '../../../features/filter/filterMapping';
 import CommonBottomBar from '../../../components/bottomBar/CommonBottomBar';
 import SearchBar from '../../../components/input/SearchBar';
 import FilterBar from '../Map/_components/filter/FilterBar';
@@ -11,22 +13,6 @@ import CafeListCardSkeleton from './Skeleton/CafeListCardSkeleton';
 import LocationLabelSkeleton from './Skeleton/LocationLabel';
 import { useSelectedLocationStore } from '../../../store/locationStore';
 import { useFilterStore } from '../../../store/filterStore';
-
-interface Cafe {
-  id: number;
-  name: string;
-  lat: number;
-  lng: number;
-  hasStamp: boolean;
-}
-
-const dummyCafes: Cafe[] = [
-  { id: 1, name: "카페 A", lat: 37.5563, lng: 126.9355, hasStamp: false },
-  { id: 2, name: "카페 B", lat: 37.5558, lng: 126.937, hasStamp: true },
-  { id: 3, name: "카페 C", lat: 37.5545, lng: 126.9362, hasStamp: false },
-  { id: 4, name: '카페 D', lat: 37.5542, lng: 126.9368, hasStamp: true },
-  { id: 5, name: '카페 E', lat: 37.5555, lng: 126.938, hasStamp: true },
-];
 
 const cafeMockDetail = {
   distanceText: "500m",
@@ -42,6 +28,10 @@ const SearchPage = () => {
   const [isMapView, setIsMapView] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    setIsMapView(false);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -56,6 +46,57 @@ const SearchPage = () => {
   const { selected, reset } = useSelectedLocationStore();   // 전역 위치
   const [didUserType, setDidUserType] = useState(false);    // 최초 입력 감지
   const { selectedByGroup, setSelectedByGroup } = useFilterStore(); 
+
+  // 지역 지정 여부: selected가 있으면 지역 지정, 없으면 전국 검색
+  const regionAssigned = !!selected;
+  const baseX = selected?.lng ?? 126.9368;
+  const baseY = selected?.lat ?? 37.5553;
+  const baseZoom = regionAssigned ? 3 : 6; // 지역 지정=근거리, 미지정=전국
+
+  // 리스트용 바디
+  const listBody = useMemo(() => {
+    const base = serializeForListBody(selectedByGroup);
+    return selected?.addressInfo ? { ...base, addressInfo: selected.addressInfo } : base;
+  }, [selectedByGroup, selected?.addressInfo, selected?.updatedAt]); 
+
+  // 리스트용 쿼리
+  const listQuery = useMemo(() => ({
+    x: baseX,
+    y: baseY,
+    searchQuery: searchValue || undefined,
+    cursor: undefined as number | undefined,
+  }), [baseX, baseY, searchValue, selected?.updatedAt]);
+
+  // 리스트 호출: data 이름을 listRes로 변경
+  const { data: listRes, isLoading: isQueryLoading } = useCafeListQuery(listQuery, listBody, {
+    enabled: !!baseX && !!baseY,
+  });
+
+  // 최종 로딩 플래그
+  const loading = isLoading || isQueryLoading;
+
+  // 리스트 결과
+  const cafes = listRes?.success?.data ?? [];
+  
+  // 2번 API 쿼리 스냅샷 (store/menu/takeout은 콤마 문자열)
+  const mapQuerySnapshot = useMemo(() => {
+    const p = serializeFromTitlesToParams(selectedByGroup);
+    return {
+      x: baseX,
+      y: baseY,
+      zoom: baseZoom,
+      store: p.store?.join(','),
+      menu: p.menu?.join(','),
+      takeout: p.takeout?.join(','),
+    };
+  }, [baseX, baseY, baseZoom, selectedByGroup]);
+
+  // 동일 집합 보장용 id 세트 + isStamped 스냅샷
+  const listIds = useMemo(() => cafes.map(c => c.id), [cafes]);
+  const stampById = useMemo(
+    () => Object.fromEntries(cafes.map(c => [c.id, !!c.isStamped])),
+    [cafes]
+  );
 
   const handleOpenFilterPopup = (group?: string) => {
     setSelectedGroup(group);
@@ -109,7 +150,7 @@ const SearchPage = () => {
             </div>
 
             <div className="mt-[1.5rem]">
-              {isLoading ? (
+              {loading ? (
                 <LocationLabelSkeleton />
               ) : (
                 <LocationLabel 
@@ -120,18 +161,27 @@ const SearchPage = () => {
             </div>
 
             <div className="mt-[1rem] flex flex-col gap-[1.25rem]">
-              {isLoading
+              {loading
                 ? Array.from({ length: 5 }).map((_, i) => <CafeListCardSkeleton key={i} />)
-                : dummyCafes.map((cafe) => (
+                : cafes.map((cafe) => (
                     <CafeListCard
                       key={cafe.id}
                       id={cafe.id}
                       name={cafe.name}
-                      distanceText={cafeMockDetail.distanceText}
-                      address={cafeMockDetail.address}
-                      images={cafeMockDetail.images}
-                      keywords={cafeMockDetail.keywords}
-                      onClick={() => navigate(`/detail`)}
+                      distanceText={cafeMockDetail.distanceText} // 상세 API 붙기 전 임시
+                      address={cafe.address}
+                      images={(cafe.photos ?? []).map(p => p.photoUrl || p.url || '').filter(Boolean)}
+                      keywords={cafe.keywords ?? []}
+                      onClick={() =>
+                        navigate('/map', {
+                          state: {
+                            listParams: mapQuerySnapshot, // x,y,zoom,store,menu,takeout
+                            listIds,                      // 동일 집합 보장
+                            stampById,                    // isStamped 스냅샷
+                            focusCafeId: cafe.id,         // 맵 최초 포커스
+                          },
+                        })
+                      }
                     />
                 ))}
             </div>
@@ -149,7 +199,11 @@ const SearchPage = () => {
             <div className="pointer-events-auto">
               <MapViewToggleButton
                 isMapView={isMapView}
-                onClick={() => setIsMapView((prev) => !prev)}
+                onClick={() =>
+                  navigate('/map', {
+                    state: { listParams: mapQuerySnapshot, listIds, stampById },
+                  })
+                }
               />
             </div>
           </div>
