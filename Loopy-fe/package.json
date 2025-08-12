@@ -53,5 +53,14 @@
     "vite": "^7.0.0",
     "vite-plugin-pwa": "^1.0.0",
     "vite-plugin-svgr": "^4.3.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@swc/core",
+      "@tailwindcss/oxide",
+      "protobufjs",
+      "@firebase/util"
+    ]
   }
 }
