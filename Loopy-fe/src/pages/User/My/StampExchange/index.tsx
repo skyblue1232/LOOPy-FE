@@ -3,9 +3,9 @@ import CommonHeader from "../../../../components/header/CommonHeader";
 import CommonBottomPopup from "../../../../components/popup/CommonBottomPopup";
 import StampBookItem from "./_components/StampBookItem";
 import StampBookItemSkeleton from "./Skeleton/StampBookItemSkeleton";
-import StampDetailPage from "./_components/StampDetailPage";
-import { useExpiringStampBooks } from "../../../../hooks/query/stampBook/useExpiringStampBooks";
-import type { ExpiringStampBookResponse } from "../../../../apis/myStamp/type";
+import { useMyExpiringStamp } from "../../../../hooks/query/my/useMyExpiringStamp";
+import type { ExpiringStampBookResponse } from "../../../../apis/my/expiring/type";
+import ActiveStampDetailPage from "./_components/ActiveStampDetailPage";
 
 interface StampExchangeProps {
   onBack: () => void;
@@ -15,8 +15,7 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedCafeName, setSelectedCafeName] = useState<string>("");
   const [selectedStampBook, setSelectedStampBook] = useState<ExpiringStampBookResponse | null>(null);
-
-  const { data, isLoading } = useExpiringStampBooks();
+  const { data, isLoading } = useMyExpiringStamp();
 
   const handleExchangeClick = (id: number, cafeName: string) => {
     setSelectedId(id);
@@ -26,7 +25,7 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
   const handleConfirmExchange = () => {
     if (selectedId != null) {
       console.log("환전 API 호출:", selectedId);
-      // mutate
+      // TODO: mutate
     }
     setSelectedId(null);
   };
@@ -69,8 +68,8 @@ const StampExchangePage = ({ onBack }: StampExchangeProps) => {
       />
 
       {selectedStampBook && (
-        <div className="fixed inset-0 z-50 bg-white overflow-y-auto">
-          <StampDetailPage
+        <div className="fixed inset-0 z-50 bg-white">
+          <ActiveStampDetailPage
             stampBook={selectedStampBook}
             onBack={() => setSelectedStampBook(null)}
           />

@@ -51,3 +51,19 @@ export const toYmd = (iso: string) => {
     return iso?.slice(0, 10) ?? '';
   }
 };
+
+export interface TerminateOwnerCouponPathParams {
+  cafeId: number;
+  couponId: number;
+}
+
+export interface TerminateOwnerCouponResponse {
+  message: string;
+  data: CreatedCoupon;
+}
+
+export interface ApiErrorEnvelope {
+  errorCode: string;
+  reason: string;
+  data: null;
+}
