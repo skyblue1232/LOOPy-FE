@@ -49,6 +49,7 @@ export default function KeypadModal({
     : '';
 
   const handleLookup = async () => {
+    console.log('lookup phone (raw):', phone);
     if (!phone) return;
     setStatus('loading');
     setErrorMessage(null);
@@ -113,18 +114,15 @@ export default function KeypadModal({
             {/* 상태별 피드백 */}
             <div className="px-4 mb-2">
               {status === 'loading' && (
-                <div className="text-sm text-[#555]">
-                  고객 정보를 조회 중입니다...
-                </div>
+                <>{console.log('고객 정보를 조회 중입니다...')}</>
               )}
               {status === 'notfound' && (
-                <div className="text-sm text-[#D04747]">
-                  해당 전화번호의 고객 정보를 찾을 수 없습니다. 번호를
-                  확인하거나 다시 시도해주세요.
-                </div>
+                <>
+                  {console.log('해당 전화번호의 고객 정보를 찾을 수 없습니다.')}
+                </>
               )}
               {status === 'error' && errorMessage && (
-                <div className="text-sm text-[#D04747]">{errorMessage}</div>
+                <>{console.log(errorMessage)}</>
               )}
             </div>
 

@@ -172,55 +172,55 @@ const publicRoutes = createBrowserRouter([
     path: '/admin',
     element: <AdminLayout />,
     children: [
-      { 
-        index: true, 
+      {
+        index: true,
         // loader: AuthCheck.authPageCheck,
-        element: <AdminLoginPage /> 
+        element: <AdminLoginPage />,
       },
       // {
       //   path: 'login/success',
       //   element: <AdminLoginSuccess />,
       //   handle: { isPublic: true },
       // },
-      { 
-        path: 'signin', 
-        element: <AdminSigninPage /> 
+      {
+        path: 'signin',
+        element: <AdminSigninPage />,
       },
-      { 
-        path: 'home', 
-        element: <AdminHomePage /> 
+      {
+        path: 'home',
+        element: <AdminHomePage />,
       },
-      { 
-        path: 'register', 
-        element: <AdminRegisterPage /> 
+      {
+        path: 'register',
+        element: <AdminRegisterPage />,
       },
-      { 
-        path: 'challenge', 
-        element: <AdminChallengePage /> 
+      {
+        path: 'challenge',
+        element: <AdminChallengePage />,
       },
-      { 
-        path: 'challenge/:type', 
-        element: <AdminChallengeDetail /> 
+      {
+        path: 'challenge/:type',
+        element: <AdminChallengeDetail />,
       },
-      { 
-        path: 'challengelist', 
-        element: <AdminChallengeList /> 
+      {
+        path: 'challengelist',
+        element: <AdminChallengeList />,
       },
-      { 
-        path: 'coupon/:cafeId', 
-        element: <AdminCouponPage /> 
+      {
+        path: 'coupon/:cafeId',
+        element: <AdminCouponPage />,
       },
-      { 
-        path: 'stamp', 
-        element: <AdminStampPage /> 
+      {
+        path: 'stamp',
+        element: <AdminStampPage />,
       },
-      { 
-        path: 'notification', 
-        element: <AdminNotificationPage /> 
+      {
+        path: 'notification',
+        element: <AdminNotificationPage />,
       },
-      { 
-        path: 'setting', 
-        element: <AdminSettingFunnelLayout /> 
+      {
+        path: 'setting',
+        element: <AdminSettingFunnelLayout />,
       },
     ],
   },
