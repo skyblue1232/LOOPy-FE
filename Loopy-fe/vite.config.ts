@@ -41,6 +41,8 @@ export default defineConfig({
         background_color: "#6970F3"
       },
       workbox: {
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        
         globPatterns: [
           'index.html',
           'manifest.webmanifest',
