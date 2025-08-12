@@ -6,10 +6,14 @@ import SearchIcon from "/src/assets/images/Search.svg?react";
 import LocationIcon from "/src/assets/images/Location.svg?react";
 import SearchResultSkeleton from "../OnBoard/Skeleton/SearchResultSkeleton";
 import SearchResultList from "../OnBoard/_components/search/SearchResultList";
+import { useSelectedLocationStore } from "../../../store/locationStore";
+import { withMapSearchProviders } from "../../../layouts/MapSearchProviderLayout";
 
 const LocationPage = () => {
     const navigate = useNavigate();
     
+    const { applyFromPlace } = useSelectedLocationStore();
+
     const {
         input,
         setInput,
@@ -21,18 +25,26 @@ const LocationPage = () => {
         isLoading,
     } = useSearchRegion();
 
+    function toKakaoLikePlace(s: any) {
+        return {
+            x: String(s.x), // kakao 원형은 문자열
+            y: String(s.y),
+            address_name: `${s.region_1depth_name} ${s.region_2depth_name} ${s.region_3depth_name}`,
+            // normalizeRegion에서 읽을 수 있도록 depth도 같이 넘김
+            region_1depth_name: s.region_1depth_name,
+            region_2depth_name: s.region_2depth_name,
+            region_3depth_name: s.region_3depth_name,
+        } as any;
+    }
+
     const handleSave = () => {
         if (!selected) return;
 
-        console.log("저장된 위치:", {
-        region: `${selected.region_1depth_name} ${selected.region_2depth_name} ${selected.region_3depth_name}`,
-        x: selected.x,
-        y: selected.y,
-        });
+        applyFromPlace(toKakaoLikePlace(selected));
 
         navigate(-1);
     };
-
+    
     return (
         <div className="relative bg-white min-h-screen">
             <div className="mt-[1.5rem] left-0 right-0">
@@ -105,4 +117,4 @@ const LocationPage = () => {
     );
 };
 
-export default LocationPage;
+export default withMapSearchProviders(LocationPage);
