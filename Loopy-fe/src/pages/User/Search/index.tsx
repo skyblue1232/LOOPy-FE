@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo} from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCafeListQuery } from '../../../hooks/query/cafe/useCafeList';
 import { serializeForListBody, serializeFromTitlesToParams } from '../../../features/filter/filterMapping';
@@ -13,72 +13,58 @@ import CafeListCardSkeleton from './Skeleton/CafeListCardSkeleton';
 import LocationLabelSkeleton from './Skeleton/LocationLabel';
 import { useSelectedLocationStore } from '../../../store/locationStore';
 import { useFilterStore } from '../../../store/filterStore';
-
-const cafeMockDetail = {
-  distanceText: "500m",
-  address: "서울 서대문구 이화여대길 52",
-  images: ["src/assets/images/CafePic.svg", "/sample2.jpg", "/sample3.jpg"],
-  keywords: ["분위기좋음", "조용한"],
-};
+import { calcDistanceMeters, formatDistance } from '../../../utils/geo';
 
 const SearchPage = () => {
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const [selectedGroup, setSelectedGroup] = useState<string | undefined>(undefined);
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
-  const [isMapView, setIsMapView] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  
-  useEffect(() => {
-    setIsMapView(false);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000); 
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [skeletonLoading, setSkeletonLoading] = useState(true);
 
   const navigate = useNavigate();
+  const { selected, reset } = useSelectedLocationStore();
+  const { selectedByGroup, setSelectedByGroup } = useFilterStore();
 
-  const { selected, reset } = useSelectedLocationStore();   // 전역 위치
-  const [didUserType, setDidUserType] = useState(false);    // 최초 입력 감지
-  const { selectedByGroup, setSelectedByGroup } = useFilterStore(); 
+  const [didUserType, setDidUserType] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setSkeletonLoading(false), 1000);
+    return () => clearTimeout(t);
+  }, []);
 
   // 지역 지정 여부: selected가 있으면 지역 지정, 없으면 전국 검색
   const regionAssigned = !!selected;
   const baseX = selected?.lng ?? 126.9368;
   const baseY = selected?.lat ?? 37.5553;
-  const baseZoom = regionAssigned ? 3 : 6; // 지역 지정=근거리, 미지정=전국
+  const baseZoom = regionAssigned ? 3 : 6;
 
   // 리스트용 바디
   const listBody = useMemo(() => {
     const base = serializeForListBody(selectedByGroup);
     return selected?.addressInfo ? { ...base, addressInfo: selected.addressInfo } : base;
-  }, [selectedByGroup, selected?.addressInfo, selected?.updatedAt]); 
+  }, [selectedByGroup, selected?.addressInfo, selected?.updatedAt]);
 
   // 리스트용 쿼리
-  const listQuery = useMemo(() => ({
-    x: baseX,
-    y: baseY,
-    searchQuery: searchValue || undefined,
-    cursor: undefined as number | undefined,
-  }), [baseX, baseY, searchValue, selected?.updatedAt]);
+  const listQuery = useMemo(
+    () => ({
+      x: baseX,
+      y: baseY,
+      searchQuery: searchValue || undefined,
+      cursor: undefined as number | undefined,
+    }),
+    [baseX, baseY, searchValue, selected?.updatedAt]
+  );
 
-  // 리스트 호출: data 이름을 listRes로 변경
+  // 리스트 호출
   const { data: listRes, isLoading: isQueryLoading } = useCafeListQuery(listQuery, listBody, {
     enabled: !!baseX && !!baseY,
   });
 
-  // 최종 로딩 플래그
-  const loading = isLoading || isQueryLoading;
-
-  // 리스트 결과
+  const loading = skeletonLoading || isQueryLoading;
   const cafes = listRes?.success?.data ?? [];
-  
-  // 2번 API 쿼리 스냅샷 (store/menu/takeout은 콤마 문자열)
+
+  // 지도 페이지로 넘길 쿼리 스냅샷
   const mapQuerySnapshot = useMemo(() => {
     const p = serializeFromTitlesToParams(selectedByGroup);
     return {
@@ -91,43 +77,47 @@ const SearchPage = () => {
     };
   }, [baseX, baseY, baseZoom, selectedByGroup]);
 
-  // 동일 집합 보장용 id 세트 + isStamped 스냅샷
-  const listIds = useMemo(() => cafes.map(c => c.id), [cafes]);
-  const stampById = useMemo(
-    () => Object.fromEntries(cafes.map(c => [c.id, !!c.isStamped])),
+  // 동일 집합 보장용 id 세트 + isStamped 스냅샷 (옵션)
+  const listIds = useMemo(() => cafes.map((c) => c.id), [cafes]);
+  const stampById = useMemo(() => Object.fromEntries(cafes.map((c) => [c.id, !!c.isStamped])), [cafes]);
+
+  // detailById 스냅샷(주소/이미지/키워드) → Map으로 전달
+  const detailById = useMemo(
+    () =>
+      Object.fromEntries(
+        cafes.map((c) => [
+          c.id,
+          {
+            address: c.address ?? '',
+            images: (c.photos ?? []).map((p) => p.photoUrl || p.url || '').filter(Boolean),
+            keywords: c.keywords ?? [],
+          },
+        ])
+      ),
     [cafes]
   );
 
   const handleOpenFilterPopup = (group?: string) => {
     setSelectedGroup(group);
-    setIsPopupVisible(true);         
-    setTimeout(() => {
-      setIsFilterPopupOpen(true);   
-    }, 10); 
+    setIsPopupVisible(true);
+    setTimeout(() => setIsFilterPopupOpen(true), 10);
   };
 
   const handleCloseFilterPopup = () => {
-    setIsFilterPopupOpen(false);     
-    setTimeout(() => {
-      setIsPopupVisible(false);     
-    }, 150); 
+    setIsFilterPopupOpen(false);
+    setTimeout(() => setIsPopupVisible(false), 150);
   };
 
   const onChangeKeyword = (v: string) => {
     if (!didUserType) {
-      reset();  
+      reset();
       setDidUserType(true);
     }
     setSearchValue(v);
   };
 
   useEffect(() => {
-    if (isFilterPopupOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-
+    document.body.style.overflow = isFilterPopupOpen ? 'hidden' : '';
     return () => {
       document.body.style.overflow = '';
     };
@@ -153,9 +143,9 @@ const SearchPage = () => {
               {loading ? (
                 <LocationLabelSkeleton />
               ) : (
-                <LocationLabel 
+                <LocationLabel
                   dongName={selected ? selected.region : '위치를 설정해주세요'}
-                  isPlaceholder={!selected} 
+                  isPlaceholder={!selected}
                 />
               )}
             </div>
@@ -163,45 +153,55 @@ const SearchPage = () => {
             <div className="mt-[1rem] flex flex-col gap-[1.25rem]">
               {loading
                 ? Array.from({ length: 5 }).map((_, i) => <CafeListCardSkeleton key={i} />)
-                : cafes.map((cafe) => (
-                    <CafeListCard
-                      key={cafe.id}
-                      id={cafe.id}
-                      name={cafe.name}
-                      distanceText={cafeMockDetail.distanceText} // 상세 API 붙기 전 임시
-                      address={cafe.address}
-                      images={(cafe.photos ?? []).map(p => p.photoUrl || p.url || '').filter(Boolean)}
-                      keywords={cafe.keywords ?? []}
-                      onClick={() =>
-                        navigate('/map', {
-                          state: {
-                            listParams: mapQuerySnapshot, // x,y,zoom,store,menu,takeout
-                            listIds,                      // 동일 집합 보장
-                            stampById,                    // isStamped 스냅샷
-                            focusCafeId: cafe.id,         // 맵 최초 포커스
-                          },
-                        })
-                      }
-                    />
-                ))}
+                : cafes.map((cafe) => {
+                    // distanceText: 서버 distance 우선, 없으면 현재 기준점(baseX/baseY)과 계산
+                    const meters =
+                      typeof cafe.distance === 'number'
+                        ? cafe.distance
+                        : calcDistanceMeters(cafe.latitude, cafe.longitude, baseY, baseX);
+
+                    return (
+                      <CafeListCard
+                        key={cafe.id}
+                        id={cafe.id}
+                        name={cafe.name}
+                        distanceText={formatDistance(meters)}
+                        address={cafe.address}
+                        images={(cafe.photos ?? [])
+                          .map((p) => p.photoUrl || p.url || '')
+                          .filter(Boolean)}
+                        keywords={cafe.keywords ?? []}
+                        onClick={() =>
+                          navigate('/map', {
+                            state: {
+                              listParams: mapQuerySnapshot, 
+                              detailById,                   
+                              focusCafeId: cafe.id,  
+                              userCoord: { x: baseX, y: baseY }, 
+                            },
+                          })
+                        }
+                      />
+                    );
+                  })}
             </div>
           </div>
 
           <div
             className="
               fixed bottom-[6.25rem]
-              right-[1.5rem]                 /* <640px: 전체폭 + 오른쪽 0 */
-              sm:left-auto sm:w-auto               /* ≥640px: 내용폭으로 축소 */
+              right-[1.5rem]
+              sm:left-auto sm:w-auto
               sm:right-[calc((100vw-24.5625rem)/2+1.5rem)]
               z-50 flex justify-end pointer-events-none
             "
           >
             <div className="pointer-events-auto">
               <MapViewToggleButton
-                isMapView={isMapView}
+                isMapView={false} // 검색 페이지이므로 false 고정
                 onClick={() =>
                   navigate('/map', {
-                    state: { listParams: mapQuerySnapshot, listIds, stampById },
+                    state: { listParams: mapQuerySnapshot, listIds, stampById, detailById },
                   })
                 }
               />
@@ -211,7 +211,7 @@ const SearchPage = () => {
           <CommonBottomBar
             active="search"
             onChange={(tab) => {
-              console.log("탭 변경:", tab);
+              console.log('탭 변경:', tab);
             }}
           />
         </div>
@@ -230,7 +230,6 @@ const SearchPage = () => {
             "
             onClick={handleCloseFilterPopup}
           />
-
           <div
             className={`
               absolute bottom-0
@@ -244,11 +243,11 @@ const SearchPage = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <FilterPopup
-              key={selectedGroup ?? 'all'}            
+              key={selectedGroup ?? 'all'}
               onClose={handleCloseFilterPopup}
-              selectedGroup={selectedGroup}             
-              initialSelected={selectedByGroup}      
-              onSave={setSelectedByGroup}  
+              selectedGroup={selectedGroup}
+              initialSelected={selectedByGroup}
+              onSave={setSelectedByGroup}
             />
           </div>
         </div>

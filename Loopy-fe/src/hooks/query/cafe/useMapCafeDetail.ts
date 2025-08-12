@@ -5,16 +5,17 @@ const EMPTY: MapCafeDetail = { address: '', images: [], keywords: [] };
 
 type Opt = {
   enabled?: boolean;
+  coord?: { x: number; y: number };
   fallback?: () => MapCafeDetail; // 서버 실패/오프라인 시 대체
 };
 
 export function useMapCafeDetailQuery(cafeId: number | null, opt?: Opt) {
   return useQuery({
-    queryKey: ['mapCafeDetail', cafeId],
+    queryKey: ['mapCafeDetail', cafeId, opt?.coord?.x, opt?.coord?.y],
     queryFn: async () => {
       try {
         if (!cafeId) return EMPTY;
-        return await getMapCafeDetail(cafeId);
+        return await getMapCafeDetail(cafeId, opt?.coord);
       } catch {
         return opt?.fallback?.() ?? EMPTY;
       }
