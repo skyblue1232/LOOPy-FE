@@ -5,10 +5,12 @@ export const cafeDetailMock: CafeDetailSuccess = {
     id: 1,
     name: "로스터리 카페",
     address: "서울시 강남구 테헤란로 123",
+    businessHourType: "WEEKDAY_WEEKEND",
     businessHours: {
-      주말: "08:00-23:00",
-      평일: "07:00-22:00",
+      weekday: { open: "07:00", close: "22:00" },
+      weekend: { open: "08:00", close: "23:00" },
     },
+    breakTime: null,
     phone: "02-1234-5678",
     websiteUrl: "https://roastery-cafe.com",
     description: "신선한 원두를 직접 로스팅하는 스페셜티 커피 전문점입니다.",
@@ -23,16 +25,8 @@ export const cafeDetailMock: CafeDetailSuccess = {
       "24시간 운영": false,
       "와이파이 제공": true,
     },
-    takeOutFilters: {
-      "포장 할인": false,
-      "텀블러 할인": true,
-    },
-    menuFilters: {
-      "비건": false,
-      "디카페인": true,
-      "글루텐프리": true,
-      "저당/무가당": true,
-    },
+    takeOutFilters: { "포장 할인": false, "텀블러 할인": true },
+    menuFilters: { "비건": false, "디카페인": true, "글루텐프리": true, "저당/무가당": true },
   },
   photos: [
     {
@@ -112,7 +106,7 @@ export const cafeDetailMock: CafeDetailSuccess = {
     {
       id: 1,
       name: "시그니처 아메리카노 무료",
-      discountType: "amount",
+      discountType: "AMOUNT",
       discountValue: 4500,
       applicableMenu: {
         id: 1,
@@ -129,7 +123,7 @@ export const cafeDetailMock: CafeDetailSuccess = {
     {
       id: 2,
       name: "전 메뉴 15% 할인",
-      discountType: "percentage",
+      discountType: "PERCENTAGE",
       discountValue: 15,
       applicableMenu: null,
       createdAt: "2025-07-15T12:00:00.000Z",
@@ -146,4 +140,7 @@ export const cafeDetailMock: CafeDetailSuccess = {
   bookmark: {
     isBookmarked: false,
   },
+  
+  challenge: [],
+  stampPolicyMessage: null,
 };
