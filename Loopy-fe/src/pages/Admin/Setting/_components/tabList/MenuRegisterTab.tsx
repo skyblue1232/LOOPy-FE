@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BigAddButton from "../../../Register/_components/BigAddButton";
 import ModalMenuForm from "../../../Register/_components/ModalMenuForm";
 import MenuCard from "../../../../User/Detail/_components/MenuCard";
@@ -7,10 +7,30 @@ import ArrowUpIcon from "/src/assets/images/ArrowUpPurple.svg?react";
 import MinusIcon from "/src/assets/images/DeleteMenu.svg?react";
 import { useSetting } from "../../../../../contexts/AdminSettingProvider";
 import type { MenuItem } from "../../../../../types/adminSteps";
+import { useOwnerMyCafeMenus } from "../../../../../hooks/query/admin/setting/useOwnerMyCafeMenus";
+import type { OwnerMenuSummary } from "../../../../../apis/admin/setting/menu/get/type";
 
 const MenuRegisterTab = () => {
   const { context, setMenus } = useSetting();
-  const menuList = context.menus; 
+  const menuList = context.menus;
+  const { data: serverMenus, isLoading } = useOwnerMyCafeMenus();
+
+  useEffect(() => {
+    if (!serverMenus || serverMenus.length === 0) return;
+    if (menuList.length > 0) return;
+
+    const mapToMenuItem = (m: OwnerMenuSummary): MenuItem => ({
+      id: String(m.id),
+      name: m.name,
+      description: m.description ?? "",
+      price: String(m.price),
+      imageUrl: m.photoUrl,
+      isRepresentative: m.isRepresentative ?? false,
+    });
+
+    setMenus(() => serverMenus.map(mapToMenuItem));
+  }, [serverMenus, menuList.length, setMenus]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [deleteMode, setDeleteMode] = useState(false);
@@ -26,7 +46,7 @@ const MenuRegisterTab = () => {
 
   const handleMenuSubmit = (newMenu: Omit<MenuItem, "id">) => {
     const id = crypto.randomUUID?.() ?? `${Date.now()}_${Math.random()}`;
-    setMenus((prev) => [...prev, { ...newMenu, id }]); // ✅ 전역 업데이트
+    setMenus((prev) => [...prev, { ...newMenu, id }]);
     setIsModalOpen(false);
   };
 
@@ -93,6 +113,12 @@ const MenuRegisterTab = () => {
         </p>
 
         <BigAddButton text="메뉴 추가하기" onClick={handleAddMenuClick} />
+
+        {isLoading && menuList.length === 0 && (
+          <div className="w-full h-[6rem] flex items-center justify-center">
+            <div className="w-10 h-10 border-4 border-[#6970F3] border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
 
         {menuList.length > 0 && (
           <div className="mt-[1.5rem] flex items-center justify-between">
