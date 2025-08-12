@@ -5,10 +5,12 @@ export const cafeDetailMock: CafeDetailSuccess = {
     id: 1,
     name: "로스터리 카페",
     address: "서울시 강남구 테헤란로 123",
+    businessHourType: "WEEKDAY_WEEKEND",
     businessHours: {
-      주말: "08:00-23:00",
-      평일: "07:00-22:00",
+      weekday: { open: "07:00", close: "22:00" },
+      weekend: { open: "08:00", close: "23:00" },
     },
+    breakTime: null,
     phone: "02-1234-5678",
     websiteUrl: "https://roastery-cafe.com",
     description: "신선한 원두를 직접 로스팅하는 스페셜티 커피 전문점입니다.",
@@ -23,16 +25,8 @@ export const cafeDetailMock: CafeDetailSuccess = {
       "24시간 운영": false,
       "와이파이 제공": true,
     },
-    takeOutFilters: {
-      "포장 할인": false,
-      "텀블러 할인": true,
-    },
-    menuFilters: {
-      "비건": false,
-      "디카페인": true,
-      "글루텐프리": true,
-      "저당/무가당": true,
-    },
+    takeOutFilters: { "포장 할인": false, "텀블러 할인": true },
+    menuFilters: { "비건": false, "디카페인": true, "글루텐프리": true, "저당/무가당": true },
   },
   photos: [
     {
@@ -62,60 +56,66 @@ export const cafeDetailMock: CafeDetailSuccess = {
     },
   ],
   menu: [
-    {
-      id: 1,
-      name: "시그니처 아메리카노",
-      price: 4500,
-      description: "하우스 블렌드 원두로 추출한 깔끔한 아메리카노",
-      imgUrl: "https://example.com/menu/signature-americano.jpg",
-      isSoldOut: false,
-    },
-    {
-      id: 2,
-      name: "바닐라 라떼",
-      price: 5500,
-      description: "마다가스카르 바닐라 시럽이 들어간 부드러운 라떼",
-      imgUrl: "https://example.com/menu/vanilla-latte.jpg",
-      isSoldOut: false,
-    },
-    {
-      id: 3,
-      name: "케냐 AA 핸드드립",
-      price: 7000,
-      description: "산미가 살아있는 케냐 원두 핸드드립",
-      imgUrl: "https://example.com/menu/kenya-drip.jpg",
-      isSoldOut: true,
-    },
-    {
-      id: 4,
-      name: "티라미수",
-      price: 6500,
-      description: "이탈리아 전통 방식으로 만든 수제 티라미수",
-      imgUrl: "https://example.com/menu/tiramisu.jpg",
-      isSoldOut: false,
-    },
-    {
-      id: 5,
-      name: "콜드브루",
-      price: 5000,
-      description: "18시간 저온추출한 시원한 콜드브루",
-      imgUrl: "https://example.com/menu/coldbrew.jpg",
-      isSoldOut: false,
-    },
+      {
+        id: 1,
+        name: "아메리카노",
+        price: 4500,
+        description: "진한 에스프레소와 뜨거운 물을 더한 커피",
+        imgUrl: "https://image.starbucks.co.kr/upload/store/skuimg/2021/04/menu1.jpg",
+        isSoldOut: false,
+        isRepresentative: true
+      },
+      {
+        id: 2,
+        name: "카페라떼",
+        price: 5000,
+        description: "부드러운 우유와 에스프레소의 조화",
+        imgUrl: "https://image.starbucks.co.kr/upload/store/skuimg/2021/04/menu2.jpg",
+        isSoldOut: false,
+        isRepresentative: true
+      },
+      {
+        id: 4,
+        name: "바닐라 스콘",
+        price: 3500,
+        description: "촉촉하고 달콤한 바닐라 스콘",
+        imgUrl: "https://image.starbucks.co.kr/upload/store/skuimg/2021/04/menu4.jpg",
+        isSoldOut: true,
+        isRepresentative: false
+      },
+      {
+        id: 5,
+        name: "초콜릿 머핀",
+        price: 4000,
+        description: "진한 초콜릿이 들어간 머핀",
+        imgUrl: "https://image.starbucks.co.kr/upload/store/skuimg/2021/04/menu5.jpg",
+        isSoldOut: false,
+        isRepresentative: false
+      },
+      {
+        id: 3,
+        name: "카푸치노",
+        price: 5000,
+        description: "진한 에스프레소에 부드러운 우유거품",
+        imgUrl: "https://image.starbucks.co.kr/upload/store/skuimg/2021/04/menu3.jpg",
+        isSoldOut: false,
+        isRepresentative: false
+      }
   ],
   coupons: [
     {
       id: 1,
       name: "시그니처 아메리카노 무료",
-      discountType: "fixed",
+      discountType: "AMOUNT",
       discountValue: 4500,
       applicableMenu: {
         id: 1,
-        name: "시그니처 아메리카노",
+        name: "아메리카노",
         price: 4500,
-        description: "하우스 블렌드 원두로 추출한 깔끔한 아메리카노",
-        imgUrl: "https://example.com/menu/signature-americano.jpg",
+        description: "진한 에스프레소와 뜨거운 물을 더한 커피",
+        imgUrl: "https://image.starbucks.co.kr/upload/store/skuimg/2021/04/menu1.jpg",
         isSoldOut: false,
+        isRepresentative: true
       },
       createdAt: "2025-07-01T10:00:00.000Z",
       expiredAt: "2025-12-31T23:59:59.000Z",
@@ -123,27 +123,11 @@ export const cafeDetailMock: CafeDetailSuccess = {
     {
       id: 2,
       name: "전 메뉴 15% 할인",
-      discountType: "percentage",
+      discountType: "PERCENTAGE",
       discountValue: 15,
       applicableMenu: null,
       createdAt: "2025-07-15T12:00:00.000Z",
       expiredAt: "2025-11-30T23:59:59.000Z",
-    },
-    {
-      id: 5,
-      name: "디저트 무료 쿠폰",
-      discountType: "fixed",
-      discountValue: 6500,
-      applicableMenu: {
-        id: 4,
-        name: "티라미수",
-        price: 6500,
-        description: "이탈리아 전통 방식으로 만든 수제 티라미수",
-        imgUrl: "https://example.com/menu/tiramisu.jpg",
-        isSoldOut: false,
-      },
-      createdAt: "2025-08-01T09:30:00.000Z",
-      expiredAt: "2026-02-28T23:59:59.000Z",
     },
   ],
   stampBook: {
@@ -156,4 +140,7 @@ export const cafeDetailMock: CafeDetailSuccess = {
   bookmark: {
     isBookmarked: false,
   },
+  
+  challenge: [],
+  stampPolicyMessage: null,
 };

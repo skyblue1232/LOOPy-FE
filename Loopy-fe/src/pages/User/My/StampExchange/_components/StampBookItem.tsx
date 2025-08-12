@@ -1,14 +1,23 @@
-import type { StampBook } from "../../../../../apis/myStamp/type";
+import type { ExpiringStampBookResponse } from "../../../../../apis/my/expiring/type";
 
 interface Props {
-  stampBook: StampBook;
+  stampBook: ExpiringStampBookResponse;
   onExchangeClick: (stampBookId: number) => void;
-  onSelect: (stampBook: StampBook) => void;
+  onSelect: (stampBook: ExpiringStampBookResponse) => void;
 }
 
 const StampBookItem = ({ stampBook, onExchangeClick, onSelect }: Props) => {
-  const { id, currentStampCount, totalStampCount, cafeName, cafeAddress, imageUrl } = stampBook;
-  const progress = (currentStampCount / totalStampCount) * 100;
+  const {
+    id,
+    cafe,            
+    currentCount,    
+    goalCount,    
+  } = stampBook;
+
+  const cafeName = cafe.name;
+  const cafeAddress = cafe.address;
+  const imageUrl = cafe.image; 
+  const progress = (currentCount / goalCount) * 100;
 
   const handleSelect = () => {
     onSelect(stampBook);
@@ -28,7 +37,7 @@ const StampBookItem = ({ stampBook, onExchangeClick, onSelect }: Props) => {
             <p className="text-[1.125rem] font-bold">{cafeName}</p>
             <button
               onClick={(e) => {
-                e.stopPropagation(); 
+                e.stopPropagation();
                 onExchangeClick(id);
               }}
               className="text-[#7F7F7F] text-[0.875rem] font-semibold bg-[#F3F3F3] px-[0.625rem] py-[0.25rem] rounded-[6px]"
@@ -36,6 +45,7 @@ const StampBookItem = ({ stampBook, onExchangeClick, onSelect }: Props) => {
               환전
             </button>
           </div>
+
           <p className="text-[0.875rem] text-[#7F7F7F] font-normal">{cafeAddress}</p>
 
           <div className="mt-[0.5rem]">
@@ -48,8 +58,8 @@ const StampBookItem = ({ stampBook, onExchangeClick, onSelect }: Props) => {
                 />
               </div>
               <div className="flex items-end gap-[2px]">
-                <span className="text-[#6970F3] text-[0.875rem] font-bold">{currentStampCount}</span>
-                <span className="text-[0.75rem] font-medium pb-0.25">/{totalStampCount}</span>
+                <span className="text-[#6970F3] text-[0.875rem] font-bold">{currentCount}</span>
+                <span className="text-[0.75rem] font-medium pb-0.25">/{goalCount}</span>
               </div>
             </div>
           </div>

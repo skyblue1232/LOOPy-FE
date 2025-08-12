@@ -31,6 +31,13 @@ import AdminHomePage from './pages/Admin/Home/index.tsx';
 import AdminChallengePage from './pages/Admin/Challenge/index.tsx';
 import AdminCouponPage from './pages/Admin/Coupon/index.tsx';
 import AdminStampPage from './pages/Admin/Stamp/index.tsx';
+import AdminSettingFunnelLayout from './layouts/AdminSettingFunnelLayout.tsx';
+import AdminChallengeList from './pages/Admin/Challenge/_components/AdminChallengeList.tsx';
+import AdminChallengeDetail from './pages/Admin/Challenge/_components/AdminChallengeDetail.tsx';
+import AdminNotificationPage from './pages/Admin/Notification/index.tsx';
+import AdminRegisterPage from './pages/Admin/Register/index.tsx';
+import MapSearchProviders from './layouts/MapSearchProviderLayout.tsx';
+import VerifyPage from './pages/auth/VerifyPage.tsx';
 // import { AuthCheck } from './utils/authCheck';
 
 const publicRoutes = createBrowserRouter([
@@ -57,6 +64,11 @@ const publicRoutes = createBrowserRouter([
         handle: { isPublic: true },
       },
       {
+        path: 'verify',
+        // loader: AuthCheck.authPageCheck,
+        element: <VerifyPage />,
+      },
+      {
         path: 'onboard',
         // loader: AuthCheck.authPageCheck,
         element: <OnboardingLayout />,
@@ -71,14 +83,27 @@ const publicRoutes = createBrowserRouter([
         children: [
           {
             index: true,
-            // loader: AuthCheck.authPageCheck,
-            element: <MapPage />,
+            element: (
+              <MapSearchProviders>
+                <MapPage />
+              </MapSearchProviders>
+            ),
           },
+          { path: 'location', element: <LocationPage /> },
+        ],
+      },
+      {
+        path: 'search',
+        children: [
           {
-            path: 'location',
-            // loader: AuthCheck.authPageCheck,
-            element: <LocationPage />,
+            index: true,
+            element: (
+              <MapSearchProviders>
+                <SearchPage />
+              </MapSearchProviders>
+            ),
           },
+          { path: 'location', element: <LocationPage /> },
         ],
       },
       {
@@ -105,21 +130,6 @@ const publicRoutes = createBrowserRouter([
         path: 'mypage',
         // loader: AuthCheck.authPageCheck,
         element: <MyPageFunnelLayout />,
-      },
-      {
-        path: 'search',
-        children: [
-          {
-            index: true,
-            // loader: AuthCheck.authPageCheck,
-            element: <SearchPage />,
-          },
-          {
-            path: 'location',
-            // loader: AuthCheck.authPageCheck,
-            element: <LocationPage />,
-          },
-        ],
       },
       {
         path: 'alarm',
@@ -162,12 +172,56 @@ const publicRoutes = createBrowserRouter([
     path: '/admin',
     element: <AdminLayout />,
     children: [
-      { index: true, element: <AdminLoginPage /> },
-      { path: 'signin', element: <AdminSigninPage /> },
-      { path: 'home', element: <AdminHomePage /> },
-      { path: 'challenge', element: <AdminChallengePage /> },
-      { path: 'coupon', element: <AdminCouponPage /> },
-      { path: 'stamp', element: <AdminStampPage /> },
+      { 
+        index: true, 
+        // loader: AuthCheck.authPageCheck,
+        element: <AdminLoginPage /> 
+      },
+      // {
+      //   path: 'login/success',
+      //   element: <AdminLoginSuccess />,
+      //   handle: { isPublic: true },
+      // },
+      { 
+        path: 'signin', 
+        element: <AdminSigninPage /> 
+      },
+      { 
+        path: 'home', 
+        element: <AdminHomePage /> 
+      },
+      { 
+        path: 'register', 
+        element: <AdminRegisterPage /> 
+      },
+      { 
+        path: 'challenge', 
+        element: <AdminChallengePage /> 
+      },
+      { 
+        path: 'challenge/:type', 
+        element: <AdminChallengeDetail /> 
+      },
+      { 
+        path: 'challengelist', 
+        element: <AdminChallengeList /> 
+      },
+      { 
+        path: 'coupon/:cafeId', 
+        element: <AdminCouponPage /> 
+      },
+      { 
+        path: 'stamp', 
+        element: <AdminStampPage /> 
+      },
+      { 
+        path: 'notification', 
+        element: <AdminNotificationPage /> 
+      },
+      { 
+        path: 'setting', 
+        element: <AdminSettingFunnelLayout /> 
+      },
     ],
   },
 ]);

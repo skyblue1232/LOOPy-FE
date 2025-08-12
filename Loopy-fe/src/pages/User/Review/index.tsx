@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CommonHeader from "../../../components/header/CommonHeader";
 import CommonButton from "../../../components/button/CommonButton";
-
+import { usePostReview } from "../../../hooks/mutation/detail/usePostReview";
 const MAX_IMAGES = 5;
 
 export default function ReviewWritePage() {
+    const [reviewTitle, setReviewTitle] = useState("");
     const [reviewText, setReviewText] = useState("");
     const [images, setImages] = useState<File[]>([]);
     const navigate = useNavigate();
+    const { cafeId } = useParams();
+    const postReviewMutation = usePostReview();
     
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
@@ -22,7 +25,29 @@ export default function ReviewWritePage() {
         setImages(newImages);
     };
 
-    const isValid = reviewText.trim().length > 0;
+    const isValid = reviewTitle.trim().length <= 20 && reviewText.trim().length <= 500;
+
+    const handleSubmit = () => {
+        if (!cafeId) return;
+
+        const formData = new FormData();
+        formData.append("title", reviewTitle);
+        formData.append("content", reviewText);
+        images.forEach((file) => formData.append("images", file));
+
+        postReviewMutation.mutate(
+        { cafeId, formData },
+        {
+            onSuccess: () => {
+            alert("리뷰가 등록되었습니다.");
+            navigate(`/detail/${cafeId}`);
+            },
+            onError: () => {
+            alert("리뷰 등록 중 오류가 발생했습니다.");
+            },
+        }
+        );
+    };
 
     return (
         <div>
@@ -36,11 +61,16 @@ export default function ReviewWritePage() {
                 리뷰 작성 <span className="text-[#FF0000]">*</span>
             </div>
 
-            {/* 카페 이름 박스 */}
+            {/* 리뷰 제목 박스 */}
             <div className="mt-[0.5rem]">
-                <div className="bg-[#F3F3F3] rounded-[0.5rem] h-[3rem] px-[1rem] flex items-center text-[1rem] font-semibold text-[#252525]">
-                카페 위니
-                </div>
+                <input
+                type="text"
+                placeholder="제목을 입력해주세요 (20자 이하)"
+                className="w-full h-[3rem] rounded-[0.5rem] bg-[#F3F3F3] px-[1rem] text-[0.875rem] text-[#3B3B3B] font-normal placeholder:text-[#7F7F7F]"
+                maxLength={20}
+                value={reviewTitle}
+                onChange={(e) => setReviewTitle(e.target.value)}
+                />
             </div>
 
             {/* 리뷰 내용 박스 */}
@@ -53,7 +83,7 @@ export default function ReviewWritePage() {
                 onChange={(e) => setReviewText(e.target.value)}
                 />
                 <div className="absolute bottom-[0.75rem] right-[1rem] text-[0.75rem] text-[#7F7F7F] font-normal">
-                {reviewText.length}/500
+                    {reviewText.length}/500
                 </div>
             </div>
 
@@ -100,6 +130,7 @@ export default function ReviewWritePage() {
             >
                 <CommonButton
                     text="완료하기"
+                    onClick={handleSubmit}
                     className={`w-full ${
                         isValid ? "bg-[#6970F3] text-white" : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
                     }`}

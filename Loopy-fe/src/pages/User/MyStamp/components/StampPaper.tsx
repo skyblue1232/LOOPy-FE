@@ -1,5 +1,6 @@
 import Step10 from '../../../../assets/images/Step10.svg?react';
 import Vector from '../../../../assets/images/Vector.svg?react';
+import AcronStamp from '../../../../assets/images/AcronStamp.svg?react';
 
 interface StampProps {
   currentStep: number; // 1~9
@@ -43,12 +44,8 @@ const StampPaper: React.FC<StampProps> = ({ currentStep }) => {
               }}
             >
               {isDone ? (
-                <div className="w-full h-full rounded-full border-[5px] border-[#DFDFDF] overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"
-                    alt={`Step ${step}`}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  <AcronStamp className="w-full h-full object-cover" />
                 </div>
               ) : (
                 <div className="w-full h-full rounded-full flex items-center justify-center text-white text-[1.25rem] font-bold border-[5px] border-[#DFDFDF] bg-[#A8A8A8]">

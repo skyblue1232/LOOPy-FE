@@ -9,7 +9,7 @@ const UserLayout = () => {
         xl - 1280px 이상
         2xl - 1536px 이상
       */}
-      <div className="w-full sm:max-w-[393px] min-h-screen bg-white relative flex flex-col px-[1.5rem] outline outline-[0.5px] outline-[#E0E0E0]">
+      <div className="w-full sm:max-w-[393px] min-h-screen bg-white relative flex flex-col px-[1.5rem] outline-[0.5px] outline-[#E0E0E0]">
         <Outlet />
       </div>
     </div>

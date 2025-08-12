@@ -4,6 +4,7 @@ import EditReviewPageSkeleton from "../Skeleton/EditReviewSkeleton";
 import ReviewTextArea from "./ReviewTextArea";
 import ReviewImageBox from "./ReviewImageBox";
 import ReviewBottomButton from "./ReviewBottomButton";
+import { useUpdateReview } from "../../../../../hooks/mutation/my/review/useUpdateReview";
 
 const MAX_IMAGES = 5;
 
@@ -15,12 +16,15 @@ interface EditReviewPageProps {
     content: string;
     images: string[];
   };
+  onSubmit: (updatedContent: string) => void;
 }
 
-const EditReviewPage = ({ onBack, review }: EditReviewPageProps) => {
+const EditReviewPage = ({ onBack, review, onSubmit }: EditReviewPageProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [reviewText, setReviewText] = useState(review.content);
   const [images, setImages] = useState<(string | File)[]>(review.images ?? []);
+
+  const { mutate: updateReviewMutate } = useUpdateReview();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1000);
@@ -51,6 +55,20 @@ const EditReviewPage = ({ onBack, review }: EditReviewPageProps) => {
   const isValid =
     reviewText.trim().length > 0 && (isContentChanged || isImageChanged);
 
+  const handleSubmit = () => {
+    updateReviewMutate(
+      { reviewId: review.id, data: { title: "", content: reviewText } },
+      {
+        onSuccess: () => {
+          onSubmit(reviewText);
+        },
+        onError: () => {
+          alert("리뷰 수정에 실패했습니다.");
+        },
+      }
+    );
+  };
+
   return (
     <div>
       <CommonHeader title="리뷰 수정" onBack={onBack} />
@@ -77,7 +95,7 @@ const EditReviewPage = ({ onBack, review }: EditReviewPageProps) => {
             onRemove={handleImageRemove}
           />
 
-          <ReviewBottomButton isValid={isValid} />
+          <ReviewBottomButton isValid={isValid} onClick={handleSubmit} />
         </>
       )}
     </div>

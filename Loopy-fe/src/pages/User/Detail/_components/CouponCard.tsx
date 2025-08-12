@@ -1,5 +1,6 @@
 import CommonCard from "../../../../components/card/CommonCard";
 import DownloadIcon from "/src/assets/images/Download.svg?react";
+import SuccessDownloadIcon from "/src/assets/images/SuccessDownload.svg?react";
 
 interface CouponCardProps {
     imageSrc: string;
@@ -8,7 +9,8 @@ interface CouponCardProps {
     description: string;
     cafeId: string;
     couponTemplateId: number;
-    onDownload: () => void;
+    onDownload: () => Promise<void>;
+    isDownloaded: boolean;
 }
 
 const CouponCard = ({
@@ -17,6 +19,7 @@ const CouponCard = ({
     title,
     description,
     onDownload,
+    isDownloaded,
 }: CouponCardProps) => {
     return (
         <CommonCard
@@ -43,9 +46,11 @@ const CouponCard = ({
             </div>
 
             <button onClick={onDownload} className="ml-[1rem] shrink-0">
-                <DownloadIcon
-                    className="w-[2.0rem] h-[2.0rem]"
-                />
+                {isDownloaded ? (
+                    <SuccessDownloadIcon className="w-[2rem] h-[2rem]" />
+                ) : (
+                    <DownloadIcon className="w-[2rem] h-[2rem]" />
+                )}
             </button>
         </CommonCard>
     );

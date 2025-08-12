@@ -1,4 +1,5 @@
 import NextIcon from "../../../../assets/images/Next.svg?react";
+import BellIcon from "../../../../assets/images/BellPlus.svg?react";
 import type { MyPageSteps } from "../../../../types/mySteps";
 
 interface Props {
@@ -12,7 +13,7 @@ const CafeNotification = ({ onNavigate }: Props) => {
       className="w-full flex items-center text-left"
     >
       <div className="flex items-center gap-[1rem]">
-        <div className="w-[2.5rem] h-[2.5rem] rounded-full bg-red-500" />
+        <BellIcon className="w-[1.5rem] h-[1.5rem]" />
         <div className="flex flex-col justify-center">
           <p className="text-[1rem] font-semibold">
             내 단골카페 알림 보기

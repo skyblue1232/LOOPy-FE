@@ -33,7 +33,7 @@ const AdminSignupButton = ({
 
   return (
     <div
-      className={`absolute left-1/2 transform -translate-x-1/2 w-full max-w-[393px] transition-all duration-300 ${
+      className={`absolute left-1/2 transform -translate-x-1/2 w-full max-w-[34rem] transition-all duration-300 ${
         isKeyboardOpen ? "bottom-[4rem]" : "bottom-[2rem]"
       }`}
     >

@@ -1,4 +1,4 @@
-import type { ReviewItem } from "../apis/review/type";
+import type { ReviewItem } from "../apis/review/get/type";
 
 export const formatReview = (review: ReviewItem) => ({
     id: review.id,

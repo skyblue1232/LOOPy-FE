@@ -1,16 +1,49 @@
 import CommonCard from "../../../../../components/card/CommonCard";
-import type { Coupon } from "../_mock/coupons";
+import type { UserCoupon } from "../../../../../apis/my/coupon/type";
+import CouponIcon from "../../../../../assets/images/Coupon.svg?react";
 
-const CouponCard = ({ coupon, isPast }: { coupon: Coupon; isPast: boolean }) => {
+interface CouponCardProps {
+  coupon: UserCoupon;
+  isPast: boolean;
+  showCafeHeader?: boolean; 
+}
+
+const fmt = (iso: string) =>
+  new Date(iso).toISOString().slice(0, 10).replaceAll("-", ".");
+
+const CouponCard = ({ coupon, isPast, showCafeHeader = true }: CouponCardProps) => {
   return (
     <CommonCard padding="p-0" className="flex items-center justify-between">
-      <div className="flex gap-[1rem] items-center">
-        <div className="w-[3.5rem] h-[3.5rem] bg-red-600 rounded-full" />
-        <div className="flex flex-col">
-          <span className="text-[0.75rem] text-[#6970F3] font-semibold mb-[0.5rem]">{coupon.store}</span>
-          <span className="text-[1rem] text-[#171718] font-semibold mb-[0.125rem]">{coupon.description}</span>
-          <span className="text-[0.875rem] text-[#7F7F7F] font-normal">{coupon.period}</span>
-        </div>
+      <div className="flex items-center">
+        {showCafeHeader ? (
+          <>
+            <img
+              src={coupon.cafeImage}
+              alt={coupon.cafeName}
+              className="w-24 h-24 rounded-full object-cover"
+            />
+            <span className="ml-4 text-[0.875rem] text-[#252525] font-semibold">
+              {coupon.cafeName}
+            </span>
+          </>
+        ) : (
+          <>
+            <CouponIcon className="w-[3.25rem] h-[2.25rem] mr-3 shrink-0" />
+            <div className="flex flex-col">
+              {!!coupon.usageCondition && (
+                <span className="text-[0.75rem] text-[#252525] mb-1">
+                  {coupon.usageCondition}
+                </span>
+              )}
+              <span className="text-[1rem] text-[#171718] font-semibold mb-2">
+                {coupon.couponTemplate.name}
+              </span>
+              <span className="text-[0.875rem] text-[#7F7F7F]">
+                {fmt(coupon.couponTemplate.startDate)} ~ {fmt(coupon.couponTemplate.endDate)}
+              </span>
+            </div>
+          </>
+        )}
       </div>
 
       {isPast && (

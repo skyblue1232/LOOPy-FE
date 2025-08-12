@@ -1,31 +1,37 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSearchRegion } from "../../../hooks/useSearchRegion";
 import CommonButton from "../../../components/button/CommonButton";
-import AddressCard from "./_components/AddressCard";
 import CommonHeader from "../../../components/header/CommonHeader";
 import SearchIcon from "/src/assets/images/Search.svg?react";
 import LocationIcon from "/src/assets/images/Location.svg?react";
-
-const dummyDongList = [
-    "서대문구 연희동",
-    "마포구 합정동",
-    "중구 필동",
-    "성동구 성수동",
-    "용산구 이태원동",
-    "강남구 역삼동",
-    "강서구 마곡동",
-    "강북구 번동",
-    "관악구 조원동",
-];
+import SearchResultSkeleton from "../OnBoard/Skeleton/SearchResultSkeleton";
+import SearchResultList from "../OnBoard/_components/search/SearchResultList";
 
 const LocationPage = () => {
     const navigate = useNavigate();
-    const [searchValue, setSearchValue] = useState("");
-    const [selectedDong, setSelectedDong] = useState<string | null>(null);
+    
+    const {
+        input,
+        setInput,
+        selected,
+        setSelected,
+        handleSearch,
+        handleCurrentLocation,
+        filteredResults,
+        isLoading,
+    } = useSearchRegion();
 
-    const filteredList = dummyDongList.filter((dong) =>
-        dong.includes(searchValue.trim())
-    );
+    const handleSave = () => {
+        if (!selected) return;
+
+        console.log("저장된 위치:", {
+        region: `${selected.region_1depth_name} ${selected.region_2depth_name} ${selected.region_3depth_name}`,
+        x: selected.x,
+        y: selected.y,
+        });
+
+        navigate(-1);
+    };
 
     return (
         <div className="relative bg-white min-h-screen">
@@ -37,19 +43,26 @@ const LocationPage = () => {
                 <div className="h-[48px] px-[1rem] py-[0.75rem] bg-[#F5F5F5] rounded-[0.5rem] flex items-center">
                     <input
                         type="text"
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
                         placeholder="동까지 입력"
                         className="flex-1 text-[1rem] bg-transparent border-none outline-none"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") handleSearch();
+                        }}
                     />
                     <SearchIcon
                         className="w-4 h-4 ml-2"
+                        onClick={handleSearch}
                     />
                 </div>
             </div>
 
             <div className="mt-[0.5rem]">
-                <button className="w-full h-[48px] rounded-[0.5rem] bg-[#6970F3] text-white text-[0.875rem] font-medium flex justify-center items-center gap-[0.25rem]">
+                <button 
+                    onClick={handleCurrentLocation}
+                    className="w-full h-[48px] rounded-[0.5rem] bg-[#6970F3] text-white text-[0.875rem] font-medium flex justify-center items-center gap-[0.25rem]"
+                >
                     <LocationIcon
                         className="w-4 h-4"
                     /> 
@@ -58,37 +71,34 @@ const LocationPage = () => {
             </div>
 
             <div
-                className="relative overflow-y-auto custom-scrollbar"
+                className="relative overflow-y-auto custom-scrollbar mt-[1.5rem]"
                 style={{ height: "calc(100vh - 47px - 48px - 26px - 48px - 172px)" }}
             >
-                <div className="pt-[1.5rem]">
-                    {filteredList.length === 0 ? (
-                        <p className="text-[0.875rem] text-center text-gray-400">검색 결과가 없습니다.</p>
+                {isLoading ? (
+                    <SearchResultSkeleton />
                     ) : (
-                        filteredList.map((dong) => (
-                            <AddressCard
-                                key={dong}
-                                dongName={dong}
-                                isSelected={selectedDong === dong}
-                                onClick={() =>
-                                setSelectedDong((prev) => (prev === dong ? null : dong))
-                                }
-                            />
-                        ))
-                    )}
-                </div>
+                    <SearchResultList
+                        results={filteredResults}
+                        selected={selected}
+                        onSelect={setSelected}
+                    />
+                )}
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 h-[172px] z-10">
                 <div className="absolute bottom-[91px] left-0 right-0 h-[81px] bg-gradient-to-t from-white to-transparent" />
                 <div className="flex flex-col justify-end h-full pb-[31px]">
-                <CommonButton
-                    text="저장하기"
-                    onClick={() => {
-                        console.log("저장:", selectedDong);
-                        navigate(-1);
-                    }}
-                />
+                    <CommonButton
+                        text="저장하기"
+                        onClick={handleSave}
+                        disabled={!selected}
+                        autoStyle={false}
+                        className={`w-full ${
+                        selected
+                            ? "bg-[#6970F3] text-white"
+                            : "bg-[#CCCCCC] text-[#7F7F7F] pointer-events-none"
+                        }`}
+                    />
                 </div>
             </div>
         </div>

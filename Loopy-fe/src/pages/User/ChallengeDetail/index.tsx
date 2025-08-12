@@ -3,6 +3,7 @@ import CommonHeader from '../../../components/header/CommonHeader';
 import Calendar from '../../../assets/images/Calendar.svg';
 import Crown from '../../../assets/images/Crown.svg';
 import Info from '../../../assets/images/Info.svg?react';
+import EmptyStamp from '../../../assets/images/EmptyStamp.svg?react';
 import ChallengeDetailSkeleton from './Skeleton/ChallengeDetailSkeleton';
 
 import { useChallengeDetail } from '../../../hooks/query/challenge/useChallengeDetail';
@@ -99,10 +100,11 @@ const ChallengeDetailPage = () => {
           {challenge.isParticipated && (
             <div>
               <div className="flex justify-center gap-[1rem] mt-8">
-                <div className="w-[5rem] h-[5rem] rounded-full bg-[#D9D9D9]" />
-                <div className="w-[5rem] h-[5rem] rounded-full bg-[#D9D9D9]" />
-                <div className="w-[5rem] h-[5rem] rounded-full bg-[#D9D9D9]" />
+                <EmptyStamp className="w-[5rem] h-[5rem]" />
+                <EmptyStamp className="w-[5rem] h-[5rem]" />
+                <EmptyStamp className="w-[5rem] h-[5rem]" />
               </div>
+
               <div className="flex flex-col bg-[#F3F3F3] p-4 rounded-[8px] mt-8">
                 <div className="flex text-[#7F7F7F] gap-2">
                   <Info className="w-4 h-4" />
@@ -122,7 +124,7 @@ const ChallengeDetailPage = () => {
 
       {/* 하단 고정 버튼 (참여 안 한 경우만) */}
       {!challenge.isParticipated && (
-        <div className="fixed bottom-2 left-0 right-0 bg-white px-4 pb-8 flex justify-center">
+        <div className="fixed bottom-2 left-0 right-0  px-4 pb-8 flex justify-center">
           <button
             onClick={() => navigate(`/challenge/${challengeId}/stores`)}
             className="w-full max-w-md bg-[#6970F3] text-white py-3 rounded-xl font-semibold"
