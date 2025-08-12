@@ -31,7 +31,6 @@ export default function ModalMenuForm({
   const [image, setImage] = useState<File | null>(null);
   const [isRepresentative, setIsRepresentative] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const { mutateAsync: createMenu, isPending } = useCreateOwnerMenu();
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -134,44 +133,46 @@ export default function ModalMenuForm({
         </div>
 
         <div className="mb-[2rem]">
-            <div className="text-[1rem] font-bold text-[#252525] mb-[0.5rem]">
-                사진 첨부 {image ? 1 : 0}/1 (선택)
-            </div>
+          <div className="text-[1rem] font-bold text-[#252525] mb-[0.5rem]">
+            사진 첨부 {image ? 1 : 0}/1 (선택)
+          </div>
 
-            <div className="mt-[0.5rem] flex gap-[0.5rem]">
-                {!image ? (
-                <label
-                    htmlFor="menu-image"
-                    className="w-[6.375rem] h-[6.375rem] shrink-0 rounded-[0.5rem] border border-dashed border-[#DFDFDF] flex items-center justify-center bg-[#F3F3F3] cursor-pointer"
+          <div className="mt-[0.5rem] flex gap-[0.5rem]">
+            {!image ? (
+              <label
+                htmlFor="menu-image"
+                className="w-[6.375rem] h-[6.375rem] shrink-0 rounded-[0.5rem] border border-dashed border-[#DFDFDF] flex items-center justify-center bg-[#F3F3F3] cursor-pointer"
+              >
+                <input
+                  id="menu-image"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageUpload}
+                />
+                <PlusPicIcon />
+              </label>
+            ) : (
+              <div className="relative w-[6.375rem] h-[6.375rem] shrink-0 overflow-hidden rounded-[0.5rem]">
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="preview"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+
+                <button
+                  onClick={handleImageRemove}
+                  className="absolute top-2 right-2 z-10 rounded-full"
+                  aria-label="사진 삭제"
+                  title="사진 삭제"
                 >
-                    <input
-                    id="menu-image"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageUpload}
-                    />
-                    <PlusPicIcon />
-                </label>
-                ) : (
-                <div className="relative w-[6.375rem] h-[6.375rem] shrink-0">
-                    <img
-                    src={URL.createObjectURL(image)}
-                    alt="preview"
-                    className="w-full h-full object-cover rounded-[0.5rem]"
-                    />
-                    <button
-                    onClick={handleImageRemove}
-                    className="absolute top-[0.25rem] right-[0.25rem] w-[1rem] h-[1rem]"
-                    aria-label="사진 삭제"
-                    title="사진 삭제"
-                    >
-                    <DeletePicIcon />
-                    </button>
-                </div>
-                )}
-            </div>
+                  <DeletePicIcon className="block w-4 h-4 pointer-events-none" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
+
 
         {!disableRepresentative && (
           <div className="mb-[2rem]">
