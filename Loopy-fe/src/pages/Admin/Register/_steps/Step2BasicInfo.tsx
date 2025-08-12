@@ -171,9 +171,9 @@ export default function Step2BasicInfo({ setValid }: Step2BasicInfoProps) {
                 />
                 <button
                   onClick={() => handleImageRemove(i)}
-                  className="absolute top-[0.25rem] right-[0.25rem] w-[1rem] h-[1rem]"
+                  className="absolute top-[0.375rem] right-[0.375rem]"
                 >
-                  <DeletePicIcon />
+                  <DeletePicIcon className='w-[1rem] h-[1rem]' />
                 </button>
               </div>
             ))}
