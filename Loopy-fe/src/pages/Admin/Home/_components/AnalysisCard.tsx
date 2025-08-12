@@ -1,4 +1,4 @@
-import AdminHomeCharacter from '../../../../assets/images/adminHomeCharacter.svg?react';
+import HomeCharacter from '../../../../assets/images/HomeCharacter.svg?react';
 
 const AnalysisCard = () => {
   return (
@@ -30,7 +30,7 @@ const AnalysisCard = () => {
       {/* 오른쪽 캐릭터 이미지 */}
       <div className="flex items-center justify-center flex-shrink-0 p-4 relative z-30 w-[120px]">
         <div className="w-full relative">
-          <AdminHomeCharacter className="absolute right-0 top-0 translate-y-[-65%] translate-x-[-10%] h-[10.063rem]" />
+          <HomeCharacter className="absolute right-0 top-0 translate-y-[-65%] translate-x-[-10%] h-[10.063rem] w-[9.301rem]" />
         </div>
       </div>
     </div>
