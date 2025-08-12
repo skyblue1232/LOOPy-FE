@@ -26,9 +26,24 @@ type MenuItem = {
 };
 
 const menuItems: MenuItem[] = [
-  { label: '홈', path: '/admin/home', icon: <AdminHome />, iconSelected: <AdminHomePurple /> },
-  { label: '스탬프 관리', path: '/admin/stamp', icon: <AdminStamp />, iconSelected: <AdminStampPurple /> },
-  { label: '챌린지 관리', path: '/admin/challenge', icon: <AdminChallenge />, iconSelected: <AdminChallengePurple /> },
+  {
+    label: '홈',
+    path: '/admin/home',
+    icon: <AdminHome />,
+    iconSelected: <AdminHomePurple />,
+  },
+  {
+    label: '스탬프 관리',
+    path: '/admin/stamp',
+    icon: <AdminStamp />,
+    iconSelected: <AdminStampPurple />,
+  },
+  {
+    label: '챌린지 관리',
+    path: '/admin/challenge',
+    icon: <AdminChallenge />,
+    iconSelected: <AdminChallengePurple />,
+  },
   {
     label: '쿠폰 관리',
     path: '/admin/coupon',
@@ -59,14 +74,13 @@ const CommonSideBar = () => {
   const cafeId = activeCafeId;
 
   const handleMenuClick = (item: MenuItem) => {
-  if (item.buildPath) {
-    const targetCafeId = cafeId || 1; 
-    navigate(item.buildPath({ cafeId: targetCafeId }));
-  } else {
-    navigate(item.path);
-  }
-};
-
+    if (item.buildPath) {
+      const targetCafeId = cafeId || 1;
+      navigate(item.buildPath({ cafeId: targetCafeId }));
+    } else {
+      navigate(item.path);
+    }
+  };
 
   const currentPath = location.pathname;
   const selectedLabel = menuItems.find((item) =>
@@ -113,7 +127,9 @@ const CommonSideBar = () => {
               onClick={() => navigate(settingPath)}
               className={`flex items-center gap-2 text-left font-semibold text-[0.875rem] pl-[1.5rem] pr-[5.313rem] py-3 leading-none rounded-lg ${isSettingSelected ? 'bg-[#F0F1FE] text-[#6970F3]' : 'text-white'}`}
             >
-              <div className={`w-4 h-4 ${isSettingSelected ? 'text-[#6970F3]' : 'text-white'}`}>
+              <div
+                className={`w-4 h-4 ${isSettingSelected ? 'text-[#6970F3]' : 'text-white'}`}
+              >
                 <AdminSetting />
               </div>
               설정
