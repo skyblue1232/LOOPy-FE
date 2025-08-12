@@ -6,12 +6,14 @@ interface CafeHashtagInputProps {
   setHashtags: (tags: string[]) => void;
 }
 
+const MAX_TAGS = 2;
+
 const CafeHashtagInput = ({ hashtags, setHashtags }: CafeHashtagInputProps) => {
   const [input, setInput] = useState("");
 
   const handleAdd = () => {
     const trimmed = input.trim();
-    if (!trimmed || hashtags.includes(trimmed) || hashtags.length >= 2) return;
+    if (!trimmed || hashtags.includes(trimmed) || hashtags.length >= MAX_TAGS) return;
     setHashtags([...hashtags, trimmed]);
     setInput("");
   };
@@ -20,14 +22,15 @@ const CafeHashtagInput = ({ hashtags, setHashtags }: CafeHashtagInputProps) => {
     setHashtags(hashtags.filter((h) => h !== tag));
   };
 
-  const disabled = !input.trim() || hashtags.length >= 2;
+  const addDisabled = !input.trim();
 
   return (
     <div>
       <div className="font-semibold text-[1rem] mb-3">대표 해시태그</div>
       <div className="text-[0.95rem] text-[#A8A8A8] mb-2">
-        해시태그는 최대 2개까지 가능해요 (예시 : 말차 맛집)
+        해시태그는 최대 {MAX_TAGS}개까지 가능해요 (예시 : 말차 맛집)
       </div>
+
       <div className="flex gap-2 items-center">
         <div className="flex-[77_0_0%]">
           <CommonInput
@@ -38,20 +41,17 @@ const CafeHashtagInput = ({ hashtags, setHashtags }: CafeHashtagInputProps) => {
             onKeyDown={e => {
               if (e.key === "Enter") handleAdd();
             }}
-            disabled={hashtags.length >= 2}
           />
         </div>
+
         <button
           type="button"
           className={`
             flex-[23_0_0%] h-[3.375rem] py-0 rounded-[8px] text-[0.95rem] font-semibold transition
-            ${disabled
-              ? "bg-[#DFDFDF] text-[#7F7F7F] cursor-not-allowed"
-              : "bg-[#6970F3] text-white"
-            }
+            ${addDisabled ? "bg-[#DFDFDF] text-[#7F7F7F] cursor-not-allowed" : "bg-[#6970F3] text-white"}
           `}
           onClick={handleAdd}
-          disabled={disabled}
+          disabled={addDisabled} 
         >
           추가하기
         </button>
