@@ -7,8 +7,8 @@ import PhoneInput from "./PhoneInput";
 import CommonAdminButton from "../../../../../../components/admin/button/CommonAdminButton";
 import AddressSearchField from "./AddressSearchField";
 import type { BasicInfoForm } from "../../../../../../types/basicInfo";
-import { useUploadOwnerCafePhotos } from "../../../../../../hooks/mutation/admin/photo/useOwnerPhoto";
-import { useDeleteOwnerCafePhotoById } from "../../../../../../hooks/mutation/admin/photo/useDeleteOwnerPhoto";
+import { useUploadCafePhotos } from "../../../../../../hooks/mutation/admin/photo/useUploadPhoto";
+import { useDeleteCafePhoto } from "../../../../../../hooks/mutation/admin/photo/useDeleteCafePhoto";
 
 interface Props {
   form: BasicInfoForm;
@@ -24,40 +24,46 @@ const BasicInfoFormView = ({
   form, setField, commit, isValid,
   isSubmitting, maxPhotos, minPhotos
 }: Props) => {
-  const { mutateAsync: uploadPhotos, isPending: isUploading } = useUploadOwnerCafePhotos();
-  const { mutateAsync: deleteById,   isPending: isDeleting  } = useDeleteOwnerCafePhotoById();
+  const { mutateAsync: uploadPhotos, isPending: isUploading } = useUploadCafePhotos();
+  const { mutateAsync: deleteById,   isPending: isDeleting  } = useDeleteCafePhoto();
 
   const handlePhotoChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
-    const currentUrls = form.serverPhotoUrls ?? [];
-    const remain = Math.max(0, maxPhotos - currentUrls.length);
+    const currIds  = form.serverPhotoIds  ?? [];
+    const currUrls = form.serverPhotoUrls ?? [];
+
+    const remain = Math.max(0, maxPhotos - currUrls.length);
     if (remain <= 0) { e.target.value = ""; return; }
 
-    const picked = Array.from(e.target.files).slice(0, remain);
+    const pickedAll  = Array.from(e.target.files);
+    const validAll   = pickedAll.filter(f => f.type.startsWith("image/") && f.size <= 10 * 1024 * 1024);
+    const toUpload   = validAll.slice(0, remain);
+    if (toUpload.length === 0) { e.target.value = ""; return; }
 
-    const valid = picked.filter(f => f.type.startsWith("image/") && f.size <= 10 * 1024 * 1024);
-    if (valid.length === 0) { e.target.value = ""; return; }
+    const res = await uploadPhotos(toUpload); 
+    const nextIds  = [...currIds,  ...res.map(p => p.id)].slice(0, maxPhotos);
+    const nextUrls = [...currUrls, ...res.map(p => p.imageUrl)].slice(0, maxPhotos);
 
-    const res = await uploadPhotos(valid);     
-    const mergedUrls = [...currentUrls, ...res.urls].slice(0, maxPhotos);
+    setField("serverPhotoIds")(nextIds);
+    setField("serverPhotoUrls")(nextUrls);
+    setField("photos")([]);
 
-    setField("serverPhotoUrls")(mergedUrls);
-    setField("photos")([]);                  
     e.target.value = "";
   };
 
   const handleDeleteServerPhoto = async (idx: number) => {
-    const ids  = form.serverPhotoIds ?? [];  
+    const ids  = form.serverPhotoIds  ?? [];
     const urls = form.serverPhotoUrls ?? [];
     const targetId = ids[idx];
 
     if (typeof targetId !== "number") {
-      console.warn("photoId가 없어 서버 삭제를 수행할 수 없습니다. GET 상세에서 id 동기화가 필요합니다.");
+      console.warn("photoId가 없어 서버 삭제를 수행할 수 없습니다. 상세 GET에서 id 동기화 필요.");
       return;
     }
 
-    await deleteById(targetId);
+    const ok = await deleteById(targetId);
+    if (!ok) return;
 
     setField("serverPhotoIds")(ids.filter((_, i) => i !== idx));
     setField("serverPhotoUrls")(urls.filter((_, i) => i !== idx));
@@ -121,13 +127,13 @@ const BasicInfoFormView = ({
       </div>
 
       <PhotoUploader
-        photos={[]} 
-        serverPhotos={form.serverPhotoUrls ?? []}
+        photos={form.photos ?? []} 
+        serverPhotos={form.serverPhotoUrls ?? []} 
         maxPhotos={maxPhotos}
         minPhotos={minPhotos}
-        onChange={handlePhotoChange}             
+        onChange={handlePhotoChange}
         onDelete={handlePhotoDelete}
-        onDeleteServerPhoto={handleDeleteServerPhoto} 
+        onDeleteServerPhoto={handleDeleteServerPhoto}
       />
 
       <DescriptionArea
