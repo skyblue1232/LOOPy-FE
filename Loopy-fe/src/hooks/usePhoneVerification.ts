@@ -1,19 +1,9 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import { auth } from "../firebase/firebase-config";
 import { signInWithPhoneNumber } from "firebase/auth";
-import debounce from "lodash.debounce";
-import { initializeRecaptcha } from "../firebase/initRecaptcha";
+import { auth } from "../firebase/firebase-config";
+import { ensureRecaptcha, resetRecaptcha } from "../firebase/initRecaptcha";
 
-declare global {
-  interface Window {
-    recaptchaVerifier?: any; 
-  }
-}
-
-export const usePhoneVerification = (
-  phone: string,
-  verifyCode: string
-) => {
+export const usePhoneVerification = (phone: string, verifyCode: string) => {
   const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
   const codeRegex = /^\d{4,6}$/;
 
@@ -22,6 +12,24 @@ export const usePhoneVerification = (
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [firebaseUser, setFirebaseUser] = useState<any>(null);
   const [isVerified, setIsVerified] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+  const backoffRef = useRef(30);
+  const tickRef = useRef<number | null>(null);
+
+  const startCooldown = useCallback(() => {
+    setCooldown(backoffRef.current);
+    if (tickRef.current) cancelAnimationFrame(tickRef.current);
+    const tick = (t0: number) => {
+      setCooldown((prev) => {
+        if (prev <= 0) return 0;
+        tickRef.current = requestAnimationFrame(() => tick(t0));
+        return prev - 1;
+      });
+      if (cooldown <= 0 && tickRef.current) cancelAnimationFrame(tickRef.current);
+    };
+    tickRef.current = requestAnimationFrame(() => tick(performance.now()));
+    backoffRef.current = Math.min(backoffRef.current * 2, 300);
+  }, [cooldown]);
 
   const isPhoneValid = useMemo(() => phoneRegex.test(phone.trim()), [phone]);
   const isCodeValid = useMemo(
@@ -35,48 +43,50 @@ export const usePhoneVerification = (
 
   const sendCode = useCallback(async () => {
     const currentPhone = phoneRef.current;
+    if (!isPhoneValid || isRequestingRef.current || cooldown > 0) return;
 
-    if (!phoneRegex.test(currentPhone.trim()) || isRequestingRef.current) return;
     isRequestingRef.current = true;
-
     const formatted = "+82" + currentPhone.replace(/-/g, "").slice(1);
 
     try {
-      await initializeRecaptcha(); 
-
-      const token = await window.recaptchaVerifier!.verify();
-      console.log("reCAPTCHA 토큰:", token);
-
-      const result = await signInWithPhoneNumber(
-        auth,
-        formatted,
-        window.recaptchaVerifier!
-      );
-
+      const verifier = ensureRecaptcha(); 
+      const result = await signInWithPhoneNumber(auth, formatted, verifier);
       setConfirmationResult(result);
       setIsRequested(true);
-    } catch (err) {
-      console.error("Firebase 인증 요청 실패:", err);
-      alert("인증번호 전송 실패");
+      setVerifyError(false);
+      backoffRef.current = 30; 
+    } catch (err: any) {
+      const code = String(err?.code || "");
+      const msg = String(err?.message || "");
+      console.error("phone signIn failed:", code, msg, err);
+
+      if (
+        code.includes("auth/too-many-requests") ||
+        msg.includes("TOO_MANY_ATTEMPTS_TRY_LATER") ||
+        code.includes("auth/quota-exceeded")
+      ) {
+        await resetRecaptcha();
+        startCooldown();
+      } else {
+        await resetRecaptcha();
+      }
     } finally {
       isRequestingRef.current = false;
     }
-  }, []);
-
-  const requestCode = useCallback(debounce(() => {
-    sendCode();
-  }, 1000), [sendCode]);
+  }, [cooldown, isPhoneValid, startCooldown]);
 
   const validateCode = useCallback(async () => {
+    if (!confirmationResult) return false;
     try {
       const result = await confirmationResult.confirm(verifyCode);
       setVerifyError(false);
       setFirebaseUser(result.user);
-      setIsVerified(true); 
+      setIsVerified(true);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       setVerifyError(true);
-      setIsVerified(false); 
+      setIsVerified(false);
+      await resetRecaptcha();
       return false;
     }
   }, [confirmationResult, verifyCode]);
@@ -86,11 +96,12 @@ export const usePhoneVerification = (
     verifyError,
     isPhoneValid,
     isCodeValid,
-    requestCode,
+    sendCode,  
     validateCode,
     setVerifyError,
     setIsRequested,
     firebaseUser,
     isVerified,
+    cooldown,
   };
 };
