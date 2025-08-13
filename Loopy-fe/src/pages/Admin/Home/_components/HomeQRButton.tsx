@@ -7,12 +7,14 @@ import CommonTwoButtonModal from '../../../../components/admin/modal/CommonTwoBu
 import CommonCompleteModal from '../../../../components/admin/modal/CommonCompleteModal';
 import useUseAllPoints from '../../../../hooks/query/admin/home/useUseAllPoints';
 import useUseCoupon from '../../../../hooks/query/admin/home/useUseCoupon';
+import { useVerifyUserChallenge } from '../../../../hooks/query/admin/home/useVerifyUserChallenge';
 
 type ConfirmInfo = {
   title: string;
   type: '사용' | '인증';
   couponId?: number;
   userId?: number;
+  challengeId?: number;
 } | null;
 
 const HomeQRButton = () => {
@@ -23,6 +25,7 @@ const HomeQRButton = () => {
 
   const useAllPointsMutation = useUseAllPoints();
   const useCouponMutation = useUseCoupon();
+  const useVerifyChallengeMutation = useVerifyUserChallenge();
 
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
@@ -32,8 +35,9 @@ const HomeQRButton = () => {
     type: '사용' | '인증',
     couponId?: number,
     userId?: number,
+    challengeId?: number,
   ) => {
-    setConfirmInfo({ title, type, couponId, userId });
+    setConfirmInfo({ title, type, couponId, userId, challengeId });
     setIsModalOpen(false);
   };
 
@@ -82,6 +86,30 @@ const HomeQRButton = () => {
     );
   };
 
+  const handleConfirmChallengeVerify = () => {
+    if (!confirmInfo?.userId || !confirmInfo?.challengeId) return;
+
+    useVerifyChallengeMutation.mutate(
+      { userId: confirmInfo.userId, challengeId: confirmInfo.challengeId },
+      {
+        onSuccess: (res) => {
+          const count = res.data.completedCount;
+          const reward = res.data.milestoneRewarded;
+          let message = `${confirmInfo.title} 인증이 완료되었어요! (누적 ${count}회)`;
+          if (reward) {
+            message += `\n축하합니다! 보상 ${reward}p가 지급되었어요!`;
+          }
+          setCompleteMessage(message);
+          setConfirmInfo(null);
+        },
+        onError: (err) => {
+          console.error('챌린지 인증 실패:', err);
+          setConfirmInfo(null);
+        },
+      },
+    );
+  };
+
   return (
     <>
       <HomeButton
@@ -119,12 +147,7 @@ const HomeQRButton = () => {
           purpleButtonOnClick={
             confirmInfo.type === '사용'
               ? handleConfirmCouponUse
-              : () => {
-                  setCompleteMessage(
-                    `${confirmInfo.title} 인증이 완료되었어요!`,
-                  );
-                  handleCloseConfirm();
-                }
+              : handleConfirmChallengeVerify
           }
         />
       )}

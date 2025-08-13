@@ -10,6 +10,7 @@ interface CustomerInfoSectionProps {
     type: '사용' | '인증',
     couponId?: number,
     userId?: number,
+    challengeId?: number,
   ) => void;
 
   onPointUseClick: (cust: Customer) => void;
@@ -104,7 +105,15 @@ export default function CustomerInfoSection({
                     expiry={c.expiry}
                     title={c.title}
                     type="인증"
-                    onClick={() => onConfirmAction(c.title, '인증')}
+                    onClick={() =>
+                      onConfirmAction(
+                        c.title,
+                        '인증',
+                        undefined,
+                        customer.userId,
+                        c.id,
+                      )
+                    }
                   />
                 ))
               ) : (

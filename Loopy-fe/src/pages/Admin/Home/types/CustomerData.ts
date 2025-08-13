@@ -5,6 +5,7 @@ export type Coupon = {
 };
 
 export type Challenge = {
+  id: number;
   expiry: string;
   title: string;
 };

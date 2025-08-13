@@ -41,6 +41,7 @@ export default function QRModal({
             title: c.name,
           })),
           challenges: data.success.ongoingChallenges.map((ch) => ({
+            id: ch.challengeId,
             expiry: ch.expiredAt,
             title: ch.title,
           })),
