@@ -62,7 +62,7 @@ const ByDayTimeCard = ({ value, onChange }: ByDayTimeCardProps) => {
   const cur = value[selectedDay] || defaultValue;
 
   return (
-    <div>
+    <>
       <div className="flex gap-2 mb-4">
         {week.map((day) => (
           <button
@@ -81,8 +81,8 @@ const ByDayTimeCard = ({ value, onChange }: ByDayTimeCardProps) => {
         ))}
       </div>
       <div className="rounded-[8px] p-6 bg-[#F3F3F3] w-full">
-        <div className="mb-4 flex items-center gap-2">
-          <span className="font-semibold text-[1rem] text-[#252525]">영업시간</span>
+        <div className="font-semibold text-[1rem] text-[#252525] mb-3">영업시간</div>
+        <div className="flex items-center gap-2 mb-4">
           <TimeInput
             value={cur.open}
             onChange={v => handleTimeChange("open", v)}
@@ -130,7 +130,7 @@ const ByDayTimeCard = ({ value, onChange }: ByDayTimeCardProps) => {
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };
 

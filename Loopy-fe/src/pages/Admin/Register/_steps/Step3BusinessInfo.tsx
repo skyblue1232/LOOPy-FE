@@ -4,7 +4,8 @@ import KeywordSelector from '../_components/KeywordSelector';
 import BasicInput from '../_components/BasicInput';
 import AddButton from '../_components/AddButton';
 import RemovableKeywordTags from '../_components/RemovableKeywordTags';
-import OperatingTimeSection from '../_components/TimeSection';
+import TimeSection from '../_components/TimeSection';
+import type { TimeSectionValues } from '../_components/TimeSection';
 import SelectableItem from '../_components/SelectableItem';
 
 const weekDays = ['월', '화', '수', '목', '금', '토', '일'];
@@ -15,11 +16,9 @@ export default function Step3BusinessInfo() {
 
     const toggleNoHolidays = () => {
         if (noHolidays) {
-            // 해제 → 전체 비선택
             setNoHolidays(false);
             setClosedDays([]);
         } else {
-            // 체크 → 전체 선택
             setNoHolidays(true);
             setClosedDays(weekDays);
         }
@@ -31,13 +30,11 @@ export default function Step3BusinessInfo() {
 
             if (prev.includes(day)) {
                 newDays = prev.filter((d) => d !== day);
-                // 하나라도 해제하면 noHolidays false
                 setNoHolidays(false);
             } else {
                 newDays = [...prev, day];
             }
 
-            // 수동으로 전체 선택한 경우 자동 체크
             if (newDays.length === weekDays.length) {
                 setNoHolidays(true);
             }
@@ -46,16 +43,14 @@ export default function Step3BusinessInfo() {
         });
     };
 
-    const [openTime, setOpenTime] = useState('');
-    const [closeTime, setCloseTime] = useState('');
-    const [hasBreakTime, setHasBreakTime] = useState(true);
-    const [breakStart, setBreakStart] = useState('');
-    const [breakEnd, setBreakEnd] = useState('');
-    const [weekendOpenTime, setWeekendOpenTime] = useState('');
-    const [weekendCloseTime, setWeekendCloseTime] = useState('');
-    const [hasWeekendBreakTime, setHasWeekendBreakTime] = useState(true);
-    const [weekendBreakStart, setWeekendBreakStart] = useState('');
-    const [weekendBreakEnd, setWeekendBreakEnd] = useState('');
+    const [timeValues, setTimeValues] = useState<TimeSectionValues>({
+        type: 'all',
+        all: { open: '', close: '', breakType: '없음', breakStart: '', breakEnd: '' },
+        weekday: { open: '', close: '', breakType: '없음', breakStart: '', breakEnd: '' },
+        weekend: { open: '', close: '', breakType: '없음', breakStart: '', breakEnd: '' },
+        byDay: {}, 
+    });
+
     const [hashtagInput, setHashtagInput] = useState('');
     const [hashtags, setHashtags] = useState<string[]>([]);
 
@@ -98,29 +93,7 @@ export default function Step3BusinessInfo() {
 
                 {/* 영업시간 */}
                 <div>
-                    <div className="text-[1rem] font-semibold leading-[100%] mb-[1rem]">영업시간</div>
-                    <OperatingTimeSection
-                        openTime={openTime}
-                        closeTime={closeTime}
-                        setOpenTime={setOpenTime}
-                        setCloseTime={setCloseTime}
-                        breakEnabled={hasBreakTime}
-                        setBreakEnabled={setHasBreakTime}
-                        breakStart={breakStart}
-                        breakEnd={breakEnd}
-                        setBreakStart={setBreakStart}
-                        setBreakEnd={setBreakEnd}
-                        weekendOpenTime={weekendOpenTime}
-                        weekendCloseTime={weekendCloseTime}
-                        setWeekendOpenTime={setWeekendOpenTime}
-                        setWeekendCloseTime={setWeekendCloseTime}
-                        weekendBreakEnabled={hasWeekendBreakTime}
-                        setWeekendBreakEnabled={setHasWeekendBreakTime}
-                        weekendBreakStart={weekendBreakStart}
-                        weekendBreakEnd={weekendBreakEnd}
-                        setWeekendBreakStart={setWeekendBreakStart}
-                        setWeekendBreakEnd={setWeekendBreakEnd}
-                    />
+                    <TimeSection values={timeValues} setValues={setTimeValues} />
                 </div>
 
                 {/* 해시태그 */} 

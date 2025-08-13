@@ -14,7 +14,7 @@ import { getCafeDetail } from "../../../apis/cafeDetail/api";
 import type { CafeDetailSuccess, CafeDetailResponse } from "../../../apis/cafeDetail/type";
 
 const DetailPage = () => {
-  const { cafeId = '1' } = useParams(); // 임의 지정
+  const { cafeId } = useParams<{ cafeId: string }>();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState<"info" | "review">("info");
@@ -23,19 +23,17 @@ const DetailPage = () => {
 
   const { data, isLoading } = useQuery<CafeDetailSuccess>({
     queryKey: ["cafeDetail", cafeId],
+    enabled: !!cafeId,                            
     queryFn: async () => {
-      if (!cafeId) throw new Error("no cafeId");
-
-      const raw = (await getCafeDetail(cafeId)) as CafeDetailSuccess | CafeDetailResponse;
-
-      return "success" in raw ? raw.success : raw;
+      const id = cafeId!; // 또는: if (!cafeId) throw new Error('no cafeId');
+      const raw = (await getCafeDetail(id)) as CafeDetailSuccess | CafeDetailResponse;
+      return 'success' in raw ? raw.success : raw;
     },
-    enabled: !!cafeId,
   });
 
   const cafe = data?.cafe;
   const photos = data?.photos || [];
-  const { data: myStampData } = useMyStampQuery(cafeId);
+  const { data: myStampData } = useMyStampQuery(cafeId ?? '');
   const hasStamp = !!myStampData?.stampBookId && myStampData.currentCount > 0;
 
   return (

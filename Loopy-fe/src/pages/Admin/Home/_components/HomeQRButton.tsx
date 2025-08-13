@@ -38,6 +38,16 @@ const HomeQRButton = () => {
       ],
       challenges: [{ expiry: '2025.09.30', title: '텀블러 사용 챌린지' }],
     },
+    '10003': {
+      name: '감자먹자',
+      points: 1200,
+      stamps: 3,
+      coupons: [
+        { expiry: '2025.09.15', title: '아메리카노 200원 할인쿠폰' },
+        { expiry: '2025.10.01', title: '디카페인 무료 업그레이드' },
+      ],
+      challenges: [{ expiry: '2025.09.30', title: '텀블러 사용 챌린지' }],
+    },
     '01098765432': {
       name: '김이박',
       points: 850,
