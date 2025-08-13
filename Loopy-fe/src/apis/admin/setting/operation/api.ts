@@ -13,7 +13,7 @@ export const MOCK_OWNER_CAFE_OPERATION: OwnerCafeOperationInfo = {
     { day: "SUNDAY",    isClosed: true,  openTime: "00:00", closeTime: "00:00", breakStart: null,     breakEnd: null },
   ],
   hasNoHoliday: false,
-  keywords: ["루프탑", "감성카페", "포토존", "한강뷰"],
+  keywords: ["루프탑", "감성카페"],
   selectedKeywords: {
     storeFilters: ["노트북", "콘센트 많음"],
     takeOutFilters: ["텀블러 할인"],
@@ -27,7 +27,7 @@ export async function getOwnerMyCafeOperation(): Promise<OwnerCafeOperationInfo>
     const { data } = await axiosInstance.get<OwnerCafeOperationInfo>(url);
     return data;
   } catch (err) {
-    console.error("운영 정보 조회 실패. 목데이터로 대체합니다.", err);
+    console.log("운영 정보 조회 실패. 목데이터로 대체합니다.", err);
     return MOCK_OWNER_CAFE_OPERATION;
   }
 }
