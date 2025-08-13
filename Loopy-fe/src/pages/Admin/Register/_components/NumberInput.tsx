@@ -17,7 +17,7 @@ interface NumerInputProps {
 const onlyDigits = (v: string) => v.replace(/\D/g, '');
 const formatAmount = (v: string) => v.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-export default function NumerInput({
+export default function NumberInput({
     mode,
     value,
     onChange,
