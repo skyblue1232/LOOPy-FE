@@ -45,9 +45,10 @@ export default function StampPolicyEditDrawer({
 
   // 드로어 열렸을 때만 정책 조회
   const { data: policy } = useQuery({
-    queryKey: ['stampPolicy'],
+    queryKey: ['stampPolicy', token ?? null],
     queryFn: () => fetchStampPolicy(token),
     enabled: open,
+    retry: 1,
   });
 
   // Step5Stamp 동일한 로컬 상태
@@ -109,7 +110,6 @@ export default function StampPolicyEditDrawer({
     ]
   );
 
-  // 정책 → 폼 초기화 + initialModel 저장
   useEffect(() => {
     if (!open || !policy) return;
 
@@ -180,8 +180,11 @@ export default function StampPolicyEditDrawer({
   const mutation = useMutation({
     mutationFn: (body: PatchStampPolicyBody) => patchStampPolicy(body, token),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['stampPolicy'] });
+      qc.invalidateQueries({ queryKey: ['stampPolicy', token ?? null] });
       onClose();
+    },
+    onError: (e) => {
+      alert(`저장 실패 : ${String((e as Error)?.message ?? e)}`);
     },
   });
 
@@ -189,26 +192,33 @@ export default function StampPolicyEditDrawer({
     if (!isEdit || !dirty) return;
 
     const body: PatchStampPolicyBody = {};
-    if (currentModel.selectedImageUrl) body.selectedImageUrl = currentModel.selectedImageUrl;
+    if (currentModel.selectedImageUrl)
+      body.selectedImageUrl = currentModel.selectedImageUrl;
 
     if (currentModel.basis === 'amount') {
       body.conditionType = 'AMOUNT';
-      if (currentModel.amountThreshold != null) body.minAmount = currentModel.amountThreshold;
-      if (currentModel.amountStampCount != null) body.stampPerAmount = currentModel.amountStampCount;
+      if (currentModel.amountThreshold != null)
+        body.minAmount = currentModel.amountThreshold; // ✅ 서버 필드명
+      if (currentModel.amountStampCount != null)
+        body.stampPerAmount = currentModel.amountStampCount; // ✅ 서버 필드명
     } else {
       body.conditionType = 'COUNT';
-      if (currentModel.countDrinkQty != null) body.drinkCount = currentModel.countDrinkQty;
-      if (currentModel.countStampCount != null) body.stampCountDrink = currentModel.countStampCount; // 서버 키
+      if (currentModel.countDrinkQty != null)
+        body.drinkCount = currentModel.countDrinkQty;
+      if (currentModel.countStampCount != null)
+        body.stampCountDrink = currentModel.countStampCount; // 서버 필드명
     }
 
     if (currentModel.reward === 'amount') {
       body.rewardType = 'DISCOUNT';
-      if (currentModel.rewardDiscountAmount != null) body.discountAmount = currentModel.rewardDiscountAmount;
+      if (currentModel.rewardDiscountAmount != null)
+        body.discountAmount = currentModel.rewardDiscountAmount;
     } else if (currentModel.reward === 'sizeup') {
       body.rewardType = 'SIZE_UP';
     } else {
       body.rewardType = 'FREE_DRINK';
-      if (currentModel.freeRewardMenuId != null) body.menuId = currentModel.freeRewardMenuId;
+      if (currentModel.freeRewardMenuId != null)
+        body.menuId = currentModel.freeRewardMenuId;
     }
 
     mutation.mutate(body);

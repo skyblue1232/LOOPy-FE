@@ -33,7 +33,7 @@ function readAddressStr(place: any): string {
   return (place && place.address_name) ? String(place.address_name) : '';
 }
 
-/** ✅ 표시용 지역 문자열 얻기: depth가 있으면 조합, 없으면 normalizeRegion(문자열) */
+/** 표시용 지역 문자열 얻기: depth가 있으면 조합, 없으면 normalizeRegion(문자열) */
 function getRegionText(place: any): string {
   // 1) 이미 depth가 들어온 경우(우리가 toKakaoLikePlace에서 넣어줌)
   const p = place as any;

@@ -5,72 +5,109 @@ import QRModal from '../_components/modal/QRModal';
 import type { Customer } from '../types/CustomerData';
 import CommonTwoButtonModal from '../../../../components/admin/modal/CommonTwoButtonModal';
 import CommonCompleteModal from '../../../../components/admin/modal/CommonCompleteModal';
+import useUseAllPoints from '../../../../hooks/query/admin/home/useUseAllPoints';
+import useUseCoupon from '../../../../hooks/query/admin/home/useUseCoupon';
+import { useVerifyUserChallenge } from '../../../../hooks/query/admin/home/useVerifyUserChallenge';
 
 type ConfirmInfo = {
   title: string;
   type: '사용' | '인증';
+  couponId?: number;
+  userId?: number;
+  challengeId?: number;
 } | null;
 
 const HomeQRButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pointCustomer, setPointCustomer] = useState<Customer | null>(null);
   const [completeMessage, setCompleteMessage] = useState<string | null>(null);
+  const [confirmInfo, setConfirmInfo] = useState<ConfirmInfo>(null);
+
+  const useAllPointsMutation = useUseAllPoints();
+  const useCouponMutation = useUseCoupon();
+  const useVerifyChallengeMutation = useVerifyUserChallenge();
 
   const handleOpen = () => setIsModalOpen(true);
   const handleClose = () => setIsModalOpen(false);
-  const [confirmInfo, setConfirmInfo] = useState<ConfirmInfo>(null);
 
-  const handleConfirmAction = (title: string, type: '사용' | '인증') => {
-    setConfirmInfo({ title, type });
+  const handleConfirmAction = (
+    title: string,
+    type: '사용' | '인증',
+    couponId?: number,
+    userId?: number,
+    challengeId?: number,
+  ) => {
+    setConfirmInfo({ title, type, couponId, userId, challengeId });
     setIsModalOpen(false);
   };
 
   const handleCloseConfirm = () => setConfirmInfo(null);
 
-  const mockCustomerDB: Record<string, Customer> = {
-    '01012345678': {
-      name: '홍길동',
-      points: 1200,
-      stamps: 3,
-      coupons: [
-        { expiry: '2025.09.15', title: '아메리카노 200원 할인쿠폰' },
-        { expiry: '2025.10.01', title: '디카페인 무료 업그레이드' },
-      ],
-      challenges: [{ expiry: '2025.09.30', title: '텀블러 사용 챌린지' }],
-    },
-    '10003': {
-      name: '감자먹자',
-      points: 1200,
-      stamps: 3,
-      coupons: [
-        { expiry: '2025.09.15', title: '아메리카노 200원 할인쿠폰' },
-        { expiry: '2025.10.01', title: '디카페인 무료 업그레이드' },
-      ],
-      challenges: [{ expiry: '2025.09.30', title: '텀블러 사용 챌린지' }],
-    },
-    '01098765432': {
-      name: '김이박',
-      points: 850,
-      stamps: 5,
-      coupons: [],
-      challenges: [],
-    },
-    '01011112222': {
-      name: '이몽룡',
-      points: 150,
-      stamps: 1,
-      coupons: [{ expiry: '2025.08.20', title: '음료 1+1 쿠폰' }],
-      challenges: [],
-    },
+  const handlePointUse = (customer: Customer) => {
+    setPointCustomer(customer);
+    setIsModalOpen(false);
   };
 
-  const lookupCustomer = async (phone: string): Promise<Customer | null> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const customer = mockCustomerDB[phone] || null;
-        resolve(customer);
-      }, 500);
+  const handleConfirmPointUse = () => {
+    if (!pointCustomer) return;
+
+    useAllPointsMutation.mutate(pointCustomer.userId, {
+      onSuccess: (res) => {
+        const usedAmount = res?.data?.usedAmount ?? 0;
+        console.log(
+          `${pointCustomer.name}님의 포인트 ${usedAmount}p 사용이 완료되었습니다.`,
+        );
+        setCompleteMessage(
+          `${pointCustomer.name}님의 포인트 ${usedAmount}p 사용이 완료되었어요!`,
+        );
+        setPointCustomer(null);
+      },
+      onError: (err) => {
+        console.error('포인트 사용에 실패했습니다:', err);
+        setPointCustomer(null);
+      },
     });
+  };
+
+  const handleConfirmCouponUse = () => {
+    if (!confirmInfo?.couponId || !confirmInfo?.userId) return;
+    useCouponMutation.mutate(
+      { userId: confirmInfo.userId, couponId: confirmInfo.couponId },
+      {
+        onSuccess: () => {
+          setCompleteMessage(`${confirmInfo.title} 쿠폰 사용이 완료되었어요!`);
+          setConfirmInfo(null);
+        },
+        onError: (err) => {
+          console.error('쿠폰 사용 실패:', err);
+          setConfirmInfo(null);
+        },
+      },
+    );
+  };
+
+  const handleConfirmChallengeVerify = () => {
+    if (!confirmInfo?.userId || !confirmInfo?.challengeId) return;
+
+    useVerifyChallengeMutation.mutate(
+      { userId: confirmInfo.userId, challengeId: confirmInfo.challengeId },
+      {
+        onSuccess: (res) => {
+          const count = res.data.completedCount;
+          const reward = res.data.milestoneRewarded;
+          let message = `${confirmInfo.title} 인증이 완료되었어요! (누적 ${count}회)`;
+          if (reward) {
+            message += `\n축하합니다! 보상 ${reward}p가 지급되었어요!`;
+          }
+          setCompleteMessage(message);
+          setConfirmInfo(null);
+        },
+        onError: (err) => {
+          console.error('챌린지 인증 실패:', err);
+          setConfirmInfo(null);
+        },
+      },
+    );
   };
 
   return (
@@ -81,17 +118,16 @@ const HomeQRButton = () => {
         onClick={handleOpen}
         aria-label="맴버쉽 QR 스캔 버튼"
       />
+
       {isModalOpen && (
         <QRModal
           onClose={handleClose}
-          onSubmit={lookupCustomer}
           onConfirmAction={handleConfirmAction}
-          onPointUseClick={(customer) => {
-            setIsModalOpen(false);
-            setPointCustomer(customer);
-          }}
+          onPointUseClick={handlePointUse}
+          onSubmit={async () => null}
         />
       )}
+
       {confirmInfo && (
         <CommonTwoButtonModal
           onClose={handleCloseConfirm}
@@ -108,17 +144,14 @@ const HomeQRButton = () => {
           purpleButton={
             confirmInfo.type === '사용' ? '쿠폰 사용 처리하기' : '인증 진행하기'
           }
-          purpleButtonOnClick={() => {
-            console.log(`${confirmInfo.title} - ${confirmInfo.type} 완료`);
-            setCompleteMessage(
-              confirmInfo.type === '사용'
-                ? `${confirmInfo.title}을 사용 처리했어요!`
-                : `${confirmInfo.title} 인증이 완료되었어요!`,
-            );
-            handleCloseConfirm();
-          }}
+          purpleButtonOnClick={
+            confirmInfo.type === '사용'
+              ? handleConfirmCouponUse
+              : handleConfirmChallengeVerify
+          }
         />
       )}
+
       {pointCustomer && (
         <CommonTwoButtonModal
           onClose={() => setPointCustomer(null)}
@@ -133,15 +166,10 @@ const HomeQRButton = () => {
           }
           message="포인트를 사용한 후에는 취소가 어려워요"
           purpleButton="포인트 사용하기"
-          purpleButtonOnClick={() => {
-            console.log(`${pointCustomer.name} 포인트 사용하기`);
-            setCompleteMessage(
-              `${pointCustomer.name}님의 포인트 사용이 완료되었어요!`,
-            );
-            setPointCustomer(null);
-          }}
+          purpleButtonOnClick={handleConfirmPointUse}
         />
       )}
+
       {completeMessage && (
         <CommonCompleteModal
           onClose={() => setCompleteMessage(null)}

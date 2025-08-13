@@ -2,9 +2,10 @@ import CommonSideBar from '../../../components/admin/sideBar/CommonSideBar';
 import CommonTopBar from '../../../components/admin/topBar/CommonTopBar';
 import StampStatsBar from './_components/StampStatsBar';
 import StampPolicyCard from './_components/StampPolicyCard';
+import Storage from '../../../utils/storage';
 
 const AdminStampPage = () => {
-  const token = undefined;
+  const token = Storage.getAccessToken?.() ?? undefined;
 
   return (
     <div>
