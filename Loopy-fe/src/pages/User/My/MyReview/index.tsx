@@ -34,9 +34,19 @@ const MyReviewPage = ({ onBack }: MyReviewPageProps) => {
   const firstPage = data?.pages?.[0]?.data ?? [];
   const otherPages = data?.pages?.slice(1).flatMap((p) => p.data) ?? [];
 
-  const reviews = isSuccess && firstPage.length === 0
-    ? dummyReviews
-    : [...firstPage, ...otherPages];
+  const mapReview = (r: any) => ({
+    id: r.reviewId ?? r.id,
+    cafeName: r.cafeName,
+    date: r.createdAt ?? r.date,
+    content: r.content,
+    images: r.images
+  });
+
+  const reviews =
+    isSuccess && firstPage.length === 0
+      ? dummyReviews.map(mapReview)
+      : [...firstPage, ...otherPages].map(mapReview);
+
 
   const handleClick = (reviewId: number) => {
     setEditingReviewId(reviewId);
@@ -54,7 +64,7 @@ const MyReviewPage = ({ onBack }: MyReviewPageProps) => {
   };
 
   const handleUpdate = () => {
-    setEditingReviewId(null); 
+    setEditingReviewId(null);
   };
 
   useEffect(() => {

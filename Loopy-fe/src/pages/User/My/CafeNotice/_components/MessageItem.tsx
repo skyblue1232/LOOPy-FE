@@ -7,32 +7,39 @@ interface MessageItemProps {
   content: string;
   date: string;
   isNew: boolean;
+  onOpen: () => void; 
 }
 
-const MessageItem = ({ sender, avatar, content, date, isNew }: MessageItemProps) => {
+const MessageItem = ({ sender, avatar, content, date, isNew, onOpen }: MessageItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const showMore = content.length > 30;
   const cardBg = isNew ? "bg-[#F0F1FE]" : "bg-[#F3F3F3]";
 
   const displayContent = showMore ? (
-  <span onClick={() => setIsExpanded((prev) => !prev)} className="cursor-pointer">
-    {!isExpanded ? (
-      <>
-        {content.slice(0, 30)}
-        <span className="text-[#A8A8A8]">...더보기</span>
-      </>
-    ) : (
-      content
-    )}
-  </span>
-) : (
-  content
-);
-
+    <span
+      onClick={() => setIsExpanded((prev) => !prev)}
+      className="cursor-pointer"
+    >
+      {!isExpanded ? (
+        <>
+          {content.slice(0, 30)}
+          <span className="text-[#A8A8A8]">...더보기</span>
+        </>
+      ) : (
+        content
+      )}
+    </span>
+  ) : (
+    content
+  );
 
   return (
-    <CommonCard padding="p-4" className={`relative ${cardBg}`}>
+    <CommonCard
+      padding="p-4"
+      className={`relative ${cardBg}`}
+      onClick={onOpen} 
+    >
       <div className="flex gap-2 items-start">
         {avatar ? (
           <img
@@ -46,7 +53,13 @@ const MessageItem = ({ sender, avatar, content, date, isNew }: MessageItemProps)
             }}
           />
         ) : null}
-        <div className={avatar ? "hidden w-6 h-6 rounded-full bg-[#434343] shrink-0" : "w-6 h-6 rounded-full bg-[#434343] shrink-0"} />
+        <div
+          className={
+            avatar
+              ? "hidden w-6 h-6 rounded-full bg-[#434343] shrink-0"
+              : "w-6 h-6 rounded-full bg-[#434343] shrink-0"
+          }
+        />
 
         <div className="flex flex-col w-full">
           <p className="text-[1rem] font-semibold text-[#252525] mb-1">{sender}</p>
