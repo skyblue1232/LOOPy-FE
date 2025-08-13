@@ -60,8 +60,23 @@ const MapPage = () => {
   const { selectedByGroup, setSelectedByGroup } = useFilterStore();
 
   const { state } = useLocation() as {
-    state?: { detailById?: Record<number, MapCafeDetail> };
+    state?: {
+      focusCafeId?: number;
+      listParams?: { x: number; y: number; zoom: number };
+      detailById?: Record<number, MapCafeDetail>;
+      userCoord?: { x: number; y: number }; 
+    };
   };
+  const pendingFocusIdRef = useRef<number | null>(state?.focusCafeId ?? null);
+  const didFocusOnceRef = useRef(false);
+
+  useEffect(() => {
+    if (state?.focusCafeId != null) {
+      pendingFocusIdRef.current = state.focusCafeId;
+      didFocusOnceRef.current = false;
+    }
+  }, [state?.focusCafeId]);
+
   const detailByIdRef = useRef<Record<number, MapCafeDetail> | undefined>(state?.detailById);
   useEffect(() => {
     if (state?.detailById) detailByIdRef.current = state.detailById;
@@ -80,12 +95,22 @@ const MapPage = () => {
     root.style.setProperty('--detail-h', selectedCafe ? `${h}px` : '0px');
   };
 
+  const userCoord =
+    state?.userCoord ??
+    (state?.listParams ? { x: state.listParams.x, y: state.listParams.y } : undefined) ??
+    (selected ? { x: selected.lng, y: selected.lat } : undefined);
+
   const { data: detailData } = useMapCafeDetailQuery(selectedCafe?.id ?? null, {
     enabled: !!selectedCafe,
+    coord: userCoord ? { x: userCoord.x, y: userCoord.y } : undefined,
     fallback: () =>
       (selectedCafe && detailByIdRef.current?.[selectedCafe.id]) ??
       { address: '', images: [], keywords: [] },
   });
+
+  useEffect(() => {
+    if (detailData) console.log('[DETAIL]', detailData);
+  }, [detailData]);
 
   useEffect(() => {
     if (!selectedCafe?.id || !detailData) return;
@@ -121,22 +146,47 @@ const MapPage = () => {
         const container = mapRef.current;
         if (!container) return;
 
-        const initialCenter =
-          (selected?.lat && selected?.lng)
+        const initialCenter = state?.listParams
+          ? { lat: state.listParams.y, lng: state.listParams.x }
+          : (selected?.lat && selected?.lng)
             ? { lat: selected.lat, lng: selected.lng }
             : (view?.center ?? { lat: 37.5553, lng: 126.9368 });
 
-        const initialZoom = view?.zoom ?? 3;
+        const initialZoom = state?.listParams?.zoom ?? (view?.zoom ?? 3);
 
         const map = new window.kakao.maps.Map(container, {
           center: new window.kakao.maps.LatLng(initialCenter.lat, initialCenter.lng),
           level: initialZoom,
         });
 
+        setView({ center: { lat: initialCenter.lat, lng: initialCenter.lng }, zoom: initialZoom });
+
         window.kakao.maps.event.addListener(map, 'idle', () => {
           const c = map.getCenter();
           const level = map.getLevel();
           setView({ center: { lat: c.getLat(), lng: c.getLng() }, zoom: level });
+          const b = map.getBounds();
+          const ne = b.getNorthEast();
+
+          const northEdge = new window.kakao.maps.LatLng(ne.getLat(), c.getLng());
+          const eastEdge  = new window.kakao.maps.LatLng(c.getLat(), ne.getLng());
+
+          const h = calcDistanceMeters(c.getLat(), c.getLng(), northEdge.getLat(), northEdge.getLng());
+          const w = calcDistanceMeters(c.getLat(), c.getLng(), eastEdge.getLat(), eastEdge.getLng());
+          const radius = Math.max(h, w);
+
+          console.log(`[MAP] level=${level}  radius≈${Math.round(radius)}m  (h=${Math.round(h)}m, w=${Math.round(w)}m)`);
+        });
+        
+        window.kakao.maps.event.addListener(map, 'click', () => {
+          const prev = activeMarkerRef.current;
+          if (prev) {
+            prev.setImage(getMarkerImage(!!prev.__hasStamp, false));
+            prev.setZIndex(0);
+            activeMarkerRef.current = null;
+          }
+          setSelectedCafe(null);
+          setIsFilterPopupOpen(false);
         });
 
         (mapRef.current as any).__map = map;
@@ -164,8 +214,9 @@ const MapPage = () => {
     () => serializeFromTitlesToParams(selectedByGroup),
     [selectedByGroup]
   );
-  const x = selected?.lng ?? view?.center?.lng ?? 126.9368;
-  const y = selected?.lat ?? view?.center?.lat ?? 37.5553;
+
+  const x = userCoord?.x ?? view?.center?.lng ?? 126.9368;
+  const y = userCoord?.y ?? view?.center?.lat ?? 37.5553;
   const rawZoom = view?.zoom ?? 3; // kakao: 작을수록 더 확대
   const apiZoom = Math.max(rawZoom, 5);
 
@@ -178,6 +229,22 @@ const MapPage = () => {
     enabled: mapReady,
     mockOnEmpty: mapSearchSimilarTop15,
   });
+
+  const resetActiveMarker = () => {
+    const prev = activeMarkerRef.current;
+    if (prev) {
+      prev.setImage(getMarkerImage(!!prev.__hasStamp, false));
+      prev.setZIndex(0);
+    }
+    activeMarkerRef.current = null;
+  };
+
+  const focusMarker = (marker: any) => {
+    resetActiveMarker();
+    marker.setImage(getMarkerImage(!!marker.__hasStamp, true));
+    marker.setZIndex(100);
+    activeMarkerRef.current = marker;
+  };
 
   useEffect(() => {
     console.log('[MAP]', 'cafes=', mapData?.success?.cafes?.length ?? 0, 'zoom=', view?.zoom);
@@ -217,21 +284,23 @@ const MapPage = () => {
         marker.__hasStamp = c.isStamped;
 
         marker.addListener('click', () => {
-          const prev = activeMarkerRef.current;
-          if (prev) prev.setImage(getMarkerImage(!!prev.__hasStamp, false));
+          focusMarker(marker);
 
-          marker.setImage(getMarkerImage(!!marker.__hasStamp, true));
-          activeMarkerRef.current = marker;
-
-          const center = map.getCenter();
           const meters = typeof c.distance === 'number'
             ? c.distance
-            : calcDistanceMeters(c.latitude, c.longitude, center.getLat(), center.getLng());
+            : calcDistanceMeters(
+                c.latitude,
+                c.longitude,
+                userCoord?.y ?? map.getCenter().getLat(),
+                userCoord?.x ?? map.getCenter().getLng()
+              );
           const distanceText = formatDistance(meters);
 
           const snapshot = detailByIdRef.current?.[c.id] ?? { address: '', images: [], keywords: [] };
 
+          if (map.getLevel() !== 4) map.setLevel(4);
           map.panTo(marker.getPosition());
+
           setSelectedCafe({
             id: c.id,
             name: c.name,
@@ -241,16 +310,59 @@ const MapPage = () => {
             distanceText,
             detail: snapshot,
           });
+
+          didFocusOnceRef.current = true;
+          pendingFocusIdRef.current = null;
         });
 
         markers.set(id, marker);
       } else {
         marker.setPosition(new window.kakao.maps.LatLng(c.latitude, c.longitude));
         marker.__hasStamp = c.isStamped;
-        marker.setImage(image);
+        const isActiveNow = activeMarkerRef.current?.__cafeId === id;
+        marker.setImage(getMarkerImage(c.isStamped, isActiveNow));
+        marker.setZIndex(isActiveNow ? 100 : 0);
         marker.setMap(map);
       }
     });
+
+    if (!didFocusOnceRef.current && pendingFocusIdRef.current != null) {
+      const focusId = pendingFocusIdRef.current;
+      const marker = markersRef.current.get(focusId);
+      if (marker) {
+        // 포커스 표시 + zIndex
+        focusMarker(marker);
+
+        // 자동 줌 4 + 이동
+        if (map.getLevel() !== 4) map.setLevel(4);
+        map.panTo(marker.getPosition());
+
+        // 상세 카드 채우기
+        const c = (mapData?.success?.cafes ?? []).find(v => v.id === focusId);
+        if (c) {
+          const center = map.getCenter();
+          const meters = typeof (c as any).distance === 'number'
+            ? (c as any).distance
+            : calcDistanceMeters(c.latitude, c.longitude, center.getLat(), center.getLng());
+          const distanceText = formatDistance(meters);
+          const snapshot = detailByIdRef.current?.[c.id] ?? { address: '', images: [], keywords: [] };
+
+          setSelectedCafe({
+            id: c.id,
+            name: c.name,
+            lat: c.latitude,
+            lng: c.longitude,
+            hasStamp: c.isStamped,
+            distanceText,
+            detail: snapshot,
+          });
+        }
+
+        // 한 번만 실행
+        didFocusOnceRef.current = true;
+        pendingFocusIdRef.current = null;
+      }
+    }
   }, [mapData]);
 
   return (
@@ -313,6 +425,7 @@ const MapPage = () => {
             name={selectedCafe.name}
             distanceText={selectedCafe.distanceText}
             {...selectedCafe.detail}
+            onClick={() => nav(`/detail/${selectedCafe.id}`)}
           />
         </div>
       )}
