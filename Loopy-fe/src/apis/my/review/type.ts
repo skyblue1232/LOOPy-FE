@@ -1,17 +1,26 @@
-export interface Review {
-  id: number;
+export interface ServerReview {
+  reviewId: number;
+  userId: number;
+  cafeId: number;
   cafeName: string;
+  title?: string;
   content: string;
-  date: string;
   images: string[];
+  createdAt: string;
 }
 
-export interface ReviewListResponse {
+export interface ReviewListSuccess {
   message: string;
-  data: Review[];
+  data: ServerReview[];
   pagination: {
     page: number;
     limit: number;
     total: number;
   };
+}
+
+export interface ReviewListResponse {
+  resultType: "SUCCESS" | "FAIL";
+  error: string | null;
+  success?: ReviewListSuccess;
 }
