@@ -27,7 +27,8 @@ const AdminStepPhoneVerify = ({
     isRequested,
     verifyError,
     isPhoneValid,
-    requestCode,
+    sendCode,
+    cooldown,
     setVerifyError,
     isVerified,
     validateCode,
@@ -72,7 +73,7 @@ const AdminStepPhoneVerify = ({
                   ? "bg-[#6970F3] text-white"
                   : "bg-[#DFDFDF] text-[#7F7F7F] pointer-events-none"
               }`}
-              onClick={requestCode}
+              onClick={sendCode}
             >
               인증번호 받기
             </button>
@@ -84,7 +85,8 @@ const AdminStepPhoneVerify = ({
             value={formData.verifyCode}
             onChange={handleVerifyCodeChange}
             hasError={verifyError}
-            onResend={requestCode}
+            onResend={sendCode}
+            cooldown={cooldown}
           />
         )}
       </div>
