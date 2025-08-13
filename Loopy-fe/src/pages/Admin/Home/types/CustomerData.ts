@@ -1,4 +1,5 @@
 export type Coupon = {
+  id: number;
   expiry: string;
   title: string;
 };
@@ -9,6 +10,7 @@ export type Challenge = {
 };
 
 export type Customer = {
+  userId: number;
   name: string;
   points: number;
   stamps: number;
