@@ -33,6 +33,7 @@ const HomeStampButton = () => {
       const user = data.success;
 
       return {
+        userId: user.userId,
         name: user.nickname,
         points: user.point.total,
         stamps: user.stamp.totalCount,
