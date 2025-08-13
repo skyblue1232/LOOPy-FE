@@ -19,7 +19,8 @@ const VerifyPage = () => {
     isRequested,
     verifyError,
     isPhoneValid,
-    requestCode,
+    sendCode,
+    cooldown,
     setVerifyError,
     isVerified,
     validateCode,
@@ -56,7 +57,7 @@ const VerifyPage = () => {
                 ? "bg-[#6970F3] text-white"
                 : "bg-[#DFDFDF] text-[#7F7F7F] pointer-events-none"
             }`}
-            onClick={requestCode}
+            onClick={sendCode}
           >
             인증번호 받기
           </button>
@@ -71,7 +72,8 @@ const VerifyPage = () => {
                 setVerifyCode(code);
               }}
               hasError={verifyError}
-              onResend={requestCode}
+              onResend={sendCode}
+              cooldown={cooldown} 
             />
           </div>
         )}
