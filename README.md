@@ -7,7 +7,7 @@
 
 | 썸머 / 이현서 | 매디 / 강나윤 | 민 / 고민균 |
 |--------------|---------------|--------------|
-| <img src="https://github.com/user-attachments/assets/9f79b8c7-6dae-43c2-9911-3cc4eb450458" width="200" height="200" /> | <img src="https://github.com/user-attachments/assets/5ed40500-a26e-40b8-bc98-2495c66b47ca" width="200" height="200" /> | <img src="https://github.com/user-attachments/assets/31447f88-c080-4891-ab24-4debf08d9eac" width="200"height="200" /> |
+| <img src="https://github.com/user-attachments/assets/9f79b8c7-6dae-43c2-9911-3cc4eb450458" width="200" height="200" /> | <img src="https://github.com/user-attachments/assets/5ed40500-a26e-40b8-bc98-2495c66b47ca" width="200" height="200" /> | <img src="https://github.com/user-attachments/assets/31447f88-c080-4891-ab24-4debf08d9eac" width="200" height="200" /> |
 
 > 루피 팀은 **카페와 사람을 단골이라는 연결로 이어주는** 경험을 디자인합니다.
 
