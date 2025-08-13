@@ -1,19 +1,60 @@
 import QuestionMark from '../../../../assets/images/QuestionMark.svg?react';
 import StampPurple from '../../../../assets/images/StampPurple.svg?react';
 import StampBarChart from './StampBarChart';
-import type { StampData } from '../types/StampData';
-
-const dummyData: StampData[] = [
-  { day: 'MON', count: 40 },
-  { day: 'TUE', count: 18 },
-  { day: 'WED', count: 18 },
-  { day: 'THU', count: 40 },
-  { day: 'FRI', count: 14 },
-  { day: 'SAT', count: 11 },
-  { day: 'SUN', count: 11 },
-];
+import type { StampData, DayOfWeek } from '../types/StampData';
+import { useOwnerStampStats } from '../../../../hooks/query/admin/home/useOwnerStampStats';
 
 const StampOverview = () => {
+  const { data, isLoading, isError, error } = useOwnerStampStats();
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (isError) return <div>에러 발생: {error?.message}</div>;
+
+  // API에서 받은 dailyStampCounts를 요일별 count로 변환
+  const dailyStampCounts = data?.data.dailyStampCounts ?? [];
+
+  // 날짜 문자열 → 요일 문자열 변환 함수
+  const getDayOfWeek = (dateStr: string): DayOfWeek => {
+    const date = new Date(dateStr);
+    const days: DayOfWeek[] = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    return days[date.getDay()];
+  };
+
+  // 요일별 데이터 map 만들기 (초기값 0)
+  const countsByDay: Record<DayOfWeek, number> = {
+    MON: 0,
+    TUE: 0,
+    WED: 0,
+    THU: 0,
+    FRI: 0,
+    SAT: 0,
+    SUN: 0,
+  };
+
+  dailyStampCounts.forEach(({ date, count }) => {
+    const day = getDayOfWeek(date);
+    countsByDay[day] = count;
+  });
+
+  // StampBarChart에 맞는 배열로 변환 (월~일 순)
+  const weekDaysOrder: DayOfWeek[] = [
+    'MON',
+    'TUE',
+    'WED',
+    'THU',
+    'FRI',
+    'SAT',
+    'SUN',
+  ];
+  const chartData: StampData[] = weekDaysOrder.map((day) => ({
+    day,
+    count: countsByDay[day] ?? 0,
+  }));
+
+  // 오늘 요일 구하기 (ISO 날짜 사용)
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const today = getDayOfWeek(todayISO);
+
   return (
     <div className="flex h-[19rem] w-full bg-[#F0F1FE] p-8 rounded-lg">
       <div className="flex flex-col">
@@ -24,10 +65,10 @@ const StampOverview = () => {
           </div>
         </div>
         <div className="flex justify-center items-center bg-white mr-12">
-          <StampBarChart data={dummyData} today="MON" />
+          <StampBarChart data={chartData} today={today} />
         </div>
       </div>
-      {/*우측 흰색 상자들*/}
+      {/* 우측 흰색 상자들 */}
       <div className="flex flex-col gap-2 flex-1">
         <div className="h-[4.688rem] bg-white rounded-lg px-[2.875rem] py-[0.875rem] flex flex-col items-center justify-center">
           <div className="flex gap-2">
@@ -37,7 +78,7 @@ const StampOverview = () => {
             <QuestionMark />
           </div>
           <span className="text-[1.25rem] font-bold mt-3 leading-none">
-            182개
+            {data?.data.thisWeekStampCount ?? 0}개
           </span>
         </div>
         <div className="h-[4.688rem] bg-white rounded-lg px-[2.875rem] py-[0.875rem] flex flex-col items-center justify-center">
@@ -48,7 +89,7 @@ const StampOverview = () => {
             <QuestionMark />
           </div>
           <span className="text-[1.25rem] font-bold mt-3 leading-none">
-            94명
+            {data?.data.uniqueUserCount ?? 0}명
           </span>
         </div>
         <div className="h-[4.688rem] bg-white rounded-lg px-[2.875rem] py-[0.875rem] flex flex-col items-center justify-center">
@@ -59,7 +100,7 @@ const StampOverview = () => {
             <QuestionMark />
           </div>
           <span className="text-[1.25rem] font-bold mt-3 leading-none">
-            17건
+            {data?.data.rewardGivenCount ?? 0}건
           </span>
         </div>
       </div>
