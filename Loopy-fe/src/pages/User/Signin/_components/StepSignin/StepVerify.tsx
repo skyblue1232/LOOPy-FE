@@ -19,7 +19,7 @@ const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
     isRequested,
     verifyError,
     isPhoneValid,
-    requestCode,
+    sendCode,
     setVerifyError,
     isVerified,
     validateCode,
@@ -59,7 +59,7 @@ const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
                 ? "bg-[#6970F3] text-white"
                 : "bg-[#DFDFDF] text-[#7F7F7F] pointer-events-none"
             }`}
-            onClick={requestCode}
+            onClick={sendCode}
           >
             인증번호 받기
           </button>
@@ -71,7 +71,7 @@ const StepPhoneVerify = ({ formData, setFormData }: StepPhoneVerifyProps) => {
           value={formData.verifyCode}
           onChange={handleVerifyCodeChange}
           hasError={verifyError}
-          onResend={requestCode}
+          onResend={sendCode}
         />
       )}
 
