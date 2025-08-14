@@ -14,6 +14,15 @@ const ChallengeCard = ({ data, hideParticipatingTag }: ChallengeCardProps) => {
     ? new Date(startDate).getMonth() + 1
     : undefined;
 
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}.${month}.${day}`;
+  };
+
   const handleClick = () => {
     navigate(`/challenge/${id}`);
   };
@@ -34,7 +43,7 @@ const ChallengeCard = ({ data, hideParticipatingTag }: ChallengeCardProps) => {
         </div>
         <div className="text-base font-bold leading-none mb-2">{title}</div>
         <div className="text-sm font-normal text-[#7F7F7F] leading-none">
-          {startDate} ~ {endDate}
+          {formatDate(startDate)} ~ {formatDate(endDate)}
         </div>
       </div>
 

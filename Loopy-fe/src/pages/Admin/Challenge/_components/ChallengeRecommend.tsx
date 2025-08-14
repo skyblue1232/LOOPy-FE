@@ -1,8 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 import ChallengeCard from './ChallengeCard';
+import { useAdminCafe } from '../../../../contexts/AdminContext';
+import { useAvailableChallenges } from '../../../../hooks/query/admin/challenge/useAvailableChallenges';
+import LoadingSpinner from '../../../../components/loading/LoadingSpinner';
 
 const ChallengeRecommend = () => {
   const navigate = useNavigate();
+  const { activeCafeId } = useAdminCafe();
+  const cafeId = activeCafeId ?? 0;
+
+  const { data, isLoading, isError } = useAvailableChallenges(cafeId);
+
+  if (isLoading) return <LoadingSpinner />;
+  if (isError) return <div>챌린지 정보를 불러오지 못했습니다.</div>;
+
+  // 랜덤으로 2개 선택
+  const challenges = data?.data || [];
+  const shuffled = [...challenges].sort(() => 0.5 - Math.random());
+  const randomTwo = shuffled.slice(0, 2);
 
   return (
     <div className="bg-[#F0F1FE] w-full h-[12rem] p-6">
@@ -19,12 +34,16 @@ const ChallengeRecommend = () => {
       </div>
 
       <div className="flex gap-4 w-full">
-        <div className="flex-1 min-w-0">
-          <ChallengeCard type="tumbler" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <ChallengeCard type="coffee" />
-        </div>
+        {randomTwo.map((challenge) => (
+          <div key={challenge.id} className="flex-1 min-w-0">
+            <ChallengeCard
+              title={challenge.title}
+              period={`${challenge.startDate} ~ ${challenge.endDate}`}
+              thumbnailUrl={challenge.thumbnailUrl}
+              isJoined={challenge.isJoined}
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
