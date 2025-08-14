@@ -19,7 +19,7 @@ const AdminSigninPageIndex = () => {
     verifyCode: "",
     agreeTerms: false,
     agreePrivacy: false,
-    agreemarketing: false,
+    agreemarketing: true,
     agreelocation: false,
     role: "OWNER",
   });

@@ -116,8 +116,8 @@ const AdminSigninPage = ({ formData, setFormData, onNext, onBack }: AdminSigninP
               <div className="-mt-[0.5rem]">
                 <AgreementItem
                   label="위치기반 서비스 이용약관 동의"
-                  checked={!!formData.agreePrivacy}
-                  onClick={() => setFormData((prev) => ({ ...prev, agreePrivacy: !prev.agreePrivacy }))}
+                  checked={!!formData.agreelocation}
+                  onClick={() => setFormData((prev) => ({ ...prev, agreelocation: !prev.agreelocation }))}
                   onArrowClick={() => setAgreementDetailKey("location")}
                 />
               </div>
