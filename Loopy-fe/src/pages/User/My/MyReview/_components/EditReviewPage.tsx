@@ -57,7 +57,13 @@ const EditReviewPage = ({ onBack, review, onSubmit }: EditReviewPageProps) => {
 
   const handleSubmit = () => {
     updateReviewMutate(
-      { reviewId: review.id, data: { title: "", content: reviewText } },
+      {
+        reviewId: review.id,
+        data: {
+          title: review.cafeName, 
+          content: reviewText
+        },
+      },
       {
         onSuccess: () => {
           onSubmit(reviewText);

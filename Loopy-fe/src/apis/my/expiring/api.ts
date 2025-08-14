@@ -26,9 +26,14 @@ export async function getExpiringStampBooks(): Promise<ExpiringStampBookItem[]> 
       return sortByExpiresAt(data);
     }
 
+    if (!data) {
+      return [];
+    }
+
     throw new Error("UNEXPECTED_RESPONSE_SHAPE");
   } catch (err) {
     console.warn("[getExpiringStampBooks] falling back to mock:", err);
     return sortByExpiresAt(getExpiringStampBooksMock());
   }
 }
+
