@@ -19,7 +19,7 @@ const AdminChallengePage = () => {
         <ChallengeChart cafeId={cafeId} />
         <div className="flex gap-4 mt-8">
           <ChallengeOverview />
-          <ChallengeHistory />
+          <ChallengeHistory cafeId={cafeId} />
         </div>
       </div>
     </div>

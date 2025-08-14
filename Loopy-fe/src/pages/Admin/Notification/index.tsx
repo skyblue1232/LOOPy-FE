@@ -4,9 +4,41 @@ import CommonSideBar from '../../../components/admin/sideBar/CommonSideBar';
 import CommonTopBar from '../../../components/admin/topBar/CommonTopBar';
 import NotificationInput from './_components/NotificationInput';
 import CommonCompleteModal from '../../../components/admin/modal/CommonCompleteModal';
+import { useSendCafeNotification } from '../../../hooks/query/admin/notification/useSendCafeNotification';
+import type { SendNotificationResponse } from '../../../apis/admin/notification/type';
+
+// 버튼 안에 들어갈 작은 스피너
+const ButtonSpinner = () => (
+  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+);
 
 const AdminNotificationPage = () => {
+  const [message, setMessage] = useState('');
   const [completeMessage, setCompleteMessage] = useState<string | null>(null);
+
+  const cafeId = 1;
+
+  // 타입 명시: ReturnType<typeof useSendCafeNotification>
+  const sendNotificationMutation: ReturnType<typeof useSendCafeNotification> =
+    useSendCafeNotification(
+      (data) =>
+        setCompleteMessage(data.success || '알림 메시지가 전송되었습니다.'),
+      (error) => {
+        if (typeof error === 'object' && error !== null && 'error' in error) {
+          alert('알림 전송 실패: ' + (error as SendNotificationResponse).error);
+        } else {
+          alert('알림 전송 실패: 알 수 없는 오류');
+        }
+      },
+    );
+
+  const handleSend = () => {
+    if (!message.trim()) {
+      alert('메시지를 입력해주세요.');
+      return;
+    }
+    sendNotificationMutation.mutate({ cafeId, message });
+  };
 
   return (
     <div>
@@ -19,12 +51,19 @@ const AdminNotificationPage = () => {
         <div className="text-[#7F7F7F] text-[0.875rem] mb-6">
           우리 매장 알림을 설정한 고객님께 메시지를 보내보세요.
         </div>
-        <NotificationInput />
+        <NotificationInput value={message} onChange={setMessage} />
+
+        {/* 버튼 */}
         <CommonAdminButton
-          label="알림 메시지 보내기"
-          onClick={() =>
-            setCompleteMessage('알림 메시지를 성공적으로 보냈어요!')
+          label={
+            sendNotificationMutation.isPending ? (
+              <ButtonSpinner />
+            ) : (
+              '알림 메시지 보내기'
+            )
           }
+          onClick={handleSend}
+          disabled={sendNotificationMutation.isPending}
         />
       </div>
 

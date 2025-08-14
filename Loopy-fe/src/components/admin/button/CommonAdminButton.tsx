@@ -3,13 +3,13 @@ import clsx from 'clsx';
 import CheckCircle from '../../../pages/User/Signin/_components/CheckCircle';
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string;
+  label: string | React.ReactNode;
   disabled?: boolean;
   className?: string;
   onClick?: () => void;
-  showCheckText?: boolean;    
-  agree?: boolean;             
-  onToggleAgree?: () => void;  
+  showCheckText?: boolean;
+  agree?: boolean;
+  onToggleAgree?: () => void;
 }
 
 const CommonAdminButton = ({
@@ -29,7 +29,7 @@ const CommonAdminButton = ({
         bg-white py-6
         flex flex-col items-center
         shadow-[0_0_32px_0_rgba(60,62,74,0.02)]
-        `
+        `,
       )}
     >
       <div className="w-full flex flex-col items-start">
@@ -59,7 +59,7 @@ const CommonAdminButton = ({
             disabled
               ? 'bg-[#DFDFDF] text-[#7F7F7F]'
               : 'bg-[#6970F3] text-white',
-            className
+            className,
           )}
           {...props}
         >

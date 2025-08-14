@@ -8,6 +8,6 @@ export interface AvailableChallenge {
 }
 
 export interface AvailableChallengesResponse {
-  resultType: string;
+  resultType: 'SUCCESS' | 'FAILURE' | string;
   data: AvailableChallenge[];
 }
