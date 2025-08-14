@@ -8,10 +8,10 @@ import CafePhotoModal from "./_components/CafePhotoModal";
 import ReviewButton from "./_components/ReviewButton";
 import TopPhotoSectionSkeleton from "./Skeleton/TopPhotoSectionSkeleton";
 import CafeInfoPanelSkeleton from "./Skeleton/CafeInfoPanelSkeleton";
-
 import { cafeDetailMock } from "../../../mock/cafeDetailMock";
 import { getCafeDetail } from "../../../apis/cafeDetail/api";
 import type { CafeDetailSuccess, CafeDetailResponse } from "../../../apis/cafeDetail/type";
+import { useToggleBookmark } from "../../../hooks/mutation/cafe/useToggleBookmark";
 
 const DetailPage = () => {
   const { cafeId } = useParams<{ cafeId: string }>();
@@ -25,11 +25,17 @@ const DetailPage = () => {
     queryKey: ["cafeDetail", cafeId],
     enabled: !!cafeId,                            
     queryFn: async () => {
-      const id = cafeId!; // 또는: if (!cafeId) throw new Error('no cafeId');
+      const id = cafeId!;
       const raw = (await getCafeDetail(id)) as CafeDetailSuccess | CafeDetailResponse;
-      return 'success' in raw ? raw.success : raw;
+      return "success" in raw ? raw.success : raw;
     },
   });
+
+  const { mutate: toggleBookmark } = useToggleBookmark();
+
+  const handleBookmarkToggle = (id: number, newState: boolean) => {
+    toggleBookmark({ cafeId: id, newState });
+  };
 
   const cafe = data?.cafe;
   const photos = data?.photos || [];
@@ -66,24 +72,25 @@ const DetailPage = () => {
               businessHours={cafe.businessHours}
               breakTime={cafe.breakTime ?? null}
               phone={cafe.phone ?? ""}
-              instagram={cafe.websiteUrl ?? ""} // 기존 prop 이름 유지
+              instagram={cafe.websiteUrl ?? ""}
               description={cafe.description ?? ""}
               isLoading={isLoading}
               storeFilters={cafe.storeFilters ?? {}}
               takeOutFilters={cafe.takeOutFilters ?? {}}
               menuFilters={cafe.menuFilters ?? {}}
               coupons={data?.coupons ?? cafeDetailMock.coupons ?? []}
+              challenge={data?.challenge ?? []}
               cafeId={String(cafe.id)}
               cafeName={cafe.name}
-              menu={data.menu ?? []} 
+              menu={data?.menu ?? []} 
+              isBookmarked={data?.bookmark.isBookmarked ?? false}
+              onBookmarkToggle={handleBookmarkToggle}
             />
           )}
         </div>
 
         <div className="fixed bottom-[1.5rem] left-1/2 -translate-x-1/2 w-full max-w-[393px] flex justify-end px-[1.5rem] z-30">
-          {selectedTab === "review" && hasStamp && (
-            <ReviewButton />
-          )}
+          {selectedTab === "review" && hasStamp && <ReviewButton />}
         </div>
 
         {isModalOpen && (
@@ -92,11 +99,9 @@ const DetailPage = () => {
             onClose={() => setIsModalOpen(false)}
           />
         )}
-
-        
       </div>
     </div>
   );
-}
+};
 
 export default DetailPage;

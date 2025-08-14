@@ -13,15 +13,6 @@ const StampStatsBar = ({ token }: Props) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['stampStats'],
     queryFn: () => fetchStampStats(token),
-
-    refetchInterval: () =>
-      typeof document !== 'undefined' && document.visibilityState === 'visible'
-        ? 5000 // 5초마다
-        : false, // 숨김 상태면 폴링 중단
-    refetchOnWindowFocus: true,   // 창 다시 볼 때 즉시 갱신
-    refetchOnReconnect: true,     // 네트워크 재연결 시 갱신
-    staleTime: 0,
-    gcTime: 5 * 60 * 1000,
     placeholderData: keepPreviousData, 
   });
 

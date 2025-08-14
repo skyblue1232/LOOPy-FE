@@ -31,7 +31,7 @@ export default function CafePhotoModal({ images, onClose }: CafePhotoModalProps)
 
     return (
         <div className="absolute inset-0 z-[100] flex items-center justify-center">
-            <div className="relative w-full max-w-[393px] h-full bg-black/70 flex flex-col items-center justify-center">
+            <div className="relative w-full h-full bg-black/70 flex flex-col items-center justify-center">
                 <button
                 onClick={onClose}
                 className="absolute top-[1.5rem] right-[1.5rem] text-white"

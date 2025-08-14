@@ -14,6 +14,10 @@ import LocationLabelSkeleton from './Skeleton/LocationLabel';
 import { useSelectedLocationStore } from '../../../store/locationStore';
 import { useFilterStore } from '../../../store/filterStore';
 import { calcDistanceMeters, formatDistance } from '../../../utils/geo';
+import { useToggleBookmark } from '../../../hooks/mutation/cafe/useToggleBookmark';
+
+const DEFAULT_X = 126.9368; // 기본 좌표 (예: 서울 중심)
+const DEFAULT_Y = 37.5553;
 
 const SearchPage = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -25,6 +29,11 @@ const SearchPage = () => {
   const navigate = useNavigate();
   const { selected, reset } = useSelectedLocationStore();
   const { selectedByGroup, setSelectedByGroup } = useFilterStore();
+  const { mutate: toggleBookmark } = useToggleBookmark();
+
+  const handleBookmarkToggle = (id: number, newState: boolean) => {
+    toggleBookmark({ cafeId: id, newState });
+  };
 
   const [didUserType, setDidUserType] = useState(false);
 
@@ -33,24 +42,24 @@ const SearchPage = () => {
     return () => clearTimeout(t);
   }, []);
 
-  // 지역 지정 여부: selected가 있으면 지역 지정, 없으면 전국 검색
+  // 기본 좌표: 위치 미설정 시 DEFAULT_X / DEFAULT_Y 사용
   const regionAssigned = !!selected;
-  const baseX = selected?.lng ?? 126.9368;
-  const baseY = selected?.lat ?? 37.5553;
+  const baseX = selected?.lng ?? DEFAULT_X;
+  const baseY = selected?.lat ?? DEFAULT_Y;
   const baseZoom = regionAssigned ? 3 : 6;
 
-  // 리스트용 바디
+  // 리스트 바디: 필터 직렬화 + 지역정보
   const listBody = useMemo(() => {
-    const base = serializeForListBody(selectedByGroup);
+    const base = serializeForListBody(selectedByGroup); // map과 동일하게 매핑
     return selected?.addressInfo ? { ...base, addressInfo: selected.addressInfo } : base;
   }, [selectedByGroup, selected?.addressInfo, selected?.updatedAt]);
 
-  // 리스트용 쿼리
+  // 리스트 쿼리: 검색어 없어도 호출
   const listQuery = useMemo(
     () => ({
       x: baseX,
       y: baseY,
-      searchQuery: searchValue || undefined,
+      searchQuery: searchValue?.trim() ? searchValue : undefined,
       cursor: undefined as number | undefined,
     }),
     [baseX, baseY, searchValue, selected?.updatedAt]
@@ -58,7 +67,7 @@ const SearchPage = () => {
 
   // 리스트 호출
   const { data: listRes, isLoading: isQueryLoading } = useCafeListQuery(listQuery, listBody, {
-    enabled: !!baseX && !!baseY,
+    enabled: !!baseX && !!baseY, // 좌표만 있으면 호출
   });
 
   const loading = skeletonLoading || isQueryLoading;
@@ -77,11 +86,11 @@ const SearchPage = () => {
     };
   }, [baseX, baseY, baseZoom, selectedByGroup]);
 
-  // 동일 집합 보장용 id 세트 + isStamped 스냅샷 (옵션)
+  // id & stamp 스냅샷
   const listIds = useMemo(() => cafes.map((c) => c.id), [cafes]);
   const stampById = useMemo(() => Object.fromEntries(cafes.map((c) => [c.id, !!c.isStamped])), [cafes]);
 
-  // detailById 스냅샷(주소/이미지/키워드) → Map으로 전달
+  // detailById 스냅샷
   const detailById = useMemo(
     () =>
       Object.fromEntries(
@@ -109,7 +118,8 @@ const SearchPage = () => {
   };
 
   const onChangeKeyword = (v: string) => {
-    if (!didUserType) {
+    // 검색어가 비어있으면 위치 초기화하지 않음
+    if (!didUserType && v.trim()) {
       reset();
       setDidUserType(true);
     }
@@ -154,7 +164,6 @@ const SearchPage = () => {
               {loading
                 ? Array.from({ length: 5 }).map((_, i) => <CafeListCardSkeleton key={i} />)
                 : cafes.map((cafe) => {
-                    // distanceText: 서버 distance 우선, 없으면 현재 기준점(baseX/baseY)과 계산
                     const meters =
                       typeof cafe.distance === 'number'
                         ? cafe.distance
@@ -171,13 +180,15 @@ const SearchPage = () => {
                           .map((p) => p.photoUrl || p.url || '')
                           .filter(Boolean)}
                         keywords={cafe.keywords ?? []}
+                        isBookmarked={cafe.isBookmarked ?? false}
+                        onBookmarkToggle={handleBookmarkToggle}
                         onClick={() =>
                           navigate('/map', {
                             state: {
-                              listParams: mapQuerySnapshot, 
-                              detailById,                   
-                              focusCafeId: cafe.id,  
-                              userCoord: { x: baseX, y: baseY }, 
+                              listParams: mapQuerySnapshot,
+                              detailById,
+                              focusCafeId: cafe.id,
+                              userCoord: { x: baseX, y: baseY },
                             },
                           })
                         }
@@ -188,17 +199,11 @@ const SearchPage = () => {
           </div>
 
           <div
-            className="
-              fixed bottom-[6.25rem]
-              right-[1.5rem]
-              sm:left-auto sm:w-auto
-              sm:right-[calc((100vw-24.5625rem)/2+1.5rem)]
-              z-50 flex justify-end pointer-events-none
-            "
+            className="fixed bottom-[6.25rem] right-[1.5rem] sm:left-auto sm:w-auto sm:right-[calc((100vw-24.5625rem)/2+1.5rem)] z-50 flex justify-end pointer-events-none"
           >
             <div className="pointer-events-auto">
               <MapViewToggleButton
-                isMapView={false} // 검색 페이지이므로 false 고정
+                isMapView={false}
                 onClick={() =>
                   navigate('/map', {
                     state: { listParams: mapQuerySnapshot, listIds, stampById, detailById },
@@ -220,26 +225,13 @@ const SearchPage = () => {
       {isPopupVisible && (
         <div className="fixed inset-0 z-50 flex justify-center">
           <div
-            className="
-              absolute top-0 bottom-0
-              left-0 right-0
-              sm:left-[calc((100vw-24.5625rem)/2)]
-              sm:right-[calc((100vw-24.5625rem)/2)]
-              bg-black/50
-              z-[205]
-            "
+            className="absolute top-0 bottom-0 left-0 right-0 sm:left-[calc((100vw-24.5625rem)/2)] sm:right-[calc((100vw-24.5625rem)/2)] bg-black/50 z-[205]"
             onClick={handleCloseFilterPopup}
           />
           <div
-            className={`
-              absolute bottom-0
-              left-[1.5rem] right-[1.5rem]
-              sm:left-[calc((100vw-24.5625rem)/2)]
-              sm:right-[calc((100vw-24.5625rem)/2)]
-              transition-transform duration-150 ease-in-out
-              ${isFilterPopupOpen ? 'translate-y-0' : 'translate-y-full'}
-              z-[210]
-            `}
+            className={`absolute bottom-0 left-[1.5rem] right-[1.5rem] sm:left-[calc((100vw-24.5625rem)/2)] sm:right-[calc((100vw-24.5625rem)/2)] transition-transform duration-150 ease-in-out ${
+              isFilterPopupOpen ? 'translate-y-0' : 'translate-y-full'
+            } z-[210]`}
             onClick={(e) => e.stopPropagation()}
           >
             <FilterPopup

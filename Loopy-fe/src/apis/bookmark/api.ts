@@ -2,6 +2,7 @@ import axiosInstance from '../axios';
 import type { Bookmark, BookmarkListResponse } from './type';
 import { bookmarkListMock } from './mock';
 
+// 북마크 목록 조회
 export const fetchBookmarkedCafes = async (): Promise<Bookmark[]> => {
   try {
     const res = await axiosInstance.get<BookmarkListResponse>(
@@ -18,4 +19,10 @@ export const fetchBookmarkedCafes = async (): Promise<Bookmark[]> => {
     console.error('북마크한 카페 목록 조회 실패:', e);
     return bookmarkListMock;
   }
+};
+
+// 북마크 토글 (등록/해제 모두 처리)
+export const toggleBookmark = async (cafeId: string) => {
+  const { data } = await axiosInstance.post(`/api/v1/cafes/${cafeId}/bookmark`);
+  return data;
 };
