@@ -25,7 +25,7 @@ const QrPopup = ({ show, onClose, qrImage, onScan }: QrPopupProps) => {
         )}
 
         <CommonButton
-          text="QR 스캔 테스트 (쿠폰)"
+          text="QR 스캔"
           autoStyle
           className="bg-[#6970F3] text-white font-semibold h-[3.125rem] flex items-center justify-center rounded"
           onClick={() =>
