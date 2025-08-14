@@ -12,11 +12,7 @@ const MyStampList = () => {
   return (
     <div className="flex flex-wrap gap-4">
       {stampBooks.map((stamp) => (
-        <MyStamp
-          key={stamp.id}
-          stampBook={stamp}
-          imageUrl={undefined} // 이미지가 있다면 stamp.imageUrl 등으로 바꿔주세요
-        />
+        <MyStamp key={stamp.id} stampBook={stamp} imageUrl={stamp.cafe.image} />
       ))}
     </div>
   );

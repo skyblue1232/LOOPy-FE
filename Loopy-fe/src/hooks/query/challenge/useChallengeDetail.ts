@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchChallengeDetail } from '../../../apis/challenge/challengeDetail/api';
+import type { ChallengeDetailResponse } from '../../../apis/challenge/challengeDetail/type';
 
-export const useChallengeDetail = (id: number) => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['challengeDetail', id],
-    queryFn: () => fetchChallengeDetail(id),
-    enabled: !!id, // id가 있을 때만 실행
+export const useChallengeDetail = (challengeId: number) => {
+  const { data, isLoading, isError } = useQuery<ChallengeDetailResponse>({
+    queryKey: ['challengeDetail', challengeId],
+    queryFn: () => fetchChallengeDetail(challengeId),
+    enabled: !!challengeId,
   });
 
   return {

@@ -6,12 +6,12 @@ interface ChallengeChartProps {
 
 const ChallengeChart = ({ cafeId }: ChallengeChartProps) => {
   const { data, isLoading, isError } = useChallengeStatistics(cafeId);
+  const statsData = data?.success;
 
   if (isLoading) return <div>로딩 중...</div>;
   if (isError) return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
 
-  if (!data?.data) {
-    console.log(data?.data);
+  if (!statsData) {
     console.warn('ChallengeChart: 데이터가 없습니다.', data);
     return null;
   }
@@ -21,7 +21,7 @@ const ChallengeChart = ({ cafeId }: ChallengeChartProps) => {
     totalParticipantCount,
     completedUserCount,
     challengeRelatedSalesCount,
-  } = data.data;
+  } = statsData;
 
   const stats = [
     { label: '참여한 챌린지 수', value: `${participatedChallengeCount}개` },
