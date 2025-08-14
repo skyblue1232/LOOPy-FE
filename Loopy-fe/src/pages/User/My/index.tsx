@@ -1,7 +1,7 @@
 import { useEffect, Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMyPageFunnel } from "../../../contexts/MyFunnelProvider";
-import LoadingSpinner from "../../../components/loading/LoadingSpinner";
+import MainMyPageSkeleton from "./Skeleton/MainMypageSkeleton";
 
 const MainMyPage = lazy(() => import("./_components/MainMyPage"));
 const SettingPage = lazy(() => import("./Setting"));
@@ -26,7 +26,7 @@ const MyPage = () => {
   }, [funnel.step, navigate]);
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <Suspense fallback={<MainMyPageSkeleton />}>
       <funnel.Render
         my={({ history }) => (
           <MainMyPage onNavigate={history.push} />
