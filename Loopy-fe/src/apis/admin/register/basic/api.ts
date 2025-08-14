@@ -1,8 +1,8 @@
-import axiosInstance from '../../../../axios';
+import axiosInstance from '../../../axios';
 import type {
   PostOwnerCafeBasicInfoRequest,
   PostOwnerCafeBasicInfoResponse,
-} from '../type';
+} from '../../setting/basic/type';
 
 export const postOwnerCafeBasicInfo = async (
   payload: PostOwnerCafeBasicInfoRequest

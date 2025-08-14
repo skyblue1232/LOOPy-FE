@@ -23,8 +23,6 @@ export default function CouponReceivedModal({
         navigate("/mypage?my.step=couponBox");
     };
 
-    const formattedDate = expiredAt ? expiredAt.replace(/-/g, ".") : "";
-
     return (
         <BaseModalLayout
             onConfirm={handleConfirm}
@@ -39,7 +37,7 @@ export default function CouponReceivedModal({
                 </p>
             </div>
             <p className="mt-[1rem] text-[#7F7F7F] text-[0.875rem] font-normal leading-[1.5rem]">
-                해당 쿠폰은 {formattedDate}까지 사용 가능해요
+                해당 쿠폰은 {expiredAt}까지 사용 가능해요
             </p>
         </BaseModalLayout>
     );

@@ -19,14 +19,15 @@ const VerifyPage = () => {
     isRequested,
     verifyError,
     isPhoneValid,
-    requestCode,
+    sendCode,
+    cooldown,
     setVerifyError,
     isVerified,
     validateCode,
   } = usePhoneVerification(phoneNumber, verifyCode);
 
   const { mutate: notifyPhoneVerified, isPending } = useNotifyPhoneVerified(
-    () => navigate("/onboarding", { replace: true }),
+    () => navigate("/onboard", { replace: true }),
     (err) => {
       console.error("전화번호 인증 완료 통보 실패", err);
     }
@@ -56,7 +57,7 @@ const VerifyPage = () => {
                 ? "bg-[#6970F3] text-white"
                 : "bg-[#DFDFDF] text-[#7F7F7F] pointer-events-none"
             }`}
-            onClick={requestCode}
+            onClick={sendCode}
           >
             인증번호 받기
           </button>
@@ -71,7 +72,8 @@ const VerifyPage = () => {
                 setVerifyCode(code);
               }}
               hasError={verifyError}
-              onResend={requestCode}
+              onResend={sendCode}
+              cooldown={cooldown} 
             />
           </div>
         )}

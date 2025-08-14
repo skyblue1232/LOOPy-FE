@@ -8,4 +8,5 @@ export interface ChallengeStatistics {
 export interface ChallengeStatisticsResponse {
   resultType: string;
   data: ChallengeStatistics;
+  success: ChallengeStatistics;
 }

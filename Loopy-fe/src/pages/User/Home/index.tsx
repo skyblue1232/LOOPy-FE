@@ -20,6 +20,8 @@ const HomePage = () => {
     error,
   } = useStampBooks({ sortBy: apiSortBy });
 
+  console.log('stampBooks:', stampBooks);
+
   const navigate = useNavigate();
 
   if (isLoading) {

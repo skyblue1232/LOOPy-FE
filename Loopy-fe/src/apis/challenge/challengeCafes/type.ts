@@ -4,6 +4,7 @@ export interface ChallengeCafe {
   address: string;
   region: string;
   distance: number;
+  imageUrl?: string;
 }
 
 export interface ChallengeCafeResponse {

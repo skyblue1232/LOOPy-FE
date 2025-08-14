@@ -4,7 +4,6 @@ import type {
   GetConvertedStampbooksResponse,
   GetConvertedStampbooksSuccess,
 } from "./type";
-import { getConvertedStampbooksMock } from "./mock";
 
 export async function getConvertedStampbooks(): Promise<ConvertedStampBookItem[]> {
   const url = "/api/v1/users/me/stampbooks/converted"; 
@@ -22,6 +21,6 @@ export async function getConvertedStampbooks(): Promise<ConvertedStampBookItem[]
     throw new Error((res as any)?.data?.reason ?? "UNEXPECTED_RESPONSE");
   } catch (err) {
     console.warn("[getConvertedStampbooks] falling back to mock due to error:", err);
-    return getConvertedStampbooksMock();
+    return [];
   }
 }
