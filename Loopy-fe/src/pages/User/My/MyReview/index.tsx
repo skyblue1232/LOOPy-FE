@@ -7,7 +7,6 @@ import ReviewListSkeleton from "./Skeleton/MyReviewSkeleton";
 import { useMyReviews } from "../../../../hooks/query/my/userMyReviews";
 import { useDeleteReview } from "../../../../hooks/mutation/my/review/useDeleteReview";
 import { useInView } from "react-intersection-observer";
-import { dummyReviews } from "../../../../mock/dummyReviews";
 
 interface MyReviewPageProps {
   onBack: () => void;
@@ -21,7 +20,6 @@ const MyReviewPage = ({ onBack }: MyReviewPageProps) => {
   const {
     data,
     isLoading,
-    isSuccess,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -42,11 +40,7 @@ const MyReviewPage = ({ onBack }: MyReviewPageProps) => {
     images: r.images
   });
 
-  const reviews =
-    isSuccess && firstPage.length === 0
-      ? dummyReviews.map(mapReview)
-      : [...firstPage, ...otherPages].map(mapReview);
-
+  const reviews = [...firstPage, ...otherPages].map(mapReview);
 
   const handleClick = (reviewId: number) => {
     setEditingReviewId(reviewId);
@@ -54,7 +48,8 @@ const MyReviewPage = ({ onBack }: MyReviewPageProps) => {
 
   const handleDelete = (id: number) => {
     deleteReviewMutate(id, {
-      onSuccess: () => {
+      onSuccess: (res) => {
+        console.log(res.message); 
         setShowDeleteSuccess(true);
       },
       onError: () => {
@@ -95,6 +90,13 @@ const MyReviewPage = ({ onBack }: MyReviewPageProps) => {
 
       {isLoading ? (
         <ReviewListSkeleton />
+      ) : reviews.length === 0 ? (
+        <div className="flex flex-col items-center justify-center text-center h-[calc(100vh-8rem)] px-4">
+          <p className="text-[1.125rem] font-bold text-[#6970F3]">아직 작성한 리뷰가 없어요!</p>
+          <p className="text-[0.875rem] font-normal text-[#7F7F7F] mt-3">
+            방문한 카페에서 리뷰를 작성해 보세요.
+          </p>
+        </div>
       ) : (
         <>
           <div className="mx-[1.5rem]">
