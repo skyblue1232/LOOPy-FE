@@ -132,8 +132,8 @@ export function serializeForListBody(
   };
 
   return {
-    storeFilter:  toObj('store',   inputByTitle['매장 이용']),
-    takeOutFilter: toObj('takeOut', inputByTitle['테이크아웃']),
-    menuFilter:   toObj('menu',    inputByTitle['메뉴']),
+    storeFilters:  toObj('store',   inputByTitle['매장 이용']),
+    takeOutFilters: toObj('takeOut', inputByTitle['테이크아웃']),
+    menuFilters:   toObj('menu',    inputByTitle['메뉴']),
   };
 }

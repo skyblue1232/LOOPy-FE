@@ -13,9 +13,9 @@ export interface CafeListQueryParams {
 
 // ====== Body ======
 export interface CafeListBody {
-  storeFilter: Record<string, boolean>;
-  takeOutFilter: Record<string, boolean>;
-  menuFilter: Record<string, boolean>;
+  storeFilters: Record<string, boolean>;
+  takeOutFilters: Record<string, boolean>;
+  menuFilters: Record<string, boolean>;
 
   addressInfo?: {
     region_1depth_name: string;
