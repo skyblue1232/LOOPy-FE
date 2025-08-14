@@ -10,7 +10,7 @@ interface Options {
   queryOptions?: UseQueryOptions<ConvertedStampBookItem[], unknown, ConvertedStampBookItem[], typeof CONVERTED_STAMPBOOKS_QUERY_KEY>;
 }
 
-export function useConvertedStamp({ useMock, queryOptions }: Options = {}) {
+export function useConvertedStamp({ useMock = false, queryOptions }: Options = {}) {
   const fetcher = useMock ? getConvertedStampbooksMock : getConvertedStampbooks;
 
   return useQuery({
@@ -22,3 +22,4 @@ export function useConvertedStamp({ useMock, queryOptions }: Options = {}) {
     ...queryOptions,
   });
 }
+

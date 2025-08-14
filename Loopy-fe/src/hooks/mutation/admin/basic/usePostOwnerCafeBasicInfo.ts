@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { postOwnerCafeBasicInfo } from "../../../../apis/admin/setting/basic/post/api";
+import { postOwnerCafeBasicInfo } from "../../../../apis/admin/register/basic/api";
 import type {
   PostOwnerCafeBasicInfoRequest,
   PostOwnerCafeBasicInfoResponse,

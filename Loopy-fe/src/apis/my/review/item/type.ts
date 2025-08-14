@@ -3,6 +3,17 @@ export interface UpdateReviewRequest {
   content: string;
 }
 
-export interface ReviewResponse {
+export interface UpdateReviewResponse {
+  message: string;
+  review: {
+    id: number;
+    title: string;
+    content: string;
+    userId: number;
+    images: string[];
+  };
+}
+
+export interface DeleteReviewResponse {
   message: string;
 }
