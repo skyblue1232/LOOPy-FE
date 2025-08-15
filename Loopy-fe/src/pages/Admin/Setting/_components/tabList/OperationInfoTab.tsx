@@ -11,7 +11,7 @@ const OperationInfoTab = () => {
     hashtags, setHashtags,
     keywordList, setKeywordList,
     timeSectionValues, setTimeSectionValues,
-    isLoading, isError,
+    isLoading, isError, setIsFormValid,
     isFormValid, submitLabel,
   } = useOwnerOperationForm();
 
@@ -38,7 +38,7 @@ const OperationInfoTab = () => {
       </div>
       <div className="flex flex-col gap-12">
         <DaySelector selectedDays={selectedDays} setSelectedDays={setSelectedDays} />
-        <TimeSection values={timeSectionValues} setValues={setTimeSectionValues} />
+        <TimeSection values={timeSectionValues} setValues={setTimeSectionValues} selectedDays={selectedDays} setValid={setIsFormValid} />
         <CafeHashtagInput hashtags={hashtags} setHashtags={setHashtags} />
         <CafeKeywordSection keywordList={keywordList} setKeywordList={setKeywordList} />
         <CommonAdminButton label={submitLabel} disabled={!isFormValid} />

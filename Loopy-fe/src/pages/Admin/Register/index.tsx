@@ -67,7 +67,7 @@ export default function AdminRegisterPage() {
       case 1:
         return <Step2BasicInfo {...props} />;
       case 2:
-        return <Step3BusinessInfo />;
+        return <Step3BusinessInfo {...props} />;
       case 3:
         return <Step4Menu setValid={setIsStepValid} />;
       case 4:
