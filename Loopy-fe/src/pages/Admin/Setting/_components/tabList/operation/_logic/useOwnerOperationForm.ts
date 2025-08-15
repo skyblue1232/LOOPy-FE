@@ -4,7 +4,6 @@ import type { TimeSectionValues } from "../TimeSection";
 import type { Day } from "./constants";
 import { defaultDayTime, makeDefaultByDay } from "./constants";
 import { mapOwnerOperationToForm } from "./mapper";
-import { isOperationFormValid } from "./validators";
 
 export function useOwnerOperationForm() {
   const [selectedDays, setSelectedDays] = useState<Day[]>([]);
@@ -18,6 +17,8 @@ export function useOwnerOperationForm() {
     byDay: makeDefaultByDay(),
   });
 
+  const [isFormValid, setIsFormValid] = useState(false);
+
   const { data, isLoading, isError } = useOwnerMyCafeOperation();
 
   useEffect(() => {
@@ -29,12 +30,6 @@ export function useOwnerOperationForm() {
     setTimeSectionValues(mapped.timeSectionValues);
   }, [data]);
 
-  const isFormValid = isOperationFormValid(
-    selectedDays.length,
-    hashtags.length,
-    keywordList.length,
-    timeSectionValues
-  );
   const submitLabel = isFormValid ? "수정 완료하기" : "수정하기";
 
   return {
@@ -43,6 +38,8 @@ export function useOwnerOperationForm() {
     keywordList, setKeywordList,
     timeSectionValues, setTimeSectionValues,
     isLoading, isError,
-    isFormValid, submitLabel,
+    isFormValid, setIsFormValid,
+    submitLabel,
   };
 }
+
