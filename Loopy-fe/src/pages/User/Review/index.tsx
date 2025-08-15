@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import CommonHeader from "../../../components/header/CommonHeader";
 import CommonButton from "../../../components/button/CommonButton";
 import { usePostReview } from "../../../hooks/mutation/detail/usePostReview";
+import DeleteIcon from "/src/assets/images/DeletePic.svg?react";
+import PlusIcon from "/src/assets/images/PlusPic.svg?react";
+
 const MAX_IMAGES = 5;
 
 export default function ReviewWritePage() {
-    const [reviewTitle, setReviewTitle] = useState("");
     const [reviewText, setReviewText] = useState("");
     const [images, setImages] = useState<File[]>([]);
     const navigate = useNavigate();
     const { cafeId } = useParams();
+    const location = useLocation() as { state?: { cafeName?: string } };
+    const cafeName = location.state?.cafeName ?? "";
     const postReviewMutation = usePostReview();
     
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,27 +29,26 @@ export default function ReviewWritePage() {
         setImages(newImages);
     };
 
-    const isValid = reviewTitle.trim().length <= 20 && reviewText.trim().length <= 500;
+    const isValid = reviewText.trim().length > 0 && reviewText.trim().length <= 500;
 
     const handleSubmit = () => {
         if (!cafeId) return;
 
         const formData = new FormData();
-        formData.append("title", reviewTitle);
-        formData.append("content", reviewText);
+        formData.append("content", reviewText); 
         images.forEach((file) => formData.append("images", file));
 
         postReviewMutation.mutate(
-        { cafeId, formData },
-        {
-            onSuccess: () => {
-            alert("리뷰가 등록되었습니다.");
-            navigate(`/detail/${cafeId}`);
-            },
-            onError: () => {
-            alert("리뷰 등록 중 오류가 발생했습니다.");
-            },
-        }
+            { cafeId, formData },
+            {
+                onSuccess: () => {
+                    alert("리뷰가 등록되었습니다.");
+                    navigate(`/detail/${cafeId}`);
+                },
+                onError: () => {
+                    alert("리뷰 등록 중 오류가 발생했습니다.");
+                },
+            }
         );
     };
 
@@ -64,12 +67,10 @@ export default function ReviewWritePage() {
             {/* 리뷰 제목 박스 */}
             <div className="mt-[0.5rem]">
                 <input
-                type="text"
-                placeholder="제목을 입력해주세요 (20자 이하)"
-                className="w-full h-[3rem] rounded-[0.5rem] bg-[#F3F3F3] px-[1rem] text-[0.875rem] text-[#3B3B3B] font-normal placeholder:text-[#7F7F7F]"
-                maxLength={20}
-                value={reviewTitle}
-                onChange={(e) => setReviewTitle(e.target.value)}
+                    type="text"
+                    value={cafeName}
+                    readOnly
+                    className="w-full h-[3rem] rounded-[0.5rem] bg-[#F0F1FE] px-[1rem] text-[0.875rem] text-[#3B3B3B] font-normal cursor-not-allowed"
                 />
             </div>
 
@@ -105,7 +106,7 @@ export default function ReviewWritePage() {
                         onClick={() => handleImageRemove(i)}
                         className="absolute top-[0.25rem] right-[0.25rem] w-[1rem] h-[1rem]"
                     >
-                        <img src="/src/assets/images/DeletePic.svg" alt="삭제" />
+                        <DeleteIcon />
                     </button>
                     </div>
                 ))}
@@ -118,7 +119,7 @@ export default function ReviewWritePage() {
                         onChange={handleImageUpload}
                         multiple
                     />
-                    <img src="/src/assets/images/PlusPic.svg" alt="사진 추가" />
+                    <PlusIcon />
                     </label>
                 )}
                 </div>

@@ -45,7 +45,11 @@ const CouponCard = ({
                 </div>
             </div>
 
-            <button onClick={onDownload} className="ml-[1rem] shrink-0">
+            <button
+                onClick={!isDownloaded ? onDownload : undefined}
+                disabled={isDownloaded}
+                className={`ml-[1rem] shrink-0 ${isDownloaded ? 'cursor-not-allowed' : ''}`}
+            >
                 {isDownloaded ? (
                     <SuccessDownloadIcon className="w-[2rem] h-[2rem]" />
                 ) : (

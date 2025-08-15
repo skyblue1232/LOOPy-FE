@@ -17,7 +17,7 @@ export default function BaseModalLayout({
 }: BaseModalLayoutProps) {
     return (
         <div className="fixed inset-0 z-50 flex justify-center items-end">
-            <div className="relative w-full max-w-[24.5625rem] h-full">
+            <div className="relative w-full h-full">
                 <div
                     className="absolute inset-0 bg-black/50 z-0"
                     onClick={onClose}

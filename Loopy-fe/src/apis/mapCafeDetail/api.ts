@@ -4,6 +4,7 @@ export type MapCafeDetail = {
     address: string;
     images: string[];
     keywords: string[];
+    isBookmarked?: boolean;
 };
 
 function toMapCafeDetail(raw: any): MapCafeDetail {

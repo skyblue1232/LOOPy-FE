@@ -5,15 +5,17 @@ import MessageModal from "./MessageModal";
 
 interface AlarmSubscribeButtonProps {
   className?: string;
+  onClick?: () => void;
 }
 
-export default function AlarmSubscribeButton({ className = "" }: AlarmSubscribeButtonProps) {
+export default function AlarmSubscribeButton({ className = "", onClick }: AlarmSubscribeButtonProps) {
     const [subscribed, setSubscribed] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     const Icon = subscribed ? BellRingIcon : BellIcon;
 
     const handleClick = () => {
+        if (onClick) onClick(); 
         setShowModal(true);
     };
 

@@ -18,3 +18,14 @@ export const postReview = async ({
   );
   return response.data;
 };
+
+export interface ReviewPostResponse {
+  message: string;
+  review: {
+    id: number;
+    title: string;
+    content: string;
+    userId: number;
+    images: string[];
+  };
+}
