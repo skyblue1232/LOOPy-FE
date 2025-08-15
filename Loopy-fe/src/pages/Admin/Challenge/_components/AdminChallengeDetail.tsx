@@ -29,6 +29,7 @@ const AdminChallengeDetail = () => {
     startDate,
     endDate,
     rewardDetail,
+    rewardPoint,
     participantCount,
     completedCount,
   } = data.data;
@@ -62,7 +63,7 @@ const AdminChallengeDetail = () => {
           </p>
           <ChallengeInfoCard
             period={`${startDate} ~ ${endDate}`}
-            points={rewardDetail}
+            points={rewardPoint}
             participants={participantCount}
             complete={completedCount}
           />
