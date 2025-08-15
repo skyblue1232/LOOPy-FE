@@ -12,7 +12,7 @@ const OperationInfoTab = () => {
     keywordList, setKeywordList,
     timeSectionValues, setTimeSectionValues,
     isLoading, isError, setIsFormValid,
-    isFormValid, submitLabel,
+    isFormValid, submitLabel, submit,
   } = useOwnerOperationForm();
 
   if (isLoading) {
@@ -41,7 +41,7 @@ const OperationInfoTab = () => {
         <TimeSection values={timeSectionValues} setValues={setTimeSectionValues} selectedDays={selectedDays} setValid={setIsFormValid} />
         <CafeHashtagInput hashtags={hashtags} setHashtags={setHashtags} />
         <CafeKeywordSection keywordList={keywordList} setKeywordList={setKeywordList} />
-        <CommonAdminButton label={submitLabel} disabled={!isFormValid} />
+        <CommonAdminButton label={submitLabel} disabled={!isFormValid} onClick={submit}/>
       </div>
     </div>
   );
