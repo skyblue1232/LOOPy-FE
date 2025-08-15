@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import AgreementItemPlain from "../_components/AgreementItemPlain";
 import CommonButton from "../../../../components/button/CommonButton";
+import { useCreateOwnerCafe } from "../../../../hooks/mutation/admin/document/useAdminCafe";
 
 interface Step1DocumentGuideProps {
   setValid: (valid: boolean) => void;
@@ -9,16 +10,22 @@ interface Step1DocumentGuideProps {
 
 export default function Step1DocumentGuide({ setValid, onNext }: Step1DocumentGuideProps) {
   const [agreed, setAgreed] = useState(false);
-  const [isPending, setIsPending] = useState(false);
+
+  const { mutate: createCafe } = useCreateOwnerCafe();
 
   useEffect(() => {
     setValid(agreed);
   }, [agreed, setValid]);
 
   const handleSubmit = () => {
-    setIsPending(true);
-    onNext();
-    setIsPending(false);
+    createCafe(undefined, {
+      onSuccess: () => {
+        onNext();
+      },
+      onError: (err) => {
+        console.error("카페 생성 실패", err);
+      },
+    });
   };
 
   return (
@@ -46,7 +53,7 @@ export default function Step1DocumentGuide({ setValid, onNext }: Step1DocumentGu
         <CommonButton
           text="다음으로 넘어가기"
           onClick={handleSubmit}
-          disabled={!agreed || isPending}
+          disabled={!agreed}
           className={`w-full max-w-[34rem] ${
             agreed
               ? "bg-[#6970F3] text-white"
