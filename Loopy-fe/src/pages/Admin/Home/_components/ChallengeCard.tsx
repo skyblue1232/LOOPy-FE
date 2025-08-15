@@ -36,7 +36,7 @@ const ChallengeCard: FC<ChallengeCardProps> = ({
       <div className="flex flex-col">
         <div className="text-black text-[1rem] font-semibold leading-none mb-2">
           {title.length > 10 ? `${title.slice(0, 15)}…` : title}
-        </div>{' '}
+        </div>
         <div className="text-[#7F7F7F] text-[0.875rem] font-normal leading-none mb-4">
           {`${startDate} ~ ${endDate}`}
         </div>
