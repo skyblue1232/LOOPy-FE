@@ -1,11 +1,12 @@
 import { useState, type FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CommonTwoButtonModal from '../../../../components/admin/modal/CommonTwoButtonModal';
 import CommonCompleteModal from '../../../../components/admin/modal/CommonCompleteModal';
 import { useJoinChallenge } from '../../../../hooks/query/admin/challenge/useJoinChallenge';
 import { useAdminCafe } from '../../../../contexts/AdminContext';
 
 type ChallengeCardProps = {
-  id: number; // challengeId
+  id: number;
   title: string;
   period: string;
   thumbnailUrl: string;
@@ -21,6 +22,7 @@ const ChallengeCard: FC<ChallengeCardProps> = ({
   isJoined,
   showButton = true,
 }) => {
+  const navigate = useNavigate();
   const { activeCafeId } = useAdminCafe();
   const cafeId = activeCafeId ?? 1;
 
@@ -52,9 +54,16 @@ const ChallengeCard: FC<ChallengeCardProps> = ({
     }
   };
 
+  const handleCardClick = () => {
+    navigate(`/admin/challenge/${id}`);
+  };
+
   return (
     <>
-      <div className="relative flex gap-6 items-center bg-white rounded-lg p-4">
+      <div
+        className="relative flex gap-6 items-center bg-white rounded-lg p-4 cursor-pointer"
+        onClick={handleCardClick}
+      >
         <div className="w-18 h-18">
           <img src={thumbnailUrl} alt={title} className="w-full h-full" />
         </div>
@@ -73,7 +82,10 @@ const ChallengeCard: FC<ChallengeCardProps> = ({
         {showButton && (
           <button
             className={`absolute right-0 h-[2.125rem] w-[4.5rem] px-4 py-2.5 rounded-md text-sm font-semibold leading-none ${buttonStyle}`}
-            onClick={handleButtonClick}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleButtonClick();
+            }}
           >
             {buttonText}
           </button>

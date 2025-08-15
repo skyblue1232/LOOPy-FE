@@ -20,6 +20,13 @@ const MyStampPage = () => {
   const { data: stampData, isLoading } = useStampBookDetail(id!);
   const { mutate: extendMutation } = useExtendStampBook();
 
+  console.log(
+    'MyStampPage에서 받은 stampBookId:',
+    stampBookId,
+    '숫자로 변환한 id:',
+    id,
+  );
+
   if (isLoading) return <MyStampSkeleton />;
   if (!stampData) return <div>해당 카페 스탬프 정보를 찾을 수 없습니다.</div>;
 

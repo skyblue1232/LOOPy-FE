@@ -5,7 +5,13 @@ export const useJoinChallenge = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (challengeId: number) => joinChallenge(challengeId),
+    mutationFn: ({
+      challengeId,
+      cafeId,
+    }: {
+      challengeId: number;
+      cafeId: number;
+    }) => joinChallenge(challengeId, cafeId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['challengeList'] });
       queryClient.invalidateQueries({ queryKey: ['challengeDetail'] });

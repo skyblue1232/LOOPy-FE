@@ -1,5 +1,6 @@
 import axiosInstance from '../../../axios';
 import type { ChallengeDetailResponse } from './type';
+
 export const getChallengeDetail = async (
   cafeId: number,
   challengeId: number,

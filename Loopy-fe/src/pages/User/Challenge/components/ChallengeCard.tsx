@@ -41,7 +41,9 @@ const ChallengeCard = ({ data, hideParticipatingTag }: ChallengeCardProps) => {
         <div className="text-xs font-normal text-[#6970F3] leading-none mb-2">
           {challengeMonth ? `${challengeMonth}월의 이벤트` : '루피만의 챌린지!'}
         </div>
-        <div className="text-base font-bold leading-none mb-2">{title}</div>
+        <div className="text-black text-[1rem] font-semibold leading-none mb-2">
+          {title.length > 15 ? `${title.slice(0, 15)}…` : title}
+        </div>{' '}
         <div className="text-sm font-normal text-[#7F7F7F] leading-none">
           {formatDate(startDate)} ~ {formatDate(endDate)}
         </div>
