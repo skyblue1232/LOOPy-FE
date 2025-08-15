@@ -199,9 +199,10 @@ const publicRoutes = createBrowserRouter([
         element: <AdminChallengePage />,
       },
       {
-        path: 'challenge/:type',
+        path: 'challenge/:challengeId',
         element: <AdminChallengeDetail />,
       },
+
       {
         path: 'challengelist',
         element: <AdminChallengeList />,

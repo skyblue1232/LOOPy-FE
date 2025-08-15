@@ -96,7 +96,6 @@ const ChallengeDetailPage = () => {
             </div>
           </div>
 
-          {/* 회색 원들 및 인증 방법 */}
           {challenge.isParticipated && (
             <div>
               <div className="flex justify-center gap-[1rem] mt-8">
@@ -122,7 +121,7 @@ const ChallengeDetailPage = () => {
         </div>
       </div>
 
-      {/* 하단 고정 버튼 (참여 안 한 경우만) */}
+      {/* 하단 버튼 (참여 안 한 경우만) */}
       {!challenge.isParticipated && (
         <div className="fixed bottom-2 left-0 right-0  px-4 pb-8 flex justify-center">
           <button

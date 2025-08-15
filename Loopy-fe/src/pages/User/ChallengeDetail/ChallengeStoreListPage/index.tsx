@@ -14,6 +14,7 @@ const ChallengeStoreListPage = () => {
   const challengeId = Number(id);
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedCafeId, setSelectedCafeId] = useState<number | null>(null);
 
   const { challengeDetail, isLoading, isError } =
     useChallengeDetail(challengeId);
@@ -21,12 +22,29 @@ const ChallengeStoreListPage = () => {
   const { mutate: joinChallenge, isPending } = useJoinChallenge();
 
   const handleJoinChallenge = () => {
-    joinChallenge(challengeId, {
-      onSuccess: () => {
-        setIsPopupOpen(false);
-        navigate('/challenge');
-      },
+    if (!selectedCafeId) return;
+
+    console.log('참여 요청 데이터:', {
+      challengeId,
+      cafeId: selectedCafeId,
     });
+
+    joinChallenge(
+      { challengeId, cafeId: selectedCafeId },
+      {
+        onSuccess: () => {
+          console.log('참여 성공:', {
+            challengeId,
+            cafeId: selectedCafeId,
+          });
+          setIsPopupOpen(false);
+          navigate('/challenge');
+        },
+        onError: (error) => {
+          console.error('참여 실패:', error);
+        },
+      },
+    );
   };
 
   if (isLoading) return <ChallengeStoreListSkeleton />;
@@ -70,7 +88,13 @@ const ChallengeStoreListPage = () => {
               </div>
               <p className="text-[0.875rem] text-[#7F7F7F]">{store.address}</p>
             </div>
-            <SmallButton text="참여" onClick={() => setIsPopupOpen(true)} />
+            <SmallButton
+              text="참여"
+              onClick={() => {
+                setSelectedCafeId(store.id);
+                setIsPopupOpen(true);
+              }}
+            />
           </div>
         ))}
       </div>

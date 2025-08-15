@@ -5,7 +5,7 @@ import CharacterFace from '../../../../assets/images/CharacterFace.svg?react';
 
 interface ChallengeInfoCardProps {
   period: string;
-  points: number;
+  points: string;
   participants: number;
   complete: number;
 }
