@@ -5,7 +5,7 @@ import Crown from '../../../assets/images/Crown.svg';
 import Info from '../../../assets/images/Info.svg?react';
 import EmptyStamp from '../../../assets/images/EmptyStamp.svg?react';
 import ChallengeDetailSkeleton from './Skeleton/ChallengeDetailSkeleton';
-
+import AcronStamp from '../../../assets/images/AcronStamp.svg?react';
 import { useChallengeDetail } from '../../../hooks/query/challenge/useChallengeDetail';
 
 const ChallengeDetailPage = () => {
@@ -99,9 +99,17 @@ const ChallengeDetailPage = () => {
           {challenge.isParticipated && (
             <div>
               <div className="flex justify-center gap-[1rem] mt-8">
-                <EmptyStamp className="w-[5rem] h-[5rem]" />
-                <EmptyStamp className="w-[5rem] h-[5rem]" />
-                <EmptyStamp className="w-[5rem] h-[5rem]" />
+                {Array.from({ length: challenge.goalCount }).map((_, index) => {
+                  if (challenge.joinedCount && index < challenge.joinedCount) {
+                    return (
+                      <AcronStamp key={index} className="w-[5rem] h-[5rem]" />
+                    );
+                  } else {
+                    return (
+                      <EmptyStamp key={index} className="w-[5rem] h-[5rem]" />
+                    );
+                  }
+                })}
               </div>
 
               <div className="flex flex-col bg-[#F3F3F3] p-4 rounded-[8px] mt-8">
