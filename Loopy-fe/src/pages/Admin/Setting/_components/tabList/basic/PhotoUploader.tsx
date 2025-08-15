@@ -4,11 +4,12 @@ import { useCafePhotos } from "../../../../../../hooks/query/admin/photo/useCafe
 import { useUploadCafePhotos } from "../../../../../../hooks/mutation/admin/photo/useUploadPhoto";
 import { useDeleteCafePhoto } from "../../../../../../hooks/mutation/admin/photo/useDeleteCafePhoto";
 import type { CafePhoto } from "../../../../../../apis/admin/setting/photo/type";
+import LoadingSpinner from "../../../../../../components/loading/LoadingSpinner";
 
 type PhotoUploaderProps = {
   maxPhotos: number;
   minPhotos: number;
-  onCountChange?: (count: number) => void; // 부모로 개수 전달
+  onCountChange?: (count: number) => void; 
 };
 
 const PhotoUploader = ({ maxPhotos, minPhotos, onCountChange }: PhotoUploaderProps) => {
@@ -71,8 +72,12 @@ const PhotoUploader = ({ maxPhotos, minPhotos, onCountChange }: PhotoUploaderPro
   };
 
   if (isLoading) {
-    return <div>사진 불러오는 중...</div>;
-  }
+    return (
+      <div className="w-full h-[100vh] flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-[#6970F3] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -140,7 +145,7 @@ const PhotoUploader = ({ maxPhotos, minPhotos, onCountChange }: PhotoUploaderPro
         ))}
       </div>
 
-      {isUploading && <div className="mt-2 text-sm text-gray-500">이미지 업로드 중...</div>}
+      {isUploading && <LoadingSpinner /> }
     </div>
   );
 };
