@@ -33,7 +33,7 @@ const ChallengeCard = ({ data, hideParticipatingTag }: ChallengeCardProps) => {
       <img
         src={thumbnailUrl}
         alt={title}
-        className="w-[4.5rem] h-[4.5rem] object-cover rounded-full mr-4"
+        className="w-18 h-18 object-fill mr-4"
       />
 
       {/* 중앙 텍스트 */}

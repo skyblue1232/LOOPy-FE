@@ -5,8 +5,8 @@ import LocationLabel from '../../../../components/etc/LocationLabel';
 import SmallButton from '../components/SmallButton';
 import CommonBottomPopup from '../../../../components/popup/CommonBottomPopup';
 import ChallengeStoreListSkeleton from '../Skeleton/ChallengeStorListSkeleton';
-import { joinChallenge } from '../../../../apis/challenge/challengeJoin/api';
 import { useChallengeDetail } from '../../../../hooks/query/challenge/useChallengeDetail';
+import { useJoinChallenge } from '../../../../hooks/query/challenge/useJoinChallenge';
 
 const ChallengeStoreListPage = () => {
   const { id } = useParams();
@@ -18,16 +18,15 @@ const ChallengeStoreListPage = () => {
   const { challengeDetail, isLoading, isError } =
     useChallengeDetail(challengeId);
 
-  const handleJoinChallenge = async () => {
-    try {
-      const res = await joinChallenge(challengeId);
-      alert(res?.success?.message || '챌린지에 참여했어요!');
-      setIsPopupOpen(false);
-      navigate(`/challenge`);
-    } catch (err) {
-      console.error('챌린지 참여 실패:', err);
-      alert('참여에 실패했습니다. 다시 시도해주세요.');
-    }
+  const { mutate: joinChallenge, isPending } = useJoinChallenge();
+
+  const handleJoinChallenge = () => {
+    joinChallenge(challengeId, {
+      onSuccess: () => {
+        setIsPopupOpen(false);
+        navigate('/challenge');
+      },
+    });
   };
 
   if (isLoading) return <ChallengeStoreListSkeleton />;
@@ -80,7 +79,7 @@ const ChallengeStoreListPage = () => {
         show={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         titleText="이 매장에서 챌린지를 진행할까요?"
-        purpleButton="참여하기"
+        purpleButton={isPending ? '참여 중...' : '참여하기'}
         purpleButtonOnClick={handleJoinChallenge}
         contentsText="챌린지는 한 카페에서만 진행하실 수 있어요"
       />
