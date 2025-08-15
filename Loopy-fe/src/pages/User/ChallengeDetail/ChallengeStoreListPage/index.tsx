@@ -78,10 +78,11 @@ const ChallengeStoreListPage = () => {
         {challengeDetail.availableCafes.map((store) => (
           <div key={store.id} className="flex items-center gap-4">
             <img
-              src={store.imageUrl || '/default-cafe.jpg'}
+              src={store.image || '/default-cafe.jpg'}
               alt={store.name}
               className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
             />
+
             <div className="flex-1 flex flex-col justify-center gap-1">
               <div className="flex items-center gap-2">
                 <p className="font-bold text-[1.125rem]">{store.name}</p>
