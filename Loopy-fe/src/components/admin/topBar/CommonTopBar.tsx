@@ -1,16 +1,20 @@
-import AdminBell from '../../../assets/images/AdminBell.svg?react';
-import BackIcon from "../../../assets/images/Back.svg?react";
+import BackIcon from '../../../assets/images/Back.svg?react';
 
 const SIDEBAR_WIDTH = '12.875rem';
 
 interface TopBarProps {
-  userName?: string; // 홈 화면일 때 
+  userName?: string; // 홈 화면일 때
   profileImageUrl?: string;
   title?: string; // 일반 제목일 때 보여줄 타이틀 텍스트
-  onBack?: () => void; // 뒤로가기 버튼 클릭 
+  onBack?: () => void; // 뒤로가기 버튼 클릭
 }
 
-const CommonTopBar = ({ userName, profileImageUrl, title, onBack }: TopBarProps) => {
+const CommonTopBar = ({
+  userName,
+  profileImageUrl,
+  title,
+  onBack,
+}: TopBarProps) => {
   const isAdmin = !!userName;
 
   return (
@@ -46,11 +50,8 @@ const CommonTopBar = ({ userName, profileImageUrl, title, onBack }: TopBarProps)
         )}
       </div>
 
-      {/* 오른쪽: 알림 + 프로필 */}
+      {/* 프로필 */}
       <div className="flex items-center gap-4 ml-auto">
-        <div className="relative w-6 h-6">
-          <AdminBell />
-        </div>
         {profileImageUrl ? (
           <img
             src={profileImageUrl}
