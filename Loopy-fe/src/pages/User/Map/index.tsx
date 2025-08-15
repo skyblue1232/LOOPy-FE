@@ -21,6 +21,9 @@ import StampDefaultMarker from '/src/assets/images/StampDefaultMarker.svg';
 import NoStampActiveMarker from '/src/assets/images/NoStampActiveMarker.svg';
 import NoStampDefaultMarker from '/src/assets/images/NoStampDefaultMarker.svg';
 import { calcDistanceMeters, formatDistance } from '../../../utils/geo';
+import { useToggleBookmark } from '../../../hooks/mutation/cafe/useToggleBookmark';
+import { useBookmarkedCafesQuery } from '../../../hooks/query/bookmark/useBookmarkdeCafeQuery';
+import { useQueryClient } from '@tanstack/react-query';
 
 declare global {
   interface Window { kakao: any }
@@ -54,7 +57,7 @@ const MapPage = () => {
   const activeMarkerRef = useRef<any>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<Map<number, any>>(new Map());
-
+  const queryClient = useQueryClient();
   const { selected, shouldApplyOnMap, markAppliedOnMap } = useSelectedLocationStore();
   const { view, setView } = useMapViewStore();
   const { selectedByGroup, setSelectedByGroup } = useFilterStore();
@@ -230,6 +233,39 @@ const MapPage = () => {
     mockOnEmpty: mapSearchSimilarTop15,
   });
 
+  const { data: bookmarks } = useBookmarkedCafesQuery();
+  const bookmarkIds = useMemo(
+    () => new Set(bookmarks?.map((b) => Number(b.id))),
+    [bookmarks]
+  );
+
+  const { mutate: toggleBookmark } = useToggleBookmark();
+
+  const handleBookmarkToggle = (id: number, newState: boolean) => {
+    toggleBookmark(
+      { cafeId: id, newState },
+      {
+        onSuccess: () => {
+          // 로컬 상태 업데이트
+          setSelectedCafe((prev) =>
+            prev && prev.id === id
+              ? {
+                  ...prev,
+                  detail: {
+                    ...prev.detail,
+                    isBookmarked: newState,
+                  },
+                }
+              : prev
+          );
+
+          // 북마크 목록 최신화
+          queryClient.invalidateQueries({ queryKey: ['bookmarkedCafes'] });
+        },
+      }
+    );
+  };
+
   const resetActiveMarker = () => {
     const prev = activeMarkerRef.current;
     if (prev) {
@@ -254,7 +290,10 @@ const MapPage = () => {
     const map: any = (mapRef.current as any)?.__map;
     if (!map) return;
 
-    const cafes = mapData?.success?.cafes ?? [];
+    const cafes = (mapData?.success?.cafes ?? []).map((cafe) => ({
+      ...cafe,
+      isBookmarked: bookmarkIds.has(cafe.id),
+    }));
     if (cafes.length === 0) return;
 
     const nextIds = new Set<number>(cafes.map((c) => c.id));
@@ -422,9 +461,14 @@ const MapPage = () => {
           onClick={(e) => e.stopPropagation()}
         >
           <CafeDetailCard
+            id={selectedCafe.id}
             name={selectedCafe.name}
             distanceText={selectedCafe.distanceText}
-            {...selectedCafe.detail}
+            images={selectedCafe.detail.images}
+            address={selectedCafe.detail.address}
+            keywords={selectedCafe.detail.keywords}
+            isBookmarked={selectedCafe.detail.isBookmarked ?? false}
+            onBookmarkToggle={(id, newState) => handleBookmarkToggle(id, newState)}
             onClick={() => nav(`/detail/${selectedCafe.id}`)}
           />
         </div>

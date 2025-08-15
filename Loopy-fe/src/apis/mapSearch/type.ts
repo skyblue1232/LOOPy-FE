@@ -27,15 +27,11 @@ export interface MapSearchResponse {
 }
 
 export interface MapSearchParams {
-  /** 항상 전달 (거리순 정렬 기준) */
   x: number; // lng
   y: number; // lat
   zoom: number | string;
 
-  /** 선택 필터: 콤마 직렬화 예정 */
-  store?: string[];   // ['wifi','laptop_seat']
-  menu?: string[];    // ['vegan','decaf']
-  takeout?: string[]; // ['package_discount']
-
-  /** 지역 지정/미지정은 x,y,zoom으로 표현 (지역 미지정=전국 스케일 zoom) */
+  store?: string[];  
+  menu?: string[];  
+  takeout?: string[];
 }

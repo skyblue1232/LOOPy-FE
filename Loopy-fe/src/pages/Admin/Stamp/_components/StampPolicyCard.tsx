@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchStampPolicy } from '../../../../apis/admin/stamp/api';
 import type {
@@ -10,6 +10,7 @@ import type {
 import EditIcon from '/src/assets/images/Pencil.svg?react';
 import StampIcon from '/src/assets/images/StampIcon.svg?react';
 import StampPolicyEditDrawer from './StampEditDrawer';
+import StampPolicyCardSkeleton from '../Skeleton/StampPolicyCardSkeleton';
 
 function formatNumber(n?: number | null) {
   if (n == null) return '-';
@@ -58,8 +59,6 @@ function rewardText(p: StampPolicyData) {
 
 export default function StampPolicyCard({ token }: { token?: string }) {
   const [openEdit, setOpenEdit] = useState(false);
-  const topLabelRef = useRef<HTMLSpanElement>(null);
-  const [chipStartRem, setChipStartRem] = useState<number>(6.8125); // 109px/16
 
   const {
     data: policy,
@@ -72,25 +71,9 @@ export default function StampPolicyCard({ token }: { token?: string }) {
     retry: 1,
   });
 
-  useEffect(() => {
-    const update = () => {
-      const labelPx = topLabelRef.current?.offsetWidth ?? 0;
-      const root =
-        parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-      setChipStartRem((labelPx + 109) / root);
-    };
-    update();
-    window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
-  }, []);
-
   let content: JSX.Element;
   if (isLoading) {
-    content = (
-      <div className="w-full max-w-[48.125rem] min-h-[13.5rem] rounded-[1rem] p-[1.5rem] bg-[#F7F7F7] flex items-center justify-center text-[1rem]">
-        불러오는 중…
-      </div>
-    );
+    content = <StampPolicyCardSkeleton />
   } else if (isError || !policy) {
     content = (
       <div className="w-full max-w-[48.125rem] min-h-[13.5rem] rounded-[1rem] p-[1.5rem] bg-[#FFF2F2] text-red-500 text-[1rem] flex items-center justify-center">
@@ -118,7 +101,8 @@ export default function StampPolicyCard({ token }: { token?: string }) {
           </button>
         </div>
 
-        <div className="mt-[2rem] flex items-center gap-[1.5rem]">
+        <div className="mt-[2rem] flex gap-[1.5rem]">
+          {/* 스탬프 이미지 */}
           <div className="w-[7.5rem] h-[7.5rem] rounded-full overflow-hidden bg-white shrink-0">
             {policy.selectedImageUrl ? (
               <img
@@ -129,17 +113,13 @@ export default function StampPolicyCard({ token }: { token?: string }) {
             ) : null}
           </div>
 
-          <div
-            className="flex-1 grid items-center gap-y-[1rem] gap-x-0"
-            style={{ gridTemplateColumns: `${chipStartRem}rem 1fr` }}
-          >
-            <span
-              ref={topLabelRef}
-              className="text-[1.125rem] font-bold leading-[100%] text-[#222] whitespace-nowrap"
-            >
-              적립 조건
-            </span>
+          {/* 오른쪽 내용 */}
+          <div className="flex flex-col justify-center gap-[1rem]">
+            {/* 적립 조건 */}
             <div className="flex items-center">
+              <span className="w-[10.75rem] text-[1.125rem] font-bold leading-[100%] text-[#222] whitespace-nowrap">
+                적립 조건
+              </span>
               <span className="inline-flex items-center rounded-[0.5rem] bg-[#6970F3] px-[1rem] py-[0.5rem] text-white text-[0.875rem] font-semibold leading-[100%]">
                 {getConditionLabel(policy.conditionType)}
               </span>
@@ -148,10 +128,11 @@ export default function StampPolicyCard({ token }: { token?: string }) {
               </span>
             </div>
 
-            <span className="text-[1.125rem] font-bold leading-[100%] text-[#222] whitespace-nowrap">
-              10번째 적립 리워드
-            </span>
+            {/* 10번째 적립 리워드 */}
             <div className="flex items-center">
+              <span className="w-[10.75rem] text-[1.125rem] font-bold leading-[100%] text-[#222] whitespace-nowrap">
+                10번째 적립 리워드
+              </span>
               <span className="inline-flex items-center rounded-[0.5rem] bg-[#6970F3] px-[1rem] py-[0.5rem] text-white text-[0.875rem] font-semibold leading-[100%]">
                 {getRewardLabel(policy.rewardType)}
               </span>
