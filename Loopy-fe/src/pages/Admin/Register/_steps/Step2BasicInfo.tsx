@@ -12,7 +12,7 @@ import type { CafePhoto } from '../../../../apis/admin/photo/type';
 import CommonButton from '../../../../components/button/CommonButton';
 
 interface Step2BasicInfoProps {
-  cafeId: number
+  cafeId?: number; 
   setValid: (valid: boolean) => void;
   onNext: () => void;
 }
@@ -84,6 +84,11 @@ export default function Step2BasicInfo({ cafeId, setValid, onNext }: Step2BasicI
   };
 
   const handleSubmit = () => {
+    if (!cafeId) {
+      console.error('cafeId가 없습니다. Step1에서 생성 후 진행해주세요.');
+      return;
+    }
+
     const payload: PostOwnerCafeBasicInfoRequest = {
       id: cafeId,
       name: businessName,
