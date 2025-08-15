@@ -5,11 +5,14 @@ import StampFree from '../../../../assets/images/StampFree.svg?react';
 import AcronStamp from '../../../../assets/images/AcronStamp.svg?react';
 
 interface StampProps {
-  currentStep: number; // 1~9
-  rewardType: 'FREE_DRINK' | 'DISCOUNT' | 'SIZE_UP';
+  currentStep: number;
+  rewardType?: 'FREE_DRINK' | 'DISCOUNT' | 'SIZE_UP';
 }
 
-const StampPaper: React.FC<StampProps> = ({ currentStep, rewardType }) => {
+const StampPaper: React.FC<StampProps> = ({
+  currentStep,
+  rewardType = null,
+}) => {
   const baseWidth = 307;
   const baseHeight = 426.4375;
 
