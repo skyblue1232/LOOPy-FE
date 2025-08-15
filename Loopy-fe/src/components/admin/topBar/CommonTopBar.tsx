@@ -1,12 +1,13 @@
 import BackIcon from '../../../assets/images/Back.svg?react';
+import { useFirstCafePhoto } from '../../../hooks/query/admin/home/useFirstCafePhoto';
 
 const SIDEBAR_WIDTH = '12.875rem';
 
 interface TopBarProps {
-  userName?: string; // 홈 화면일 때
+  userName?: string;
   profileImageUrl?: string;
-  title?: string; // 일반 제목일 때 보여줄 타이틀 텍스트
-  onBack?: () => void; // 뒤로가기 버튼 클릭
+  title?: string; // 일반 제목일 때
+  onBack?: () => void;
 }
 
 const CommonTopBar = ({
@@ -16,6 +17,9 @@ const CommonTopBar = ({
   onBack,
 }: TopBarProps) => {
   const isAdmin = !!userName;
+
+  const { data } = useFirstCafePhoto();
+  const firstCafePhotoUrl = data?.photo.photoUrl;
 
   return (
     <header
@@ -33,7 +37,7 @@ const CommonTopBar = ({
           : undefined
       }
     >
-      {/* 왼쪽: 관리자 인사말 or 일반 타이틀 */}
+      {/* 인사말 or 일반 타이틀 */}
       <div className="flex items-center gap-4">
         {!isAdmin && title && onBack && (
           <button onClick={onBack} aria-label="뒤로가기" className="mt-0.25">
@@ -52,9 +56,9 @@ const CommonTopBar = ({
 
       {/* 프로필 */}
       <div className="flex items-center gap-4 ml-auto">
-        {profileImageUrl ? (
+        {firstCafePhotoUrl || profileImageUrl ? (
           <img
-            src={profileImageUrl}
+            src={firstCafePhotoUrl || profileImageUrl}
             alt="프로필 사진"
             className="w-8 h-8 rounded-full object-cover"
           />

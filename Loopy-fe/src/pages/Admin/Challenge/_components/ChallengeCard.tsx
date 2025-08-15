@@ -71,7 +71,7 @@ const ChallengeCard: FC<ChallengeCardProps> = ({
           <div className="text-[#6970F3] text-[0.75rem] font-semibold leading-none">
             월간 챌린지
           </div>
-          <div className="text-black text-[1rem] font-semibold leading-none mb-2">
+          <div className="text-black text-[1rem] font-semibold leading-none">
             {title.length > 20 ? `${title.slice(0, 20)}…` : title}
           </div>
           <div className="text-[#7F7F7F] text-[0.875rem] font-normal leading-none">
