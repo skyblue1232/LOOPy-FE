@@ -40,7 +40,6 @@ class Storage {
     localStorage.removeItem("nickname");
     localStorage.removeItem("role");
     localStorage.removeItem("isOnboarded");
-    localStorage.removeItem("activeCafeId");
   };
 }
 
