@@ -5,7 +5,7 @@ import CouponList from './CouponList';
 import AddCouponButton from './AddCouponButton';
 import TypeFilterModal, { type CouponTypeKey } from './TypeFilterModal';
 import { useOwnerCoupons } from '../../../../hooks/query/admin/coupon/useOwnerCoupon';
-import { useTerminateOwnerCoupon } from '../../../../hooks/query/admin/coupon/useTerminateCoupon';
+import { useTerminateOwnerCoupon } from '../../../../hooks/mutation/admin/coupon/useTerminateCoupon';
 import type { OwnerCouponListItem } from '../../../../apis/admin/coupon/type';
 
 interface Props {
@@ -25,8 +25,8 @@ const toYmdSafe = (iso?: string) => (iso ? iso.split('T')[0] : '');
 
 const mapToUICoupon = (item: OwnerCouponListItem) => {
   const hasPeriod = !!(item.startDate && item.endDate);
-  const uiStatus: '진행중' | '종료됨' =
-    item.status === 'ENDED' ? '종료됨' : '진행중';
+  const uiStatus: '발행 중' | '종료됨' =
+    item.status === '종료됨' ? '종료됨' : '발행 중';
 
   return {
     id: item.id,
