@@ -184,53 +184,53 @@ const publicRoutes = createBrowserRouter([
       // },
       {
         path: 'signin',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminSigninPage />,
       },
       {
         path: 'home',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminHomePage />,
       },
       {
         path: 'register',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminRegisterPage />,
       },
       {
         path: 'challenge',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminChallengePage />,
       },
       {
         path: 'challenge/:challengeId',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminChallengeDetail />,
       },
 
       {
         path: 'challengelist',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminChallengeList />,
       },
       {
         path: 'coupon/:cafeId',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminCouponPage />,
       },
       {
         path: 'stamp',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminStampPage />,
       },
       {
         path: 'notification',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminNotificationPage />,
       },
       {
         path: 'setting',
-        // loader: AuthCheck.authPageCheck,
+        loader: AuthCheck.authPageCheck,
         element: <AdminSettingFunnelLayout />,
       },
     ],
