@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import UserLayout from './layouts/UserLayout.tsx';
 import AdminLayout from './layouts/AdminLayout';
-import LoginPage from './pages/User/Login';
 import HomePage from './pages/User/Home';
 import DetailPage from './pages/User/Detail';
 import AdminLoginPage from './pages/Admin/Login';
@@ -38,6 +37,7 @@ import AdminRegisterPage from './pages/Admin/Register/index.tsx';
 import MapSearchProviders from './layouts/MapSearchProviderLayout.tsx';
 import VerifyPage from './pages/auth/VerifyPage.tsx';
 import { AuthCheck } from './utils/authCheck';
+import AppEntry from './pages/AppEntry.tsx';
 
 const publicRoutes = createBrowserRouter([
   {
@@ -47,7 +47,7 @@ const publicRoutes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <LoginPage />,
+        element: <AppEntry />,
         handle: { isPublic: true },
       },
       {
