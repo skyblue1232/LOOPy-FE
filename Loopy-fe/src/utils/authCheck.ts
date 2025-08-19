@@ -47,3 +47,4 @@ export class AuthCheck {
     return null;
   }
 }
+
